@@ -3,7 +3,7 @@ import { FaFacebook, FaInstagram, FaTwitter, FaLinkedin } from "react-icons/fa";
 export default function Footer() {
   return (
     <>
-      <div className="mx-32 px-6 grid grid-cols-1 md:grid-cols-4 gap-20">
+      <div className="mx-20 px-6 grid grid-cols-1 md:grid-cols-4 gap-20">
         {/* About */}
         <div>
           <h2
