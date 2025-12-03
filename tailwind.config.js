@@ -29,9 +29,9 @@ module.exports = {
         },
       },
       animation: {
-        shrinkLogo: "shrinkLogo 0.8s linear forwards",
-        expandLogo: "expandLogo 0.8s linear forwards",
-        fadeOutOverlay: "fadeOutOverlay 0.4s ease-out forwards",
+        shrinkLogo: "shrinkLogo 0.6s linear forwards",
+        expandLogo: "expandLogo 0.6s linear forwards",
+        fadeOutOverlay: "fadeOutOverlay 0.3s ease-out forwards",
       },
     },
   },

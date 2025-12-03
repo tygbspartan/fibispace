@@ -16,11 +16,11 @@ import LoadingOverlay from "./components/LoadingOverlay";
 const Main = () => {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
-  const [phaseTimer, setPhaseTimer] = useState(800);
+  const [phaseTimer, setPhaseTimer] = useState(600);
   // Initial load
   useEffect(() => {
     setLoading(true);
-    const totalTime = phaseTimer + 400 + phaseTimer + 50; // shrink + pause + expand + fade
+    const totalTime = phaseTimer + 180 + phaseTimer + 50; // shrink + pause + expand + fade
     const timer = setTimeout(() => setLoading(false), totalTime);
     return () => clearTimeout(timer);
   }, []);
@@ -28,7 +28,7 @@ const Main = () => {
   // Route changes
   useEffect(() => {
     setLoading(true);
-    const totalTime = phaseTimer + 400 + phaseTimer + 50;
+    const totalTime = phaseTimer + 180 + phaseTimer + 50;
     const timer = setTimeout(() => setLoading(false), totalTime);
     return () => clearTimeout(timer);
   }, [location.pathname]);
