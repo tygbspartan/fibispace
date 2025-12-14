@@ -51,13 +51,13 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-transparent text-black z-50 items-center">
-      <div className="mx-20 px-6 py-9 flex items-center justify-between">
+      <div className="px-24 py-9 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-2">
           <img src="/assets/fibiGreen.png" alt="logo" className="w-auto h-9" />
-          <div className="text-5xl font-bold" style={{ color: "#12A89D" }}>
+          {/* <div className="text-5xl font-bold" style={{ color: "#12A89D" }}>
             FibiSpace
-          </div>
+          </div> */}
         </div>
 
         {/* Desktop Buttons */}

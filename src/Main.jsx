@@ -1,11 +1,6 @@
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-} from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Services from "./pages/Services";
 import About from "./pages/About";
@@ -16,7 +11,7 @@ import LoadingOverlay from "./components/LoadingOverlay";
 const Main = () => {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
-  const [phaseTimer, setPhaseTimer] = useState(600);
+  const [phaseTimer] = useState(600);
   // Initial load
   useEffect(() => {
     setLoading(true);
@@ -39,24 +34,24 @@ const Main = () => {
       <div
         className={`${
           loading ? "opacity-0" : "opacity-100"
-        } transition-opacity duration-300 flex flex-col min-h-screen`}
+        } transition-opacity duration-300 flex flex-col min-h-screen bg-[#f0f1fa]`}
       >
         <header>
           <Navbar />
         </header>
 
-        <main className="flex-grow mt-32 mx-20 px-6">
+        <main className="flex-grow ">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/services" element={<Services />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
-            {/* <Route path="/get-started" element={<About />} /> */}
+            <Route path="*" element={<Home />} />
           </Routes>
         </main>
-        <footer className="text-black pt-12 pb-6 items-center fibi-bg">
-          <Footer />
-        </footer>
+        {/* <footer className="text-black pt-12 pb-6 items-center fibi-bg"> */}
+        <Footer />
+        {/* </footer> */}
       </div>
     </>
   );
