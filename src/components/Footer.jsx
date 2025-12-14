@@ -130,7 +130,7 @@ const Footer = () => {
                     <Instagram className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors duration-300" />
                   </a>
                   <a
-                    href="#"
+                    href="https://www.facebook.com/fibispace"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-[#12a89d] transition-all duration-300 transform hover:scale-110 hover:-translate-y-1"

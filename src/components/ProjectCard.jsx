@@ -13,7 +13,7 @@ const ProjectCard = ({ project, index, scrollDirection }) => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && scrollDirection === 'down' && !hasAnimated) {
+          if (entry.isIntersecting && !hasAnimated) {
             timeoutRef.current = setTimeout(() => {
               setIsVisible(true);
               setHasAnimated(true);
