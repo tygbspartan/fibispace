@@ -3,10 +3,12 @@ import Navbar from "./components/Navbar";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Services from "./pages/Services";
-import About from "./pages/About";
+import About from "./pages/AboutUs";
 import Contact from "./pages/Contact";
 import { useEffect, useState } from "react";
 import LoadingOverlay from "./components/LoadingOverlay";
+import Projects from "./pages/Projects";
+import ProjectDetails from "./pages/ProjectDetails";
 
 const Main = () => {
   const location = useLocation();
@@ -44,6 +46,8 @@ const Main = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/services" element={<Services />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/projects/:id" element={<ProjectDetails />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<Home />} />

@@ -1,6 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const ProjectCard = ({ project, index, scrollDirection }) => {
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
   const [tiltStyle, setTiltStyle] = useState({});
@@ -23,7 +25,7 @@ const ProjectCard = ({ project, index, scrollDirection }) => {
       },
       {
         threshold: 0.2,
-        rootMargin: '0px'
+        rootMargin: "0px",
       }
     );
 
@@ -57,28 +59,37 @@ const ProjectCard = ({ project, index, scrollDirection }) => {
 
     setTiltStyle({
       transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`,
-      transition: 'transform 0.1s ease-out'
+      transition: "transform 0.1s ease-out",
     });
   };
 
   const handleMouseLeave = () => {
     setTiltStyle({
-      transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
-      transition: 'transform 0.3s ease-out'
+      transform:
+        "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)",
+      transition: "transform 0.3s ease-out",
     });
   };
 
   return (
     <div
       ref={cardRef}
-      className={`project-card-container ${isVisible ? 'visible' : ''}`}
+      className={`project-card-container ${isVisible ? "visible" : ""}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={tiltStyle}
     >
-      <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${isImageLeft ? '' : 'lg:grid-flow-dense'}`}>
+      <div
+        className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${
+          isImageLeft ? "" : "lg:grid-flow-dense"
+        }`}
+      >
         {/* Image Section */}
-        <div className={`project-image-wrapper ${isImageLeft ? 'lg:col-start-1' : 'lg:col-start-2'} ${isVisible ? 'image-visible' : ''}`}>
+        <div
+          className={`project-image-wrapper ${
+            isImageLeft ? "lg:col-start-1" : "lg:col-start-2"
+          } ${isVisible ? "image-visible" : ""}`}
+        >
           <div className="relative overflow-hidden rounded-2xl shadow-2xl group">
             <img
               src={project.image}
@@ -90,7 +101,11 @@ const ProjectCard = ({ project, index, scrollDirection }) => {
         </div>
 
         {/* Text Section */}
-        <div className={`project-text-wrapper ${isImageLeft ? 'lg:col-start-2' : 'lg:col-start-1'} ${isVisible ? 'text-visible' : ''}`}>
+        <div
+          className={`project-text-wrapper ${
+            isImageLeft ? "lg:col-start-2" : "lg:col-start-1"
+          } ${isVisible ? "text-visible" : ""}`}
+        >
           <div className="space-y-6">
             <h3 className="text-3xl md:text-4xl font-bold text-gray-900">
               {project.title}
@@ -98,10 +113,17 @@ const ProjectCard = ({ project, index, scrollDirection }) => {
             <p className="text-lg text-gray-600 leading-relaxed">
               {project.description}
             </p>
-            
+
             {/* Button positioned based on layout */}
-            <div className={`flex ${!isImageLeft ? 'lg:justify-end' : 'lg:justify-start'} justify-start`}>
-              <button className="project-view-button group relative inline-flex items-center px-6 py-3 bg-[#12a89d] text-white font-semibold rounded-lg overflow-hidden transition-all duration-300 hover:bg-[#0d8579] hover:shadow-lg hover:px-10">
+            <div
+              className={`flex ${
+                !isImageLeft ? "lg:justify-end" : "lg:justify-start"
+              } justify-start`}
+            >
+              <button
+                onClick={() => navigate(`/projects/${project.id}`)}
+                className="project-view-button group relative inline-flex items-center px-6 py-3 bg-[#12a89d] text-white font-semibold rounded-lg overflow-hidden transition-all duration-300 hover:bg-[#0d8579] hover:shadow-lg hover:px-10"
+              >
                 <span className="arrow-icon absolute left-4 opacity-0 transform -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
                   →
                 </span>

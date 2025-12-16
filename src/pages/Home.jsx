@@ -172,7 +172,7 @@ const Homepage = () => {
           </div>
           <div className="mt-16 relative">
             <Link
-              to="/projects"
+              to="/services"
               className="group block relative overflow-hidden"
             >
               <div className="relative bg-gradient-to-r from-[#12a89d] to-[#0d8579] py-6 px-8 rounded-2xl flex items-center justify-center">

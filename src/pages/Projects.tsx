@@ -1,16 +1,9 @@
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import ServiceCard from "../components/ServiceCard";
-import { useEffect, useState } from "react";
-import { services } from "../json/datas";
+import ProjectCard from "../components/ProjectCard";
+import { projects } from "../json/datas";
 
-interface ServiceModal {
-  id: number;
-  title: string;
-  description: string;
-  imagePath: string;
-}
-
-const Services = () => {
+const Projects = () => {
   const [scrollY, setScrollY] = useState(0);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -24,32 +17,28 @@ const Services = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [scrollY]);
   return (
-    <section className="relative py-20 px-4 md:px-32 mt-12 ">
-      <div
-        style={{
-          transform: `translateY(${(scrollY - 400) * 0.1}px)`,
-        }}
-      >
+    <section className="relative  py-20 px-4 md:px-32 ">
+      <div className="">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Our Services
+            Our Projects
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Comprehensive solutions designed to elevate your business to new
-            heights
+            Showcasing our finest work and innovative solutions
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {services.map((service, index) => (
-            <ServiceCard
-              key={service.id}
-              service={service}
+        <div className="space-y-16 md:space-y-24">
+          {projects.map((project, index) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
               index={index}
               scrollDirection={scrollY > lastScrollY ? "down" : "up"}
             />
           ))}
         </div>
+
         {/* <div className="mt-16 relative">
           <Link to="/projects" className="group block relative overflow-hidden">
             <div className="relative bg-gradient-to-r from-[#12a89d] to-[#0d8579] py-6 px-8 rounded-2xl flex items-center justify-center">
@@ -63,7 +52,7 @@ const Services = () => {
 
               <div className="relative z-10 flex items-center gap-4">
                 <span className="text-white text-2xl font-bold">
-                  Explore All Services
+                  Explore All Projects
                 </span>
                 <div className="arrow-wrapper flex items-center gap-2 overflow-hidden">
                   <span className="arrow-slide text-white text-2xl font-bold opacity-0 transform -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
@@ -79,4 +68,4 @@ const Services = () => {
   );
 };
 
-export default Services;
+export default Projects;

@@ -148,7 +148,7 @@ const Footer = () => {
               <p className="text-gray-500 text-sm">
                 © {currentYear} Fibi Space. All rights reserved.
               </p>
-              <div className="flex gap-6 text-sm">
+              {/* <div className="flex gap-6 text-sm">
                 <Link
                   to="/privacy"
                   className="text-gray-500 hover:text-[#12a89d] transition-colors duration-300"
@@ -161,7 +161,7 @@ const Footer = () => {
                 >
                   Terms of Service
                 </Link>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
