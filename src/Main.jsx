@@ -36,11 +36,9 @@ const Main = () => {
       <div
         className={`${
           loading ? "opacity-0" : "opacity-100"
-        } transition-opacity duration-300 flex flex-col min-h-screen bg-[#f0f1fa]`}
+        } transition-opacity duration-300 flex flex-col min-h-screen md:mx-24 `}
       >
-        <header>
-          <Navbar />
-        </header>
+        <Navbar />
 
         <main className="flex-grow ">
           <Routes>
@@ -53,9 +51,7 @@ const Main = () => {
             <Route path="*" element={<Home />} />
           </Routes>
         </main>
-        {/* <footer className="text-black pt-12 pb-6 items-center fibi-bg"> */}
         <Footer />
-        {/* </footer> */}
       </div>
     </>
   );

@@ -46,7 +46,7 @@ export default function LoadingOverlay({ isActive, phaseTimer }) {
     >
       {showLogo && (
         <img
-          src="/assets/fibiGreen.png"
+          src="/assets/fibiBlack.png"
           alt="FibiLoading"
           className={`
             absolute top-1/2 left-1/2 

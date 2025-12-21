@@ -2,6 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import ServiceCard from "../components/ServiceCard";
 import ProjectCard from "../components/ProjectCard";
 import { Link } from "react-router-dom";
+import AboutSection from "../components/AboutSection";
+import FeaturedWork from "../components/FeaturedWork";
+import WorkTogether from "../components/WorkTogether";
 
 const Homepage = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -107,151 +110,64 @@ const Homepage = () => {
   ];
 
   return (
-    <div className="relative overflow-hidden ">
-      {/* Hero Section with Parallax */}
-      <section className="relative h-screen w-full overflow-hidden">
-        <div
-          className="absolute inset-0 w-full h-full"
-          style={{
-            transform: `translateY(${scrollY * 0.5}px)`,
-            transition: "transform 0.1s ease-out",
-          }}
-        >
-          <img
-            src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600"
-            alt="Hero"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-30"></div>
+    <div className="relative pt-[75px] md:pt-[47px]">
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex flex-col items-center px-4 md:px-0">
+        {/* Tagline - Centered */}
+        <div className="text-center mb-5 text-[28px] md:text-[45px] font-normal text-gray-900 leading-none flex flex-col gap-">
+          <span>Crafting digital journeys that</span>
+          <span>forge real connections.</span>
         </div>
 
-        <div
-          className="absolute bottom-0 left-0 p-8 md:p-24 max-w-4xl z-10"
-          style={{
-            transform: `translateY(${scrollY * -0.2}px)`,
-            opacity: Math.max(1 - scrollY / 500, 0),
-          }}
-        >
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
-            Fibi Space
-          </h1>
-          <p className="text-lg md:text-xl text-white drop-shadow-md leading-relaxed">
-            We provide SEO, social media marketing, content marketing, and email
-            marketing. Let us help take your digital marketing efforts to the
-            next level.
-          </p>
+        {/* Hero Image Container with Border */}
+        <div className="relative w-full pt-6">
+          <div className="border-2 rounded-2xl md:rounded-3xl overflow-hidden min-w-full">
+            <img
+              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600"
+              alt="Hero"
+              className="w-full max-h-[72vh] h-[75vh] md:h-[75vh] object-cover"
+            />
+          </div>
+        </div>
+        <div className="hidden md:flex flex-row justify-between w-full text-4xl">
+          <p>+</p>
+          <p>+</p>
+          <p>+</p>
+          <p>+</p>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="relative py-20 px-4 md:px-32 ">
-        <div
-          style={{
-            transform: `translateY(${(scrollY - 400) * 0.1}px)`,
-          }}
-        >
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Our Services
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Comprehensive solutions designed to elevate your business to new
-              heights
-            </p>
-          </div>
+      {/* About Us Section */}
+      <AboutSection
+        buttonRequired={true}
+        description={
+          "We turn your business goals into reality with data driven marketing and expert design. Fibi Space is your partner for reaching greater heights in the digital age."
+        }
+        imagePath={
+          "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800"
+        }
+        titleTop={"Turning Big Dreams"}
+        titleBottom={"Into Reality"}
+      />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {services.map((service, index) => (
-              <ServiceCard
-                key={service.id}
-                service={service}
-                index={index}
-                scrollDirection={scrollY > lastScrollY ? "down" : "up"}
-              />
-            ))}
-          </div>
-          <div className="mt-16 relative">
-            <Link
-              to="/services"
-              className="group block relative overflow-hidden"
-            >
-              <div className="relative bg-gradient-to-r from-[#12a89d] to-[#0d8579] py-6 px-8 rounded-2xl flex items-center justify-center">
-                <div className="chevron-container absolute inset-0 opacity-10">
-                  <div className="chevron chevron-1"></div>
-                  <div className="chevron chevron-2"></div>
-                  <div className="chevron chevron-3"></div>
-                  <div className="chevron chevron-4"></div>
-                  <div className="chevron chevron-5"></div>
-                </div>
+      {/* Featured Work Section */}
+      <FeaturedWork />
 
-                <div className="relative z-10 flex items-center gap-4">
-                  <span className="text-white text-2xl font-bold">
-                    Explore All Services
-                  </span>
-                  <div className="arrow-wrapper flex items-center gap-2 overflow-hidden">
-                    <span className="arrow-slide text-white text-2xl font-bold opacity-0 transform -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                      →
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* About Us Section 2*/}
+      <AboutSection
+        buttonRequired={false}
+        description={
+          "We don't follow the crowd; we carve a unique path for your business. Fibi Space is dedicated to the art of the personalized experience, rejecting generic trends in favor of custom-built digital solutions that leave a permanent mark on your audience."
+        }
+        imagePath={
+          "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800"
+        }
+        titleTop={"Turning Big Ideas Into"}
+        titleBottom={"Custom-Built Experiences"}
+      />
 
-      {/* Projects Section */}
-      <section className="relative mt-36 py-20 px-4 md:px-32 ">
-        <div className="">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Our Projects
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Showcasing our finest work and innovative solutions
-            </p>
-          </div>
-
-          <div className="space-y-16 md:space-y-24">
-            {projects.map((project, index) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                index={index}
-                scrollDirection={scrollY > lastScrollY ? "down" : "up"}
-              />
-            ))}
-          </div>
-
-          <div className="mt-16 relative">
-            <Link
-              to="/projects"
-              className="group block relative overflow-hidden"
-            >
-              <div className="relative bg-gradient-to-r from-[#12a89d] to-[#0d8579] py-6 px-8 rounded-2xl flex items-center justify-center">
-                <div className="chevron-container absolute inset-0 opacity-10">
-                  <div className="chevron chevron-1"></div>
-                  <div className="chevron chevron-2"></div>
-                  <div className="chevron chevron-3"></div>
-                  <div className="chevron chevron-4"></div>
-                  <div className="chevron chevron-5"></div>
-                </div>
-
-                <div className="relative z-10 flex items-center gap-4">
-                  <span className="text-white text-2xl font-bold">
-                    Explore All Projects
-                  </span>
-                  <div className="arrow-wrapper flex items-center gap-2 overflow-hidden">
-                    <span className="arrow-slide text-white text-2xl font-bold opacity-0 transform -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                      →
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* Work Together Section */}
+      <WorkTogether />
     </div>
   );
 };
