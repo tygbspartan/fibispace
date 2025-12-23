@@ -13,19 +13,23 @@ const ProjectCard = ({ project, index, isVisible }) => {
       onMouseLeave={() => setIsHovered(false)}
       style={{
         opacity: isVisible ? 1 : 0,
-        transform: isVisible ? "translateY(0)" : "translateY(40px)",
-        transition: `all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${
-          index * 0.15
-        }s`,
+        transform: isVisible
+          ? isHovered
+            ? "scale(1.03)"
+            : "scale(1)"
+          : "scale(0.7)",
+        transition: isVisible
+          ? "all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)"
+          : `all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) ${index * 0.12}s`,
       }}
     >
       {/* Image Container with Water Effect */}
-      <div className="relative overflow-hidden rounded-2xl mb-4 bg-gray-100">
+      <div className="relative overflow-hidden rounded-xl sm:rounded-2xl mb-3 sm:mb-4 bg-gray-100">
         <div className={`water-effect ${isHovered ? "active" : ""}`}>
           <img
             src={project.image}
             alt={project.title}
-            className="w-full h-[300px] md:h-[55vh] object-cover transition-transform duration-700 group-hover:scale-105"
+            className="w-full h-[250px] sm:h-[300px] md:h-[45vh] lg:h-[55vh] object-cover transition-transform duration-700 group-hover:scale-105"
           />
         </div>
 
@@ -42,23 +46,24 @@ const ProjectCard = ({ project, index, isVisible }) => {
       </div>
 
       {/* Project Info */}
-      <div className="space-y-2">
-        <p className="text-xs text-gray-600 uppercase tracking-wide">
+      <div className="space-y-1.5 sm:space-y-2">
+        <p className="text-[10px] sm:text-xs text-gray-600 uppercase tracking-wide">
           {project.category}
         </p>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {/* Arrow - Only visible on hover - LEFT SIDE */}
           <img
             src="/assets/arrow.png"
-            className=" transition-all duration-300"
+            className="transition-all duration-300"
             style={{
               opacity: isHovered ? 1 : 0,
-              width: isHovered ? "20px" : "0px",
+              width: isHovered ? "16px" : "0px",
               overflow: "hidden",
             }}
+            alt="arrow"
           />
           <h3
-            className="text-2xl md:text-4xl font-medium text-gray-900 transition-transform duration-300"
+            className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-medium text-gray-900 transition-transform duration-300"
             style={{
               transform: isHovered ? "translateX(0)" : "translateX(-13px)",
             }}

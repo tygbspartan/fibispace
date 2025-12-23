@@ -148,6 +148,7 @@ const Homepage = () => {
         }
         titleTop={"Turning Big Dreams"}
         titleBottom={"Into Reality"}
+        leftStick={false}
       />
 
       {/* Featured Work Section */}
@@ -164,6 +165,7 @@ const Homepage = () => {
         }
         titleTop={"Turning Big Ideas Into"}
         titleBottom={"Custom-Built Experiences"}
+        leftStick={true}
       />
 
       {/* Work Together Section */}
