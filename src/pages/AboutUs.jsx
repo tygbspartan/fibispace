@@ -1,264 +1,358 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const AboutUs = () => {
-  const [scrollY, setScrollY] = useState(0);
-  const [visibleLetters, setVisibleLetters] = useState([]);
-  const [animationStarted, setAnimationStarted] = useState(false);
+  const containerRef = useRef(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleWheel = (e) => {
+      e.preventDefault();
+
+      // Adjust this value: lower = slower, higher = faster
+      const scrollAmount = e.deltaY * 0.5;
+      container.scrollLeft += scrollAmount;
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleScroll = () => {
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      const scrollPercentage =
+        maxScroll > 0 ? container.scrollLeft / maxScroll : 0;
+      setScrollProgress(scrollPercentage);
+    };
+
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    container.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => {
+      container.removeEventListener("wheel", handleWheel);
+      container.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
-  // Letter-by-letter animation for title - Start after delay
-  useEffect(() => {
-    // Wait 500ms before starting the animation
-    const startDelay = setTimeout(() => {
-      setAnimationStarted(true);
-      const title = "About Us";
-      const letters = title.split("");
-
-      letters.forEach((letter, index) => {
-        setTimeout(() => {
-          setVisibleLetters((prev) => [...prev, { letter, index }]);
-        }, index * 100);
-      });
-    }, 1500);
-
-    return () => clearTimeout(startDelay);
-  }, []);
-
-  // Calculate path reveal based on scroll
-  const totalHeight =
-    typeof document !== "undefined"
-      ? document.documentElement.scrollHeight
-      : 3000;
-  const viewportHeight =
-    typeof window !== "undefined" ? window.innerHeight : 800;
-  const scrollableHeight = totalHeight - viewportHeight;
-  const scrollProgress = Math.min(scrollY / scrollableHeight, 1);
-
-  const futureGoals = [
+  // ========================================
+  // ADD NEW SECTIONS HERE - Works dynamically for any number!
+  // ========================================
+  const sections = [
     {
-      title: "Expand Global Reach",
-      description:
-        "Establish partnerships across continents to serve clients worldwide with localized digital marketing expertise.",
+      id: 1,
+      type: "text",
+      lines: [
+        { text: "WE ARE FIBI SPACE", italic: false },
+        { text: "A CREATIVE", italic: false },
+        { text: "PRODUCTION STUDIO", italic: true },
+      ],
+      bottomRight: {
+        text: "NICE TO",
+        italic: true,
+        text2: "MEET YOU",
+        italic2: false,
+      },
     },
     {
-      title: "AI-Powered Solutions",
-      description:
-        "Integrate cutting-edge artificial intelligence to deliver smarter, data-driven marketing strategies.",
+      id: 2,
+      type: "text",
+      lines: [
+        { text: "The team of experienced", italic: false },
+        { text: "and skilled", italic: false },
+        { text: "professionals", italic: false },
+      ],
+      bottomRight: {
+        text: "who bring a wide range of",
+        italic: true,
+        text2: "talents and perspectives",
+        italic2: false,
+        text3: "to a project.",
+        italic3: false,
+      },
     },
     {
-      title: "Sustainable Growth",
+      id: 3,
+      type: "image-text",
+      image:
+        "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800",
+      title: "Our Creative Process",
       description:
-        "Build eco-conscious digital campaigns that drive results while minimizing environmental impact.",
+        "We believe in a collaborative approach that brings together diverse perspectives and expertise. Our team works closely with clients to understand their vision and transform it into compelling digital experiences that resonate with audiences.",
     },
     {
-      title: "Innovation Hub",
+      id: 4,
+      type: "image-text",
+      image:
+        "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800",
+      title: "Our Creative Process",
       description:
-        "Create a research and development center focused on emerging marketing technologies and trends.",
+        "We believe in a collaborative approach that brings together diverse perspectives and expertise. Our team works closely with clients to understand their vision and transform it into compelling digital experiences that resonate with audiences.",
     },
+    // ADD MORE SECTIONS HERE - Just keep adding!
+    // {
+    //   id: 4,
+    //   type: 'text',
+    //   lines: [
+    //     { text: "ANOTHER SECTION", italic: false },
+    //   ],
+    //   bottomRight: {
+    //     text: "MORE TEXT",
+    //     italic: false
+    //   }
+    // },
   ];
+  // ========================================
 
   return (
-    <>
-      <div className="relative min-h-screen bg-white overflow-hidden">
-        {/* Flowing Ribbon SVG - Fixed Background */}
-        <svg
-          className="fixed top-0 left-0 w-full h-full pointer-events-none z-0"
-          viewBox="0 0 1440 3000"
-          preserveAspectRatio="xMidYMid slice"
-        >
-          <defs>
-            <linearGradient
-              id="ribbonGradient"
-              x1="0%"
-              y1="0%"
-              x2="100%"
-              y2="0%"
-            >
-              <stop offset="0%" stopColor="#12a89d" stopOpacity="0.8" />
-              <stop offset="50%" stopColor="#0d8579" stopOpacity="0.9" />
-              <stop offset="100%" stopColor="#12a89d" stopOpacity="0.8" />
-            </linearGradient>
-          </defs>
+    <div className="relative w-full h-screen overflow-hidden bg-white">
+      {/* Horizontal Scroll Container */}
+      <div
+        ref={containerRef}
+        className="relative flex h-screen overflow-x-auto overflow-y-hidden z-10"
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
+      >
+        <style>{`
+          .overflow-x-auto::-webkit-scrollbar {
+            display: none;
+          }
+        `}</style>
 
-          {/* Smooth Flowing Ribbon Path - Starting from top left */}
-          <path
-            d="M 50 100 Q 300 200 600 150 T 1200 300 Q 900 500 600 600 T 300 900 Q 500 1100 900 1200 T 1300 1500 Q 1000 1700 600 1800 T 300 2100 Q 500 2300 800 2400 T 1200 2700"
-            fill="none"
-            stroke="url(#ribbonGradient)"
-            strokeWidth="60"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeDasharray="5000"
-            strokeDashoffset={5000 - 5000 * scrollProgress}
-            style={{
-              transition: "stroke-dashoffset 0.05s linear",
-              filter: "blur(1px)",
-              opacity: 0.6,
-            }}
+        {sections.map((section, index) => (
+          <Section
+            key={section.id}
+            section={section}
+            index={index}
+            scrollProgress={scrollProgress}
+            totalSections={sections.length}
           />
-
-          {/* Static base path - always visible */}
-          <path
-            d="M 50 100 Q 300 200 600 150 T 1200 300 Q 900 500 600 600 T 300 900 Q 500 1100 900 1200 T 1300 1500 Q 1000 1700 600 1800 T 300 2100 Q 500 2300 800 2400 T 1200 2700"
-            fill="none"
-            stroke="url(#ribbonGradient)"
-            strokeWidth="60"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={{
-              filter: "blur(1px)",
-              opacity: 0.15,
-            }}
-          />
-        </svg>
-
-        {/* Title Section with Letter Animation - Reduced Height */}
-        <section className="relative pt-32 pb-12 flex items-center justify-center px-4">
-          <div className="relative z-10">
-            <h1 className="text-6xl md:text-8xl font-bold text-gray-900 text-center">
-              {animationStarted &&
-                visibleLetters.map((item, idx) => (
-                  <span
-                    key={`letter-${idx}`}
-                    style={{
-                      display: "inline-block",
-                      opacity: 0,
-                      transform: "translateY(0)",
-                      animation: `slideUpLetter 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) ${
-                        idx * 0.08
-                      }s forwards`,
-                    }}
-                  >
-                    {item.letter === " " ? "\u00A0" : item.letter}
-                  </span>
-                ))}
-            </h1>
-          </div>
-        </section>
-
-        {/* Our Story Section - Reduced Padding */}
-        <section className="relative py-12 px-4 md:px-32">
-          <div
-            className="max-w-4xl mx-auto relative z-10"
-            style={{
-              transform: `translateY(${scrollY * 0.05}px)`,
-            }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
-              Our Story
-            </h2>
-            <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
-              <p>
-                Founded in 2020 by a team of passionate digital marketing
-                enthusiasts, Fibi Space emerged from a simple yet powerful
-                vision: to democratize access to world-class digital marketing
-                services for businesses of all sizes.
-              </p>
-              <p>
-                What started as a small consultancy in Kathmandu has grown into
-                a dynamic agency serving clients across the globe. Our founders
-                recognized the gap between traditional marketing approaches and
-                the rapidly evolving digital landscape, and set out to bridge
-                that divide with innovative, results-driven strategies.
-              </p>
-              <p>
-                Every campaign we launch, every strategy we develop, and every
-                success story we create is rooted in our commitment to
-                understanding our clients' unique needs and delivering
-                measurable results that exceed expectations.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Vision Section - Reduced Padding */}
-        <section className="relative py-12 px-4 md:px-32">
-          <div
-            className="max-w-4xl mx-auto relative z-10"
-            style={{
-              transform: `translateY(${scrollY * 0.04}px)`,
-            }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
-              Our Vision
-            </h2>
-            <div className="space-y-6">
-              <p className="text-xl text-gray-700 leading-relaxed font-medium">
-                To become the leading catalyst for digital transformation in
-                South Asia, empowering businesses to achieve unprecedented
-                growth through innovative marketing solutions.
-              </p>
-              <p className="text-lg text-gray-600 leading-relaxed">
-                We envision a future where every business, regardless of size or
-                industry, has access to cutting-edge digital marketing
-                strategies that drive real, measurable impact. Through
-                continuous innovation, strategic partnerships, and an unwavering
-                commitment to excellence, we're building a legacy of success
-                stories that inspire and transform.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Future Goals Section - Reduced Padding */}
-        <section className="relative py-12 px-4 md:px-32">
-          <div
-            className="max-w-5xl mx-auto relative z-10"
-            style={{
-              transform: `translateY(${scrollY * 0.03}px)`,
-            }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-12 text-center">
-              Where We're Heading
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {futureGoals.map((goal, index) => (
-                <div
-                  key={index}
-                  className="group p-8 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-[#12a89d]/30"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#12a89d] to-[#0d8579] rounded-lg flex items-center justify-center text-white font-bold text-xl">
-                      {index + 1}
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-[#12a89d] transition-colors duration-300">
-                        {goal.title}
-                      </h3>
-                      <p className="text-gray-600 leading-relaxed">
-                        {goal.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Closing Statement - Reduced Top Margin */}
-        <section className="relative py-20 px-4 md:px-32 mt-12 bg-gradient-to-br from-[#12a89d] to-[#0d8579]">
-          <div className="max-w-4xl mx-auto text-center relative z-10">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Let's Build Something Amazing Together
-            </h2>
-            <p className="text-xl text-white/90 leading-relaxed">
-              Whether you're a startup looking to make your mark or an
-              established business ready to scale, we're here to turn your
-              digital dreams into reality.
-            </p>
-          </div>
-        </section>
+        ))}
       </div>
-    </>
+
+      {/* Plus Signs - Static */}
+      <div className="fixed top-12 left-12 text-black/30 text-2xl md:text-4xl pointer-events-none z-20">
+        +
+      </div>
+      <div className="fixed top-12 left-[30%] text-black/30 text-2xl md:text-4xl pointer-events-none z-20">
+        +
+      </div>
+      <div className="fixed top-12 left-[50%] text-black/30 text-2xl md:text-4xl pointer-events-none z-20">
+        +
+      </div>
+      <div className="fixed top-12 left-[70%] text-black/30 text-2xl md:text-4xl pointer-events-none z-20">
+        +
+      </div>
+      <div className="fixed top-12 right-12 text-black/30 text-2xl md:text-4xl pointer-events-none z-20">
+        +
+      </div>
+
+      {/* Scroll Progress Bar */}
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 w-32 h-1 bg-black/20 rounded-full overflow-hidden z-20">
+        <div
+          className="h-full bg-black rounded-full transition-all duration-100"
+          style={{ width: `${scrollProgress * 100}%` }}
+        />
+      </div>
+
+      {/* Debug - Remove later */}
+      <div className="fixed top-20 right-12 text-black/70 text-xs z-20 bg-white/80 px-3 py-1 rounded">
+        Scroll: {(scrollProgress * 100).toFixed(1)}%
+      </div>
+    </div>
+  );
+};
+
+// Individual Section Component
+const Section = ({ section, index, scrollProgress, totalSections }) => {
+  // DYNAMIC CALCULATION FOR ANY NUMBER OF SECTIONS
+  // With 50% overlap: unit = 1 / (N + 1)
+  // Section i appears at: i * unit
+  // Section i centered at: (i + 1) * unit
+  // Section i exits at: (i + 2) * unit
+
+  const unit = 1 / (totalSections + 3);
+  const sectionStart = index * unit;
+  const sectionMidpoint = (index + 1) * unit;
+  const sectionEnd = (index + 2) * unit;
+
+  let translateX = 0;
+  let scale = 0.85;
+  let visibility = "hidden"; // hidden, visible
+
+  // FIRST SECTION - Starts fully visible
+  if (index === 0) {
+    if (scrollProgress < sectionMidpoint) {
+      // Fully visible from start
+      translateX = 0;
+      scale = 1;
+      visibility = "visible";
+    } else if (
+      scrollProgress >= sectionMidpoint &&
+      scrollProgress < sectionEnd
+    ) {
+      // Exiting to left
+      const progress =
+        (scrollProgress - sectionMidpoint) / (sectionEnd - sectionMidpoint);
+      translateX = -progress * 100;
+      scale = 1 - progress * 0.15;
+      visibility = "visible";
+    } else {
+      // Fully exited
+      translateX = -100;
+      scale = 0.85;
+      visibility = "hidden";
+    }
+  }
+  // MIDDLE & LAST SECTIONS
+  else {
+    if (scrollProgress < sectionStart) {
+      // Not yet visible
+      translateX = 100;
+      scale = 0.85;
+      visibility = "hidden";
+    } else if (
+      scrollProgress >= sectionStart &&
+      scrollProgress < sectionMidpoint
+    ) {
+      // Entering from right
+      const progress =
+        (scrollProgress - sectionStart) / (sectionMidpoint - sectionStart);
+      translateX = (1 - progress) * 100;
+      scale = 0.85 + progress * 0.15;
+      visibility = "visible";
+    } else if (
+      scrollProgress >= sectionMidpoint &&
+      scrollProgress < sectionEnd
+    ) {
+      // Centered or exiting
+      if (index === totalSections - 1) {
+        // Last section stays centered
+        translateX = 0;
+        scale = 1;
+        visibility = "visible";
+      } else {
+        // Exiting to left
+        const progress =
+          (scrollProgress - sectionMidpoint) / (sectionEnd - sectionMidpoint);
+        translateX = -progress * 100;
+        scale = 1 - progress * 0.15;
+        visibility = "visible";
+      }
+    } else {
+      // Fully exited (or last section still visible)
+      if (index === totalSections - 1) {
+        translateX = 0;
+        scale = 1;
+        visibility = "visible";
+      } else {
+        translateX = -100;
+        scale = 0.85;
+        visibility = "hidden";
+      }
+    }
+  }
+
+  // Render image-text layout
+  if (section.type === "image-text") {
+    return (
+      <div
+        className="relative min-w-full h-full flex-shrink-0 flex items-center justify-center p-12 md:p-16 lg:p-24"
+        style={{ visibility }}
+      >
+        <div
+          className="w-full max-w-7xl h-full border-4 border-black rounded-3xl overflow-hidden flex items-center bg-white"
+          style={{
+            transform: `translateX(${translateX}%) scale(${scale})`,
+            transition: "none",
+          }}
+        >
+          <div className="flex flex-col md:flex-row w-full h-full">
+            {/* Left - Image */}
+            <div className="w-full md:w-1/2 h-1/2 md:h-full">
+              <img
+                src={section.image}
+                alt={section.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* Right - Text */}
+            <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col justify-center p-8 md:p-12 lg:p-16">
+              <h2 className="text-[28px] sm:text-[36px] md:text-[48px] lg:text-[64px] font-bold text-black mb-6 leading-tight">
+                {section.title}
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 leading-relaxed">
+                {section.description}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Default text layout
+  return (
+    <div
+      className="relative min-w-full h-full flex-shrink-0 flex items-center justify-center p-12 md:p-16 lg:p-24"
+      style={{ visibility }}
+    >
+      <div
+        className="w-full max-w-7xl h-full border-4 border-black rounded-3xl flex flex-col justify-between p-8 sm:p-12 md:p-16 lg:p-20 text-black bg-white"
+        style={{
+          transform: `translateX(${translateX}%) scale(${scale})`,
+          transition: "none",
+        }}
+      >
+        {/* Top Left Text */}
+        <div className="max-w-4xl">
+          {section.lines.map((line, idx) => (
+            <h1
+              key={idx}
+              className={`text-[32px] sm:text-[48px] md:text-[72px] lg:text-[95px] leading-none mb-2 ${
+                line.italic ? "italic font-light" : "font-normal"
+              }`}
+            >
+              {line.text}
+            </h1>
+          ))}
+        </div>
+
+        {/* Bottom Right Text */}
+        <div className="self-end text-right max-w-2xl">
+          <h2
+            className={`text-[24px] sm:text-[32px] md:text-[48px] lg:text-[64px] leading-tight ${
+              section.bottomRight.italic ? "italic font-light" : "font-normal"
+            }`}
+          >
+            {section.bottomRight.text}
+          </h2>
+          {section.bottomRight.text2 && (
+            <h2
+              className={`text-[24px] sm:text-[32px] md:text-[48px] lg:text-[64px] leading-tight ${
+                section.bottomRight.italic2
+                  ? "italic font-light"
+                  : "font-normal"
+              }`}
+            >
+              {section.bottomRight.text2}
+            </h2>
+          )}
+          {section.bottomRight.text3 && (
+            <h2
+              className={`text-[24px] sm:text-[32px] md:text-[48px] lg:text-[64px] leading-tight ${
+                section.bottomRight.italic3
+                  ? "italic font-light"
+                  : "font-normal"
+              }`}
+            >
+              {section.bottomRight.text3}
+            </h2>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 

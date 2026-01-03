@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import AboutSection from "../components/AboutSection";
 import FeaturedWork from "../components/FeaturedWork";
 import WorkTogether from "../components/WorkTogether";
+import Footer from "../components/Footer";
 
 const Homepage = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -170,6 +171,7 @@ const Homepage = () => {
 
       {/* Work Together Section */}
       <WorkTogether />
+      <Footer />
     </div>
   );
 };
