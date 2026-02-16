@@ -1,37 +1,27 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
-      keyframes: {
-        shrinkLogo: {
-          "0%": {
-            transform: "translate(-50%, -50%) scale(40) rotate(-110deg)",
-          },
-          "100%": {
-            transform: "translate(-50%, -50%) scale(1) rotate(0deg)",
-          },
-        },
-
-        expandLogo: {
-          "0%": {
-            transform: "translate(-50%, -50%) scale(1) rotate(0deg)",
-            opacity: 1,
-          },
-          "100%": {
-            transform: "translate(-50%, -50%) scale(40) rotate(110deg)",
-            opacity: 0,
-          },
-        },
-
-        fadeOutOverlay: {
-          "0%": { opacity: 1 },
-          "100%": { opacity: 0 },
-        },
+      colors: {
+        primary: "#008AA9",
+        "primary-dark": "#007a98",
       },
-      animation: {
-        shrinkLogo: "shrinkLogo 0.6s linear forwards",
-        expandLogo: "expandLogo 0.6s linear forwards",
-        fadeOutOverlay: "fadeOutOverlay 0.3s ease-out forwards",
+      fontFamily: {
+        sans: [
+          "Inter",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "Roboto",
+          "Oxygen",
+          "Ubuntu",
+          "Cantarell",
+          "Fira Sans",
+          "Droid Sans",
+          "Helvetica Neue",
+          "sans-serif",
+        ],
       },
     },
   },

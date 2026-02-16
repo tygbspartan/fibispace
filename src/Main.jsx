@@ -1,14 +1,9 @@
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import { Routes, Route, useLocation } from "react-router-dom";
-import Home from "./pages/Home";
-import Services from "./pages/Services";
-import About from "./pages/AboutUs";
-import Contact from "./pages/Contact";
+import HomePage from "./pages/HomePage";
 import { useEffect, useState } from "react";
 import LoadingOverlay from "./components/LoadingOverlay";
-import Projects from "./pages/Projects";
-import ProjectDetails from "./pages/ProjectDetails";
 
 // Import Admin Components
 import { AuthProvider } from "./admin/context/AuthContext";
@@ -18,6 +13,12 @@ import Dashboard from "./admin/pages/Dashboard";
 import ProjectList from "./admin/pages/ProjectList";
 import CreateProject from "./admin/pages/CreateProject";
 import EditProject from "./admin/pages/EditProject";
+import ProjectsPage from "./pages/ProjectsPage";
+import ServicesPage from "./pages/ServicesPage";
+import AboutPage from "./pages/AboutPage";
+import TeamList from "./admin/pages/TeamList";
+import TeamForm from "./admin/pages/TeamForm";
+import ContactPage from "./pages/ContactPage";
 
 const Main = () => {
   const location = useLocation();
@@ -90,24 +91,48 @@ const Main = () => {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/admin/team"
+            element={
+              <PrivateRoute>
+                <TeamList />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/team/create"
+            element={
+              <PrivateRoute>
+                <TeamForm />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/team/edit/:id"
+            element={
+              <PrivateRoute>
+                <TeamForm />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       ) : (
         // Public routes - with navbar/footer
         <div
           className={`${
             loading ? "opacity-0" : "opacity-100"
-          } transition-opacity duration-300 flex flex-col min-h-screen md:mx-24`}
+          } transition-opacity duration-300 flex flex-col min-h-screen`}
         >
           <Navbar />
           <main className="flex-grow">
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/projects/:id" element={<ProjectDetails />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="*" element={<Home />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              {/* <Route path="/projects/:id" element={<ProjectDetails />} /> */}
+              {/* <Route path="*" element={<HomePage />} /> */}
             </Routes>
           </main>
         </div>

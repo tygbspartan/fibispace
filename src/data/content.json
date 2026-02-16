@@ -1,0 +1,132 @@
+{
+  "hero": {
+    "title": "From Social Feeds to Street Prints",
+    "subtitle": "We Make Your Brand Unmissable",
+    "description": "Bridging the gap between digital strategy & creative execution to build brands that last.",
+    "ctaText": "Free Counselling",
+    "stats": {
+      "time": "34.5 Mins",
+      "timeDescription": "Average Video Watch Time",
+      "reach": "2.8B+",
+      "reachDescription": "Total Accounts Reached"
+    }
+  },
+  "clients": [
+    { "name": "Ecos Ink", "logo": "/images/clients/ecos-ink.png" },
+    {
+      "name": "Bhatbeni Fitness",
+      "logo": "/images/clients/bhatbeni-fitness.png"
+    },
+    { "name": "Bottoms Nepal", "logo": "/images/clients/bottoms-nepal.png" },
+    {
+      "name": "Planet Education",
+      "logo": "/images/clients/planet-education.png"
+    },
+    { "name": "Mero Chitra", "logo": "/images/clients/mero-chitra.png" },
+    { "name": "Ecstasy Hotel", "logo": "/images/clients/ecstasy-hotel.png" },
+    { "name": "Path To Career", "logo": "/images/clients/path-to-career.png" },
+    { "name": "Aburi", "logo": "/images/clients/aburi.png" },
+    { "name": "Johnson International", "logo": "/images/clients/johnson.png" },
+    { "name": "Stryder Fashion", "logo": "/images/clients/stryder.png" },
+    { "name": "Mala Retail", "logo": "/images/clients/mala-retail.png" },
+    { "name": "Tranquility Spa", "logo": "/images/clients/tranquility.png" }
+  ],
+  "expertise": [
+    {
+      "id": 1,
+      "title": "Market Research",
+      "description1": "Blend consumer behavior & economic",
+      "description2": "trends to confirm & improve business Ideas",
+      "image": "/images/market-research.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Ads Production",
+      "description1": "Creative consultation, Pre production,",
+      "description2": "production & post production",
+      "image": "/images/ads-production.jpg"
+    },
+    {
+      "id": 3,
+      "title": "Branding Strategies",
+      "description1": "Build identification and favorability with",
+      "description2": "Customers & Potential clients",
+      "image": "/images/branding.jpg"
+    }
+  ],
+  "expertiseDescription": "Digital marketing bridges the gap between you and your audience, 24/7. It's the most cost-effective way for businesses of all sizes to boost traffic, generate leads, and turn prospects into loyal clients. We help you turn strangers into loyal fans, and fans into your strongest brand ambassadors by building your digital presence & telling your business in never-cliché.",
+  "services": [
+    {
+      "id": 1,
+      "title": "Social Media Marketing (SMM)",
+      "subtitle": "Ready to expand and market to your audiences on social media?",
+      "description": "Ready to expand and market to your audiences on social media? We handle everything from content creation to community management, amplifying your presence and driving real engagement.",
+      "bg-color": "#F8F8F8"
+    },
+    {
+      "id": 2,
+      "title": "Custom Website Design (UI/UX)",
+      "subtitle": "Capture your target audiences’ attention with a professional custom web design...",
+      "description": "Capture your target audiences’ attention with a professional custom web design that creates a powerful first impression. We build responsive, high-performance sites tailored specifically to reflect your brand’s unique identity and vision.",
+      "bg-color": "#F1F6F5"
+    },
+    {
+      "id": 3,
+      "title": "Custom Graphic Design",
+      "subtitle": "Transforming your brand vision into stunning visuals that communicate, engage, and convert.",
+      "description": "We build custom, mobile-ready, and search engine optimized websites that help your business thrive online and convert visitors into loyal customers.",
+      "bg-color": "#F9EDE4"
+    },
+    {
+      "id": 4,
+      "title": "Web Design & Development",
+      "subtitle": "Thrive build custom, Mobile Ready And Search Engine Optimized Website..",
+      "description": "Through careful keywords research & SEO practices we optimize your digital presence to secure top search rankings, ensuring your brand is the first one your customers see.",
+      "bg-color": "#F8F8F8"
+    },
+    {
+      "id": 5,
+      "title": "Search Engine Optimization (SEO)",
+      "subtitle": "Through careful keywords research & SEO practices..",
+      "description": "Tell your brand’s story through cinematic visuals and compelling narratives that emotionally connect with your audience, transforming casual viewers into loyal brand advocates.",
+      "bg-color": "#F1F5F9"
+    },
+    {
+      "id": 6,
+      "title": "Advertisement And Commercial",
+      "subtitle": "Tell your brand’s story through cinematic visuals and compelling narratives that emotionally connect with your audience.",
+      "description": "We transform your brand vision into stunning visuals that communicate, engage, and convert. Whether you need a brand refresh or digital assets, our team delivers designs that leave a mark.",
+      "bg-color": "#F9F1E4"
+    },
+    {
+      "id": 7,
+      "title": "Event Management",
+      "subtitle": "bring your brand to life through seamless, high-impact event management.",
+      "description": "We provide stunning product photography that makes your merchandise impossible to ignore. From crisp catalog shots to creative lifestyle imagery, we ensure your products look as good on screen as they do in real life.",
+      "bg-color": "#F1F7FF"
+    },
+    {
+      "id": 8,
+      "title": "Creative Product Shoot",
+      "subtitle": "stunning product photography that makes your merchandise impossible to ignore.",
+      "description": "Bring your brand to life through seamless, high-impact event management. Whether it’s a corporate launch or an exclusive gala, we ensure your vision is executed to perfection.",
+      "bg-color": "#FEFAE7"
+    }
+  ],
+  "cta": {
+    "title": "READY TO UNLEASH YOUR WILDEST CONCEPTS?",
+    "heading": "Let's work together!",
+    "buttonText": "Connect With Us"
+  },
+  "contact": {
+    "heading": "Let's Connect",
+    "location": ["Swayambhu Marg", "17-Dhalko", "Kathmandu, Nepal"],
+    "phone": "+977 974-1661719",
+    "email": "fibispace@gmail.com",
+    "socials": {
+      "instagram": "https://instagram.com/fibispace",
+      "facebook": "https://facebook.com/fibispace",
+      "linkedin": "https://linkedin.com/company/fibispace"
+    }
+  }
+}
