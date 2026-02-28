@@ -5,44 +5,17 @@ const AboutHero: React.FC = () => {
     <section className="bg-white pt-8 md:pt-12 lg:pt-20">
       <div className="px-6 md:px-12 lg:px-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-8 lg:mb-12">
-          {/* Left Side - Text Content (Vertically Centered) */}
+          {/* Left Side - Text Content */}
           <div className="flex flex-col justify-center">
-            <p
-              className="text-[#008AA9] mb-3 md:mb-4"
-              style={{
-                fontFamily: "Inter",
-                fontSize: "clamp(18px, 2.5vw, 24px)",
-                fontWeight: "500",
-                lineHeight: "clamp(40px, 6vw, 64px)",
-                letterSpacing: "0%",
-              }}
-            >
+            <p className="text-[#008AA9] mb-3 md:mb-4 text-lg md:text-xl lg:text-2xl font-medium">
               About Us
             </p>
 
-            <h1
-              className="mb-4 md:mb-6"
-              style={{
-                fontFamily: "Inter",
-                fontSize: "clamp(32px, 5vw, 48px)",
-                fontWeight: "500",
-                lineHeight: "clamp(40px, 6vw, 64px)",
-                letterSpacing: "0%",
-              }}
-            >
+            <h1 className="mb-4 md:mb-6 text-3xl md:text-4xl lg:text-5xl font-medium leading-tight">
               Your Partner in Digital Success
             </h1>
 
-            <p
-              className="text-gray-700"
-              style={{
-                fontFamily: "Inter",
-                fontSize: "clamp(16px, 2.5vw, 24px)",
-                fontWeight: "300",
-                lineHeight: "clamp(24px, 4vw, 40px)",
-                letterSpacing: "0%",
-              }}
-            >
+            <p className="text-gray-700 text-base md:text-lg lg:text-2xl font-light leading-relaxed">
               At Fibi Space, we connect you with your ideal customers through
               innovative digital strategies. We don't just execute campaigns; we
               understand your business needs and craft a roadmap to help you
@@ -54,8 +27,8 @@ const AboutHero: React.FC = () => {
             </p>
           </div>
 
-          {/* Right Side - Hero Image (Taller, Sticks Right) */}
-          <div className="relative flex justify-center lg:justify-end">
+          {/* Right Side - Hero Image (Uncomment when image is ready) */}
+          {/* <div className="relative flex justify-center lg:justify-end">
             <img
               src="/images/about-hero.jpg"
               alt="About Us Hero"
@@ -63,12 +36,14 @@ const AboutHero: React.FC = () => {
               style={{
                 maxWidth: "700px",
                 height: "auto",
-                minHeight: "400px",
                 objectFit: "cover",
               }}
             />
-          </div>
+          </div> */}
         </div>
+
+        {/* Horizontal Line */}
+        {/* <div className="w-full h-[1px] bg-black"></div> */}
       </div>
     </section>
   );

@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import contentData from "../../data/content.json";
+import { useNavigate } from "react-router-dom";
 
 const ServicesList: React.FC = () => {
+  const navigate = useNavigate() 
   const { services } = contentData;
   const [animatedCards, setAnimatedCards] = useState<Set<number>>(new Set());
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Intersection Observer for animations
   useEffect(() => {
+
     if (services.length === 0) return;
 
     const observers: IntersectionObserver[] = [];
@@ -21,12 +24,12 @@ const ServicesList: React.FC = () => {
             if (entry.isIntersecting) {
               setTimeout(() => {
                 setAnimatedCards((prev) => new Set(prev).add(index));
-              }, index * 200); // 0.2s stagger between cards
+              }, index * 100); // 0.2s stagger between cards
             }
           });
         },
         {
-          threshold: 0.2, // Trigger when 20% visible
+          threshold: 0.1, // Trigger when 20% visible
         },
       );
 
@@ -132,6 +135,9 @@ const ServicesList: React.FC = () => {
                         lineHeight: "clamp(22px, 3vw, 30px)",
                         letterSpacing: "0%",
                         textAlign: "center",
+                      }}
+                      onClick={()=>{
+                        navigate('/contact')
                       }}
                     >
                       Discuss Project

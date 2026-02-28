@@ -75,6 +75,7 @@ export const teamAPI = {
   delete: (id: number) => api.delete(`/teams/${id}`),
 };
 
+// Contact API
 export const contactAPI = {
   // Submit contact form
   submit: (data: {
@@ -84,7 +85,7 @@ export const contactAPI = {
     email: string;
     service: string;
     message: string;
-  }) => api.post('/contactUs', data),
+  }) => api.post('/contactus', data),
 };
 
 export default api;

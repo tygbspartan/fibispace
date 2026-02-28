@@ -35,7 +35,7 @@ const Expertise: React.FC = () => {
         });
       },
       {
-        threshold: 0.3, // Trigger when 30% of section is visible
+        threshold: 0.3,
       },
     );
 
@@ -53,19 +53,18 @@ const Expertise: React.FC = () => {
   // Animation styles for each card
   const getCardAnimation = (index: number) => {
     if (!isVisible) {
-      // Initial state before animation
       switch (index) {
-        case 0: // Slide from left
+        case 0:
           return {
             opacity: 0,
             transform: "translateX(-100px)",
           };
-        case 1: // Slide from bottom
+        case 1:
           return {
             opacity: 0,
             transform: "translateY(100px)",
           };
-        case 2: // Slide from right
+        case 2:
           return {
             opacity: 0,
             transform: "translateX(100px)",
@@ -75,11 +74,10 @@ const Expertise: React.FC = () => {
       }
     }
 
-    // Animated state
     return {
       opacity: 1,
       transform: "translate(0, 0)",
-      transition: `all 0.6s ease-out ${index * 0.2}s`, // Staggered delay
+      transition: `all 0.6s ease-out ${index * 0.2}s`,
     };
   };
 
@@ -91,46 +89,25 @@ const Expertise: React.FC = () => {
     >
       <div className="px-6 md:px-12 lg:px-24 py-12 md:py-16 lg:py-20 flex-1 flex flex-col">
         {/* Section Header - Title and Tagline */}
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8 lg:gap-12">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 md:gap-6 lg:gap-12 mb-8 md:mb-10 lg:mb-12">
           {/* Title */}
-          <h2
-            className="text-[32px] md:text-[40px] lg:text-[48px] font-medium"
-            style={{
-              fontFamily: "Inter",
-              lineHeight: "40px",
-              letterSpacing: "0%",
-            }}
-          >
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium">
             Our Expertise
           </h2>
 
           {/* Tagline */}
-          <div>
-            <p
-              className="text-[18px] md:text-[20px] lg:text-[24px] font-light max-w-md lg:max-w-lg"
-              style={{
-                fontFamily: "Inter",
-                lineHeight: "32px",
-                letterSpacing: "0%",
-              }}
-            >
+          <div className="max-w-md lg:max-w-lg">
+            <p className="text-base md:text-lg lg:text-2xl font-light leading-relaxed">
               Transform ideas into reality by combining
             </p>
-            <p
-              className="text-[18px] md:text-[20px] lg:text-[24px] font-light max-w-md lg:max-w-lg"
-              style={{
-                fontFamily: "Inter",
-                lineHeight: "32px",
-                letterSpacing: "0%",
-              }}
-            >
+            <p className="text-base md:text-lg lg:text-2xl font-light leading-relaxed">
               creativity, strategy, and expertise.
             </p>
           </div>
         </div>
 
         {/* Expertise Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 flex-1">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-10 lg:mb-12 flex-1">
           {expertise.map((item, index) => {
             const { firstLine, secondLine } = splitTitle(item.title);
 
@@ -142,24 +119,17 @@ const Expertise: React.FC = () => {
                   backgroundColor: cardBackgrounds[index],
                   width: "100%",
                   maxWidth: "555px",
-                  height: "572px",
+                  minHeight: "500px",
+                  height: "auto",
                   borderRadius: "4px",
                   margin: "0 auto",
-                  ...getCardAnimation(index), // Apply animation styles
+                  ...getCardAnimation(index),
                 }}
               >
                 {/* Card Content Section */}
-                <div className="p-8 flex flex-col">
+                <div className="p-6 md:p-8 flex flex-col flex-1">
                   {/* Title - Split into two lines */}
-                  <h3
-                    className="font-light capitalize mb-4"
-                    style={{
-                      fontFamily: "Inter",
-                      fontSize: "36px",
-                      lineHeight: "50px",
-                      letterSpacing: "0%",
-                    }}
-                  >
+                  <h3 className="font-light capitalize mb-3 md:mb-4 text-2xl md:text-3xl lg:text-4xl leading-tight md:leading-snug">
                     {firstLine}
                     {secondLine && (
                       <>
@@ -170,43 +140,25 @@ const Expertise: React.FC = () => {
                   </h3>
 
                   {/* Horizontal Line */}
-                  <div className="w-full h-[1px] bg-black mb-4"></div>
+                  <div className="w-full h-[1px] bg-black mb-3 md:mb-4"></div>
 
                   {/* Description */}
-                  <p
-                    className="font-light text-[#5C5C5C] capitalize"
-                    style={{
-                      fontFamily: "Inter",
-                      fontSize: "20px",
-                      lineHeight: "30px",
-                      letterSpacing: "0%",
-                    }}
-                  >
+                  <p className="font-light text-[#5C5C5C] capitalize mb-2 text-sm md:text-base lg:text-xl leading-relaxed">
                     {item.description1}
                   </p>
-                  <p
-                    className="font-light text-[#5C5C5C] capitalize"
-                    style={{
-                      fontFamily: "Inter",
-                      fontSize: "20px",
-                      lineHeight: "30px",
-                      letterSpacing: "0%",
-                    }}
-                  >
+                  <p className="font-light text-[#5C5C5C] capitalize text-sm md:text-base lg:text-xl leading-relaxed">
                     {item.description2}
                   </p>
                 </div>
 
                 {/* Card Image - At the bottom */}
-                <div className="px-8">
+                <div className="px-6 md:px-8 pb-6 md:pb-8">
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-full object-cover transition-transform duration-300"
+                    className="w-full h-auto object-cover transition-transform duration-300 rounded"
                     onError={(e) => {
-                      // e.currentTarget.src =
-                      //   "https://via.placeholder.com/491x284?text=" +
-                      //   item.title;
+                      (e.target as HTMLImageElement).style.display = "none";
                     }}
                   />
                 </div>
@@ -216,22 +168,10 @@ const Expertise: React.FC = () => {
         </div>
 
         {/* Description Box */}
-        <div className="mt-auto mb-10">
-          <p
-            className="text-center"
-            style={{
-              fontFamily: "Inter",
-              fontSize: "24px",
-              lineHeight: "40px",
-              letterSpacing: "0%",
-            }}
-          >
-            <span className="font-semibold" style={{ fontWeight: "600" }}>
-              Be Where Your Customers Are:{" "}
-            </span>
-            <span className="font-light" style={{ fontWeight: "300" }}>
-              {expertiseDescription}
-            </span>
+        <div className="mt-auto mb-6 md:mb-8 lg:mb-10">
+          <p className="text-center text-base md:text-lg lg:text-2xl leading-relaxed md:leading-loose">
+            <span className="font-semibold">Be Where Your Customers Are: </span>
+            <span className="font-light">{expertiseDescription}</span>
           </p>
         </div>
 

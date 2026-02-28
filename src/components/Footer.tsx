@@ -68,7 +68,7 @@ const Footer: React.FC = () => {
                 Quick Connect
               </h3>
               <a
-                href={`tel:${contact.phone}`}
+                href='https://wa.me/9779741661719'
                 className="capitalize hover:text-[#008AA9] transition-colors block"
                 style={{
                   fontFamily: "Inter",

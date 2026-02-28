@@ -1,14 +1,18 @@
 import React from "react";
 import contentData from "../data/content.json";
+import { useNavigate } from "react-router-dom";
+import { Clock4, Globe  } from "lucide-react";
 
-const Hero: React.FC = () => {
+const Hero = () => {
   const { hero } = contentData;
+  const navigate = useNavigate();
 
   const handleFreeCounselling = () => {
-    const contactSection = document.querySelector("#contact");
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: "smooth" });
-    }
+    navigate("/contact");
+    // const contactSection = document.querySelector("#contact");
+    // if (contactSection) {
+    //   contactSection.scrollIntoView({ behavior: "smooth" });
+    // }
   };
 
   return (
@@ -41,6 +45,7 @@ const Hero: React.FC = () => {
               fontSize: "clamp(16px, 2.5vw, 24px)",
               lineHeight: "clamp(20px, 3vw, 32px)",
               letterSpacing: "0%",
+              zIndex:'100000000'
             }}
           >
             {hero.description}
@@ -63,7 +68,7 @@ const Hero: React.FC = () => {
         </div>
 
         {/* Phone Mockup with Floating Elements - Desktop Only (lg and above) */}
-        <div className="relative hidden lg:flex justify-center items-center mt-16">
+        <div className="relative hidden nlg:flex justify-center items-center mt-16">
           {/* Phone Mockup */}
           <div className="relative z-10">
             <img
@@ -77,7 +82,7 @@ const Hero: React.FC = () => {
           <div
             className="absolute bg-white rounded-2xl shadow-xl p-4 transition-all"
             style={{
-              top: "-45%",
+              top: "-35%",
               left: "5%",
               width: "clamp(160px, 12vw, 200px)",
             }}
@@ -113,7 +118,7 @@ const Hero: React.FC = () => {
 
           {/* Yellow Stat Box - Top Right */}
           <div
-            className="absolute rounded-2xl shadow-xl p-4 md:p-6 flex items-center gap-3 md:gap-4 transition-all"
+            className="absolute rounded-2xl shadow-xl p-4 md:p-6 flex items-start gap-3 md:gap-4 transition-all"
             style={{
               backgroundColor: "#FFD94E",
               top: "0",
@@ -121,7 +126,9 @@ const Hero: React.FC = () => {
               width: "clamp(260px, 20vw, 320px)",
             }}
           >
-            <div className="text-2xl md:text-4xl">⏱️</div>
+            <div className="mt-1">
+              <Clock4 size={'30px'}/>
+            </div>
             <div>
               <p className="text-xl md:text-3xl font-bold">{hero.stats.time}</p>
               <p className="text-xs md:text-sm">{hero.stats.timeDescription}</p>
@@ -139,7 +146,7 @@ const Hero: React.FC = () => {
             }}
           >
             <div className="flex items-center gap-2 mb-2">
-              <div className="text-xl md:text-2xl text-black">🌐</div>
+              <div className="text-xl md:text-2xl text-black"><Globe size={'30px'}/></div>
             </div>
             <p className="text-xl md:text-3xl font-bold text-black">
               {hero.stats.reach}
@@ -151,11 +158,11 @@ const Hero: React.FC = () => {
         </div>
 
         {/* Tablet and Mobile View - Only Phone Mockup (hidden on desktop) */}
-        <div className="lg:hidden flex justify-center items-center mt-8">
+        <div className="nlg:hidden flex justify-center items-center mt-8">
           <img
             src="/images/banner.png"
             alt="Phone Mockup"
-            className="w-full max-w-sm md:max-w-md h-auto object-contain"
+            className="w-full max-w-sm md:max-w-xl h-auto object-contain"
           />
         </div>
 

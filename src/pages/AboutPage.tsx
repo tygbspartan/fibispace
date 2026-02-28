@@ -16,7 +16,7 @@ const AboutPage: React.FC = () => {
       <AboutStats />
       <AboutMissionVision />
       <AboutProcess />
-      {/* <AboutTeam /> */}
+      <AboutTeam />
       <CTA />
       <Footer />
     </div>

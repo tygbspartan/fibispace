@@ -32,8 +32,8 @@ const Services: React.FC = () => {
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              // Stagger by column (4 columns, so delay based on column position)
-              const columnDelay = (index % 4) * 150; // 150ms between columns
+              // Stagger by column
+              const columnDelay = (index % 4) * 150;
               setTimeout(() => {
                 setAnimatedCards((prev) => new Set(prev).add(index));
               }, columnDelay);
@@ -58,19 +58,12 @@ const Services: React.FC = () => {
     <section className="bg-white pb-12 md:pb-20 overflow-hidden" id="services">
       <div className="px-6 md:px-12 lg:px-24">
         {/* Section Title */}
-        <h2
-          className="text-[32px] md:text-[40px] lg:text-[48px] font-medium mb-10 md:mb-12 lg:mb-16"
-          style={{
-            fontFamily: "Inter",
-            lineHeight: "40px",
-            letterSpacing: "0%",
-          }}
-        >
-          OUR SERVICES
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium mb-8 md:mb-10 lg:mb-16">
+          Our Services
         </h2>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
           {services.map((service, index) => {
             const isFlipped = flippedCards.has(service.id);
             const isAnimated = animatedCards.has(index);
@@ -85,7 +78,7 @@ const Services: React.FC = () => {
                   isAnimated ? "opacity-100 translate-y-0" : "opacity-0"
                 }`}
                 style={{
-                  height: "552px",
+                  height: "clamp(450px, 60vw, 552px)",
                   perspective: "1000px",
                   transform: !isAnimated
                     ? "translateY(100px)"
@@ -103,7 +96,7 @@ const Services: React.FC = () => {
                 >
                   {/* Front Side */}
                   <div
-                    className="absolute inset-0 rounded flex flex-col justify-between p-8"
+                    className="absolute inset-0 rounded flex flex-col justify-between p-6 md:p-8"
                     style={{
                       backgroundColor: service["bg-color"] || "#F8F8F8",
                       borderRadius: "4px",
@@ -114,28 +107,12 @@ const Services: React.FC = () => {
                     {/* Card Content */}
                     <div className="flex flex-col flex-1">
                       {/* Service Title */}
-                      <h3
-                        className="font-light capitalize mb-4"
-                        style={{
-                          fontFamily: "Inter",
-                          fontSize: "36px",
-                          lineHeight: "50px",
-                          letterSpacing: "0%",
-                        }}
-                      >
+                      <h3 className="font-light capitalize mb-3 md:mb-4 text-2xl md:text-3xl lg:text-4xl leading-tight md:leading-snug">
                         {service.title}
                       </h3>
 
                       {/* Service Subtitle */}
-                      <p
-                        className="font-light capitalize"
-                        style={{
-                          fontFamily: "Inter",
-                          fontSize: "20px",
-                          lineHeight: "30px",
-                          letterSpacing: "0%",
-                        }}
-                      >
+                      <p className="font-light capitalize text-sm md:text-base lg:text-xl leading-relaxed">
                         {service.subtitle}
                       </p>
                     </div>
@@ -143,15 +120,7 @@ const Services: React.FC = () => {
                     {/* Learn More Button - Bottom Left */}
                     <button
                       onClick={() => toggleFlip(service.id)}
-                      className="text-left underline capitalize hover:opacity-80 transition-opacity"
-                      style={{
-                        fontFamily: "Inter",
-                        fontSize: "20px",
-                        fontWeight: "400",
-                        lineHeight: "30px",
-                        letterSpacing: "0%",
-                        textDecorationStyle: "solid",
-                      }}
+                      className="text-left underline capitalize hover:opacity-80 transition-opacity text-sm md:text-base lg:text-xl"
                     >
                       Learn More
                     </button>
@@ -159,7 +128,7 @@ const Services: React.FC = () => {
 
                   {/* Back Side */}
                   <div
-                    className="absolute inset-0 rounded flex flex-col justify-between p-8"
+                    className="absolute inset-0 rounded flex flex-col justify-between p-6 md:p-8"
                     style={{
                       backgroundColor: service["bg-color"] || "#F8F8F8",
                       borderRadius: "4px",
@@ -171,28 +140,12 @@ const Services: React.FC = () => {
                     {/* Card Content */}
                     <div className="flex flex-col flex-1">
                       {/* Service Title */}
-                      <h3
-                        className="font-light capitalize mb-4"
-                        style={{
-                          fontFamily: "Inter",
-                          fontSize: "36px",
-                          lineHeight: "50px",
-                          letterSpacing: "0%",
-                        }}
-                      >
+                      <h3 className="font-light capitalize mb-3 md:mb-4 text-2xl md:text-3xl lg:text-4xl leading-tight md:leading-snug">
                         {service.title}
                       </h3>
 
-                      {/* Service Description (replaces subtitle) */}
-                      <p
-                        className="font-light capitalize"
-                        style={{
-                          fontFamily: "Inter",
-                          fontSize: "20px",
-                          lineHeight: "30px",
-                          letterSpacing: "0%",
-                        }}
-                      >
+                      {/* Service Description */}
+                      <p className="font-light capitalize text-sm md:text-base lg:text-xl leading-relaxed">
                         {service.description}
                       </p>
                     </div>
@@ -200,15 +153,7 @@ const Services: React.FC = () => {
                     {/* Go Back Button - Bottom Left */}
                     <button
                       onClick={() => toggleFlip(service.id)}
-                      className="text-left underline capitalize hover:opacity-80 transition-opacity"
-                      style={{
-                        fontFamily: "Inter",
-                        fontSize: "20px",
-                        fontWeight: "400",
-                        lineHeight: "30px",
-                        letterSpacing: "0%",
-                        textDecorationStyle: "solid",
-                      }}
+                      className="text-left underline capitalize hover:opacity-80 transition-opacity text-sm md:text-base lg:text-xl"
                     >
                       Go Back
                     </button>

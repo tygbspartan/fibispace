@@ -4,62 +4,20 @@ const ServicesHero: React.FC = () => {
   return (
     <section className="bg-white pt-8 md:pt-12 lg:pt-20">
       <div className="px-6 md:px-12 lg:px-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-12">
-          {/* Left Side - Text Content (Vertically Centered) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-8 lg:mb-12">
+          {/* Left Side - Text Content */}
           <div className="flex flex-col justify-center">
-            <p
-              className="text-[#008AA9]"
-              style={{
-                fontFamily: "Inter",
-                fontSize: "24px",
-                fontWeight: "500",
-                // lineHeight: "64px",
-                letterSpacing: "0%",
-              }}
-            >
+            <p className="text-[#008AA9] mb-3 md:mb-4 text-lg md:text-xl lg:text-2xl font-medium">
               Services
             </p>
 
-            <h1
-              style={{
-                fontFamily: "Inter",
-                fontSize: "48px",
-                fontWeight: "500",
-                lineHeight: "64px",
-                letterSpacing: "0%",
-              }}
-            >
-              Collaborating for Your
+            <h1 className="mb-4 md:mb-6 text-3xl md:text-4xl lg:text-5xl font-medium leading-tight">
+              Collaborating for Your Future
             </h1>
-            <h1
-              className="mb-6"
-              style={{
-                fontFamily: "Inter",
-                fontSize: "48px",
-                fontWeight: "500",
-                lineHeight: "64px",
-                letterSpacing: "0%",
-              }}
-            >
-              Future
-            </h1>
-            <p
-              style={{
-                fontFamily: "Inter",
-                fontSize: "24px",
-                fontWeight: "300",
-                lineHeight: "40px",
-                letterSpacing: "0%",
-              }}
-            >
-              <span
-                style={{
-                  fontWeight: "500",
-                }}
-              >
-                Design. Develop. Dominate.
-              </span>{" "}
-              We bridge the gap between creative vision and technical execution.
+
+            <p className="text-gray-700 text-base md:text-lg lg:text-2xl font-light leading-relaxed">
+              <span className="font-medium">Design. Develop. Dominate.</span> We
+              bridge the gap between creative vision and technical execution.
               Fibi Space offers a full spectrum of digital services designed to
               integrate seamlessly with your business goals. By combining
               top-tier Research, SEO, Branding, and Web Design, we turn your
@@ -68,21 +26,23 @@ const ServicesHero: React.FC = () => {
             </p>
           </div>
 
-          {/* Right Side - Hero Image (Taller, Sticks Right) */}
-          <div className="relative flex justify-end">
+          {/* Right Side - Hero Image (Uncomment when image is ready) */}
+          {/* <div className="relative flex justify-center lg:justify-end">
             <img
               src="/images/services-hero.jpg"
               alt="Services Hero"
-              className="rounded ml-auto"
+              className="rounded w-full lg:w-auto lg:ml-auto"
               style={{
-                width: "700px",
+                maxWidth: "700px",
                 height: "auto",
-                minHeight: "600px",
                 objectFit: "cover",
               }}
             />
-          </div>
+          </div> */}
         </div>
+
+        {/* Horizontal Line */}
+        {/* <div className="w-full h-[1px] bg-black"></div> */}
       </div>
     </section>
   );
