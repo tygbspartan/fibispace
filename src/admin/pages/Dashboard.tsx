@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { projectsAPI, teamAPI } from "../../services/api";
+import { projectsAPI, teamAPI, clientAPI } from "../../services/api";
 import { useAuth } from "../context/AuthContext";
 
 interface Stats {
   totalProjects: number;
   totalMembers: number;
+  totalClients: number;
+}
+
+interface Client {
+  id: number;
+  name: string;
+  image: string;
 }
 
 interface Project {
@@ -29,7 +36,9 @@ const Dashboard: React.FC = () => {
   const [stats, setStats] = useState<Stats>({
     totalProjects: 0,
     totalMembers: 0,
+    totalClients: 0,
   });
+  const [clients, setClients] = useState<Client[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,20 +50,21 @@ const Dashboard: React.FC = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const [statsRes, projectsRes, teamRes] = await Promise.all([
+      const [statsRes, projectsRes, teamRes, clientsRes] = await Promise.all([
         projectsAPI.getStats(),
         projectsAPI.getAll(),
         teamAPI.getAll(),
+        clientAPI.getAll(),
       ]);
-
-      console.log("Team Response:", teamRes.data); // Debug log
 
       setStats({
         totalProjects: statsRes.data.totalProjects || 0,
         totalMembers: teamRes.data.count || 0,
+        totalClients: clientsRes.data.count || 0,
       });
       setProjects(projectsRes.data.projects?.slice(0, 5) || []);
       setTeamMembers(teamRes.data.members?.slice(0, 5) || []);
+      setClients(clientsRes.data.clients?.slice(0, 5) || []);
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
     } finally {
@@ -90,7 +100,7 @@ const Dashboard: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
             <h3 className="text-sm font-medium opacity-90 uppercase tracking-wide">
               Total Projects
@@ -102,6 +112,12 @@ const Dashboard: React.FC = () => {
               Team Members
             </h3>
             <p className="text-4xl font-bold mt-2">{stats.totalMembers}</p>
+          </div>
+          <div className="bg-gradient-to-br from-orange-500 to-yellow-600 rounded-xl shadow-lg p-6 text-white">
+            <h3 className="text-sm font-medium opacity-90 uppercase tracking-wide">
+              Total Clients
+            </h3>
+            <p className="text-4xl font-bold mt-2">{stats.totalClients}</p>
           </div>
         </div>
 
@@ -160,6 +176,31 @@ const Dashboard: React.FC = () => {
               className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-lg font-semibold transition"
             >
               Manage Team
+            </Link>
+            <Link
+              to="/admin/clients/create"
+              className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-semibold transition inline-flex items-center"
+            >
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              Add Client
+            </Link>
+            <Link
+              to="/admin/clients"
+              className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-lg font-semibold transition"
+            >
+              Manage Clients
             </Link>
           </div>
         </div>
@@ -226,7 +267,7 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Recent Team Members */}
-        <div className="bg-white rounded-xl shadow-md p-6">
+        <div className="bg-white rounded-xl shadow-md p-6 mb-8">
           <h2 className="text-xl font-bold text-gray-900 mb-4">
             Recent Team Members
           </h2>
@@ -265,6 +306,54 @@ const Dashboard: React.FC = () => {
                   <Link
                     to={`/admin/team/edit/${member.id}`}
                     className="block w-full text-center bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg transition text-xs"
+                  >
+                    Edit
+                  </Link>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Recent Clients */}
+        <div className="bg-white rounded-xl shadow-md p-6">
+          <h2 className="text-xl font-bold text-gray-900 mb-4">
+            Recent Clients
+          </h2>
+          {clients.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500 mb-4">No clients yet</p>
+              <Link
+                to="/admin/clients/create"
+                className="text-orange-600 hover:text-orange-700 font-semibold"
+              >
+                Add your first client →
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {clients.map((client) => (
+                <div
+                  key={client.id}
+                  className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
+                >
+                  <div className="h-20 flex items-center justify-center mb-3">
+                    <img
+                      src={client.image}
+                      alt={client.name}
+                      className="max-w-full max-h-full object-contain"
+                      onError={(e) => {
+                        e.currentTarget.src =
+                          "https://via.placeholder.com/80?text=No+Logo";
+                      }}
+                    />
+                  </div>
+                  <h3 className="font-semibold text-gray-900 text-center text-xs truncate mb-3">
+                    {client.name}
+                  </h3>
+                  <Link
+                    to={`/admin/clients/edit/${client.id}`}
+                    className="block w-full text-center bg-orange-600 hover:bg-orange-700 text-white px-3 py-2 rounded-lg transition text-xs"
                   >
                     Edit
                   </Link>

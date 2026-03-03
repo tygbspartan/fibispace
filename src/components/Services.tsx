@@ -138,14 +138,14 @@ const Services: React.FC = () => {
                     }}
                   >
                     {/* Card Content */}
-                    <div className="flex flex-col flex-1">
+                    <div className="flex flex-col flex-1 overflow-hidden">
                       {/* Service Title */}
-                      <h3 className="font-light capitalize mb-3 md:mb-4 text-2xl md:text-3xl lg:text-4xl leading-tight md:leading-snug">
+                      <h3 className="font-light capitalize mb-3 md:mb-4 text-2xl md:text-3xl lg:text-4xl leading-tight md:leading-snug flex-shrink-0">
                         {service.title}
                       </h3>
 
-                      {/* Service Description */}
-                      <p className="font-light capitalize text-sm md:text-base lg:text-xl leading-relaxed">
+                      {/* Service Description with Line Clamp */}
+                      <p className="font-light capitalize text-sm md:text-base lg:text-xl leading-relaxed line-clamp-8 slg:line-clamp-10 overflow-hidden">
                         {service.description}
                       </p>
                     </div>
@@ -153,7 +153,7 @@ const Services: React.FC = () => {
                     {/* Go Back Button - Bottom Left */}
                     <button
                       onClick={() => toggleFlip(service.id)}
-                      className="text-left underline capitalize hover:opacity-80 transition-opacity text-sm md:text-base lg:text-xl"
+                      className="text-left underline capitalize hover:opacity-80 transition-opacity text-sm md:text-base lg:text-xl flex-shrink-0 mt-4"
                     >
                       Go Back
                     </button>

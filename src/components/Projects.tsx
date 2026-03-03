@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { projectsAPI } from "../services/api";
 import { Project } from "../types";
+import { useNavigate } from "react-router-dom";
 
 const Projects: React.FC = () => {
+  const navigate = useNavigate()
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -130,80 +132,86 @@ const Projects: React.FC = () => {
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {projects.map((project, index) => {
-            const isLeftColumn = index % 2 === 0;
-            const isAnimated = animatedCards.has(index);
+          {projects
+            .filter((x) => {
+              return x.isFeatured
+            })
+            .map((project, index) => {
+              const isLeftColumn = index % 2 === 0;
+              const isAnimated = animatedCards.has(index);
 
-            return (
-              <div
-                key={project.id}
-                ref={(el) => {
-                  cardRefs.current[index] = el;
-                }}
-                className={`group cursor-pointer transition-all duration-1000 ease-in-out ${
-                  isAnimated
-                    ? "opacity-100 translate-x-0 translate-y-0"
-                    : "opacity-0"
-                }`}
-                style={{
-                  transform: !isAnimated
-                    ? window.innerWidth >= 768
-                      ? isLeftColumn
-                        ? "translateX(-100px)"
-                        : "translateX(100px)"
-                      : "translateY(100px)"
-                    : "translate(0, 0)",
-                }}
-              >
-                {/* Project Image */}
+              return (
                 <div
-                  className="relative overflow-hidden mb-4"
-                  style={{ height: "655px" }}
+                  key={project.id}
+                  ref={(el) => {
+                    cardRefs.current[index] = el;
+                  }}
+                  className={`group cursor-pointer transition-all duration-1000 ease-in-out ${
+                    isAnimated
+                      ? "opacity-100 translate-x-0 translate-y-0"
+                      : "opacity-0"
+                  }`}
+                  style={{
+                    transform: !isAnimated
+                      ? window.innerWidth >= 768
+                        ? isLeftColumn
+                          ? "translateX(-100px)"
+                          : "translateX(100px)"
+                        : "translateY(100px)"
+                      : "translate(0, 0)",
+                  }}
                 >
-                  <img
-                    src={project.mainImage}
-                    alt={project.title}
-                    className="w-full h-full object-cover rounded group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-
-                {/* Project Info - Title and Categories */}
-                <div className="flex justify-between items-center gap-4">
-                  {/* Title */}
-                  <h3
-                    className="font-light flex-1"
-                    style={{
-                      fontFamily: "Inter",
-                      fontSize: "36px",
-                      lineHeight: "40px",
-                      letterSpacing: "0%",
-                    }}
+                  {/* Project Image */}
+                  <div
+                    className="relative overflow-hidden mb-4"
+                    style={{ height: "655px" }}
                   >
-                    {project.title}
-                  </h3>
+                    <img
+                      src={project.mainImage}
+                      alt={project.title}
+                      className="w-full h-full object-cover rounded group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
 
-                  {/* Category Badges */}
-                  <div className="flex flex-wrap gap-2 justify-end">
-                    {project.category.map((cat, idx) => (
-                      <span
-                        key={idx}
-                        className="px-3 py-1 text-sm font-normal bg-white border border-black rounded"
-                        style={{ fontFamily: "Inter" }}
-                      >
-                        {cat.replace(/_/g, " ").toUpperCase()}
-                      </span>
-                    ))}
+                  {/* Project Info - Title and Categories */}
+                  <div className="flex justify-between items-center gap-4">
+                    {/* Title */}
+                    <h3
+                      className="font-light flex-1"
+                      style={{
+                        fontFamily: "Inter",
+                        fontSize: "36px",
+                        lineHeight: "40px",
+                        letterSpacing: "0%",
+                      }}
+                    >
+                      {project.title}
+                    </h3>
+
+                    {/* Category Badges */}
+                    <div className="flex flex-wrap gap-2 justify-end">
+                      {project.category.map((cat, idx) => (
+                        <span
+                          key={idx}
+                          className="px-3 py-1 text-sm font-normal bg-white border border-black rounded"
+                          style={{ fontFamily: "Inter" }}
+                        >
+                          {cat.replace(/_/g, " ").toUpperCase()}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
 
         {/* View More Button */}
         {projects.length > 0 && (
           <div className="text-center mt-8 lg:mt-10">
-            <button className="px-8 py-3 bg-[#008AA9] text-white rounded-md font-medium hover:bg-[#007a98] transition-colors">
+            <button
+            onClick={()=> { navigate('/projects')}}
+             className="px-8 py-3 bg-[#008AA9] text-white rounded-md font-medium hover:bg-[#007a98] transition-colors">
               All Projects
             </button>
           </div>

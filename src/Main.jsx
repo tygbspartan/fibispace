@@ -19,6 +19,8 @@ import AboutPage from "./pages/AboutPage";
 import TeamList from "./admin/pages/TeamList";
 import TeamForm from "./admin/pages/TeamForm";
 import ContactPage from "./pages/ContactPage";
+import ClientList from "./admin/pages/ClientList";
+import ClientForm from "./admin/pages/ClientForm";
 
 const Main = () => {
   const location = useLocation();
@@ -112,6 +114,30 @@ const Main = () => {
             element={
               <PrivateRoute>
                 <TeamForm />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/clients"
+            element={
+              <PrivateRoute>
+                <ClientList />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/clients/create"
+            element={
+              <PrivateRoute>
+                <ClientForm />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/clients/edit/:id"
+            element={
+              <PrivateRoute>
+                <ClientForm />
               </PrivateRoute>
             }
           />

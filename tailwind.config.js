@@ -34,8 +34,15 @@ module.exports = {
         expandLogo: "expandLogo 0.8s linear forwards",
         fadeOutOverlay: "fadeOutOverlay 0.4s ease-out forwards",
       },
+       lineClamp: {
+        7: '7',
+        8: '8',
+        9: '9',
+        10: '10',
+      },
       screens: {
         nlg: "1400px",
+        slg: "1550px",
       },
       colors: {
         primary: "#008AA9",

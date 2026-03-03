@@ -14,15 +14,20 @@ const CreateProject: React.FC = () => {
     mainImage: "",
     thumbnailImages: [] as string[],
     keyFindings: [] as string[],
+    isFeatured: false,
   });
   const [newThumbnail, setNewThumbnail] = useState("");
   const [newKeyFinding, setNewKeyFinding] = useState("");
 
   const categories = [
-    { value: "printing", label: "Printing" },
-    { value: "website_creation", label: "Website Creation" },
+    { value: "smm", label: "Social Media Marketing" },
+    { value: "graphic_design", label: "Custom Graphic Design" },
     { value: "ui_ux", label: "UI/UX" },
-    { value: "digital_marketing", label: "Digital Marketing" },
+    { value: "web_development", label: "Web Design and Development" },
+    { value: "seo", label: "Search Engine Optimization" },
+    { value: "ad_commercial", label: "Advertisement and Commercial" },
+    { value: "event_management", label: "Event Management" },
+    { value: "product_shoot", label: "Creative Product Shoot" },
   ];
 
   const handleCategoryChange = (cat: string) => {
@@ -308,6 +313,52 @@ const CreateProject: React.FC = () => {
             )}
           </div>
 
+          {/* Featured Toggle */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Featured Project
+            </label>
+            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <div className="flex-1">
+                <p className="font-medium text-gray-900">Mark as Featured</p>
+                <p className="text-sm text-gray-600 mt-1">
+                  Featured projects will be highlighted on the homepage
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    isFeatured: !prev.isFeatured,
+                  }))
+                }
+                className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
+                  formData.isFeatured ? "bg-indigo-600" : "bg-gray-300"
+                }`}
+              >
+                <span
+                  className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform ${
+                    formData.isFeatured ? "translate-x-7" : "translate-x-1"
+                  }`}
+                />
+              </button>
+            </div>
+            {formData.isFeatured && (
+              <div className="mt-2 p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
+                <p className="text-sm text-indigo-700 flex items-center gap-2">
+                  <svg
+                    className="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                  This project is marked as featured
+                </p>
+              </div>
+            )}
+          </div>
           {/* Form Actions */}
           <div className="flex gap-4 pt-6 border-t">
             <button

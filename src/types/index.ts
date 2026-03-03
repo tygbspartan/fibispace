@@ -4,6 +4,7 @@ export interface Project {
   description: string;
   category: string[];
   mainImage: string;
+  isFeatured: boolean;
   thumbnailImages: string[];
   keyFindings?: string[];
   createdAt: string;
@@ -53,5 +54,18 @@ export interface TeamMember {
 
 export interface TeamMembersResponse {
   members: TeamMember[];
+  count: number;
+}
+
+export interface Client {
+  id: number;
+  name: string;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ClientsResponse {
+  clients: Client[];
   count: number;
 }

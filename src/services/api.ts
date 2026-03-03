@@ -1,8 +1,8 @@
 import axios from "axios";
-import { TeamMember, TeamMembersResponse } from "../types";
+import { Client, ClientsResponse, TeamMember, TeamMembersResponse } from "../types";
 
-// const API_BASE_URL = "http://localhost:5000/api";
-const API_BASE_URL = "https://api.fibispace.com/api";
+const API_BASE_URL = "http://localhost:5000/api";
+// const API_BASE_URL = "https://api.fibispace.com/api"; // production only
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -87,6 +87,16 @@ export const contactAPI = {
     service: string;
     message: string;
   }) => api.post('/contactus', data),
+};
+
+// Add this with the other API sections (after teamAPI)
+export const clientAPI = {
+  getAll: () => api.get<ClientsResponse>('/clients'),
+  getById: (id: number) => api.get<{ client: Client }>(`/clients/${id}`),
+  create: (data: { name: string; image: string }) => api.post('/clients', data),
+  update: (id: number, data: { name: string; image: string }) => 
+    api.put(`/clients/${id}`, data),
+  delete: (id: number) => api.delete(`/clients/${id}`),
 };
 
 export default api;

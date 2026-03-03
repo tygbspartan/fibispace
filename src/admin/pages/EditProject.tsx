@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams, Link } from 'react-router-dom';
-import { projectsAPI } from '../../services/api';
-import { useAuth } from '../context/AuthContext';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import { projectsAPI } from "../../services/api";
+import { useAuth } from "../context/AuthContext";
 
 const EditProject: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -10,21 +10,26 @@ const EditProject: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
+    title: "",
+    description: "",
     category: [] as string[],
-    mainImage: '',
+    mainImage: "",
     thumbnailImages: [] as string[],
     keyFindings: [] as string[],
+    isFeatured: false, // Add this
   });
-  const [newThumbnail, setNewThumbnail] = useState('');
-  const [newKeyFinding, setNewKeyFinding] = useState('');
+  const [newThumbnail, setNewThumbnail] = useState("");
+  const [newKeyFinding, setNewKeyFinding] = useState("");
 
   const categories = [
-    { value: 'printing', label: 'Printing' },
-    { value: 'website_creation', label: 'Website Creation' },
-    { value: 'ui_ux', label: 'UI/UX' },
-    { value: 'digital_marketing', label: 'Digital Marketing' },
+    { value: "smm", label: "Social Media Marketing" },
+    { value: "graphic_design", label: "Custom Graphic Design" },
+    { value: "ui_ux", label: "UI/UX" },
+    { value: "web_development", label: "Web Design and Development" },
+    { value: "seo", label: "Search Engine Optimization" },
+    { value: "ad_commercial", label: "Advertisement and Commercial" },
+    { value: "event_management", label: "Event Management" },
+    { value: "product_shoot", label: "Creative Product Shoot" },
   ];
 
   useEffect(() => {
@@ -36,8 +41,8 @@ const EditProject: React.FC = () => {
       const response = await projectsAPI.getById(Number(id));
       setFormData(response.data.project);
     } catch (error) {
-      alert('Error loading project');
-      navigate('/admin/projects');
+      alert("Error loading project");
+      navigate("/admin/projects");
     } finally {
       setLoading(false);
     }
@@ -58,7 +63,7 @@ const EditProject: React.FC = () => {
         ...prev,
         thumbnailImages: [...prev.thumbnailImages, newThumbnail.trim()],
       }));
-      setNewThumbnail('');
+      setNewThumbnail("");
     }
   };
 
@@ -75,7 +80,7 @@ const EditProject: React.FC = () => {
         ...prev,
         keyFindings: [...prev.keyFindings, newKeyFinding.trim()],
       }));
-      setNewKeyFinding('');
+      setNewKeyFinding("");
     }
   };
 
@@ -90,7 +95,7 @@ const EditProject: React.FC = () => {
     e.preventDefault();
 
     if (formData.category.length === 0) {
-      alert('Please select at least one category');
+      alert("Please select at least one category");
       return;
     }
 
@@ -98,10 +103,10 @@ const EditProject: React.FC = () => {
 
     try {
       await projectsAPI.update(Number(id), formData);
-      alert('Project updated successfully!');
-      navigate('/admin/projects');
+      alert("Project updated successfully!");
+      navigate("/admin/projects");
     } catch (error: any) {
-      alert('Error updating project: ' + error.response?.data?.error);
+      alert("Error updating project: " + error.response?.data?.error);
     } finally {
       setSaving(false);
     }
@@ -139,7 +144,10 @@ const EditProject: React.FC = () => {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-md p-8 space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white rounded-xl shadow-md p-8 space-y-6"
+        >
           {/* Title */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -148,9 +156,12 @@ const EditProject: React.FC = () => {
             <input
               type="text"
               value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
               required
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+              placeholder="Enter project title"
             />
           </div>
 
@@ -161,17 +172,21 @@ const EditProject: React.FC = () => {
             </label>
             <textarea
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               required
               rows={5}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition resize-none"
+              placeholder="Enter project description"
             />
           </div>
 
           {/* Categories */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Categories <span className="text-red-500">*</span> (Select multiple)
+              Categories <span className="text-red-500">*</span> (Select
+              multiple)
             </label>
             <div className="grid grid-cols-2 gap-3">
               {categories.map((cat) => (
@@ -179,8 +194,8 @@ const EditProject: React.FC = () => {
                   key={cat.value}
                   className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition ${
                     formData.category.includes(cat.value)
-                      ? 'border-indigo-500 bg-indigo-50'
-                      : 'border-gray-300 hover:border-gray-400'
+                      ? "border-indigo-500 bg-indigo-50"
+                      : "border-gray-300 hover:border-gray-400"
                   }`}
                 >
                   <input
@@ -189,7 +204,9 @@ const EditProject: React.FC = () => {
                     onChange={() => handleCategoryChange(cat.value)}
                     className="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                   />
-                  <span className="ml-3 text-gray-700 font-medium">{cat.label}</span>
+                  <span className="ml-3 text-gray-700 font-medium">
+                    {cat.label}
+                  </span>
                 </label>
               ))}
             </div>
@@ -203,9 +220,12 @@ const EditProject: React.FC = () => {
             <input
               type="url"
               value={formData.mainImage}
-              onChange={(e) => setFormData({ ...formData, mainImage: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, mainImage: e.target.value })
+              }
               required
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+              placeholder="https://i.imgur.com/example.jpg"
             />
             {formData.mainImage && (
               <div className="mt-4">
@@ -214,9 +234,57 @@ const EditProject: React.FC = () => {
                   alt="Main preview"
                   className="w-full max-w-md h-48 object-cover rounded-lg border-2 border-gray-200"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x200?text=Invalid+Image+URL';
+                    (e.target as HTMLImageElement).src =
+                      "https://via.placeholder.com/400x200?text=Invalid+Image+URL";
                   }}
                 />
+              </div>
+            )}
+          </div>
+
+          {/* Featured Toggle - ADD THIS SECTION */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Featured Project
+            </label>
+            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <div className="flex-1">
+                <p className="font-medium text-gray-900">Mark as Featured</p>
+                <p className="text-sm text-gray-600 mt-1">
+                  Featured projects will be highlighted on the homepage
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    isFeatured: !prev.isFeatured,
+                  }))
+                }
+                className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
+                  formData.isFeatured ? "bg-indigo-600" : "bg-gray-300"
+                }`}
+              >
+                <span
+                  className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform ${
+                    formData.isFeatured ? "translate-x-7" : "translate-x-1"
+                  }`}
+                />
+              </button>
+            </div>
+            {formData.isFeatured && (
+              <div className="mt-2 p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
+                <p className="text-sm text-indigo-700 flex items-center gap-2">
+                  <svg
+                    className="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                  This project is marked as featured
+                </p>
               </div>
             )}
           </div>
@@ -254,10 +322,13 @@ const EditProject: React.FC = () => {
                       alt={`Thumbnail ${index + 1}`}
                       className="w-16 h-16 object-cover rounded"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'https://via.placeholder.com/64?text=Invalid';
+                        (e.target as HTMLImageElement).src =
+                          "https://via.placeholder.com/64?text=Invalid";
                       }}
                     />
-                    <span className="flex-1 text-sm text-gray-600 truncate">{url}</span>
+                    <span className="flex-1 text-sm text-gray-600 truncate">
+                      {url}
+                    </span>
                     <button
                       type="button"
                       onClick={() => removeThumbnail(index)}
@@ -317,7 +388,7 @@ const EditProject: React.FC = () => {
           <div className="flex gap-4 pt-6 border-t">
             <button
               type="button"
-              onClick={() => navigate('/admin/projects')}
+              onClick={() => navigate("/admin/projects")}
               className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-6 rounded-lg font-semibold transition"
             >
               Cancel
@@ -327,7 +398,7 @@ const EditProject: React.FC = () => {
               disabled={saving}
               className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-6 rounded-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {saving ? 'Saving...' : 'Save Changes'}
+              {saving ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </form>
