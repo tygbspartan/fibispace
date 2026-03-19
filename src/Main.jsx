@@ -21,39 +21,50 @@ import TeamForm from "./admin/pages/TeamForm";
 import ContactPage from "./pages/ContactPage";
 import ClientList from "./admin/pages/ClientList";
 import ClientForm from "./admin/pages/ClientForm";
+import api from "./services/api";
 
 const Main = () => {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
-  const [phaseTimer] = useState(600);
+  const [backendReady, setBackendReady] = useState(false);
 
   // Check if current route is admin route
   const isAdminRoute = location.pathname.startsWith("/admin");
 
-  // Initial load
+  // Check backend on initial load
   useEffect(() => {
+    if (isAdminRoute) {
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
-    const totalTime = phaseTimer + 180 + phaseTimer + 50;
-    const timer = setTimeout(() => setLoading(false), totalTime);
-    return () => clearTimeout(timer);
+    setBackendReady(false);
+
+    // Hit a lightweight endpoint to verify backend is up
+    api
+      .get("/teams/")
+      .then(() => setBackendReady(true))
+      .catch(() => {
+        // Even on error, we know the backend responded — let user through
+        console.warn("Backend check failed, proceeding anyway");
+        setBackendReady(true);
+      });
   }, []);
 
-  // // Route changes
-  // useEffect(() => {
-  //   // Don't show loading overlay for admin routes
-  //   if (!isAdminRoute) {
-  //     setLoading(true);
-  //     const totalTime = phaseTimer + 180 + phaseTimer + 50;
-  //     const timer = setTimeout(() => setLoading(false), totalTime);
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [location.pathname, isAdminRoute]);
+  // Once overlay finishes its fade animation, stop rendering it
+  useEffect(() => {
+    if (backendReady) {
+      const timer = setTimeout(() => setLoading(false), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [backendReady]);
 
   return (
     <AuthProvider>
       {/* Only show loading overlay for non-admin routes */}
       {!isAdminRoute && (
-        <LoadingOverlay isActive={loading} phaseTimer={phaseTimer} />
+        <LoadingOverlay isActive={loading} backendReady={backendReady} />
       )}
 
       {/* Conditionally render public layout wrapper */}
