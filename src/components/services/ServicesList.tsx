@@ -3,14 +3,25 @@ import contentData from "../../data/content.json";
 import { useNavigate } from "react-router-dom";
 
 const ServicesList: React.FC = () => {
-  const navigate = useNavigate() 
+  const navigate = useNavigate();
   const { services } = contentData;
   const [animatedCards, setAnimatedCards] = useState<Set<number>>(new Set());
+  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Intersection Observer for animations
-  useEffect(() => {
+  const toggleExpand = (id: number) => {
+    setExpandedCards((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
 
+  useEffect(() => {
     if (services.length === 0) return;
 
     const observers: IntersectionObserver[] = [];
@@ -24,13 +35,11 @@ const ServicesList: React.FC = () => {
             if (entry.isIntersecting) {
               setTimeout(() => {
                 setAnimatedCards((prev) => new Set(prev).add(index));
-              }, index * 100); // 0.2s stagger between cards
+              }, index * 100);
             }
           });
         },
-        {
-          threshold: 0.1, // Trigger when 20% visible
-        },
+        { threshold: 0.1 },
       );
 
       observer.observe(card);
@@ -45,7 +54,6 @@ const ServicesList: React.FC = () => {
   return (
     <section className="bg-white py-12 md:py-20 overflow-hidden">
       <div className="px-6 md:px-12 lg:px-24">
-        {/* Section Title */}
         <h2
           className="mb-10 md:mb-12 lg:mb-16"
           style={{
@@ -58,10 +66,10 @@ const ServicesList: React.FC = () => {
           Our Services
         </h2>
 
-        {/* Services List */}
         <div className="space-y-6 md:space-y-8">
           {services.map((service, index) => {
             const isAnimated = animatedCards.has(index);
+            const isExpanded = expandedCards.has(service.id);
 
             return (
               <div
@@ -78,7 +86,7 @@ const ServicesList: React.FC = () => {
                 }}
               >
                 <div className="flex items-start md:items-center gap-4 md:gap-8 lg:gap-12">
-                  {/* Large Number - Left Side - Responsive */}
+                  {/* Number */}
                   <div
                     className="flex-shrink-0"
                     style={{
@@ -86,61 +94,73 @@ const ServicesList: React.FC = () => {
                       fontSize: "clamp(64px, 10vw, 128px)",
                       fontWeight: "400",
                       lineHeight: "1",
-                      letterSpacing: "0%",
-                      textAlign: "center",
                       color: "#FFFFFF",
-                      textTransform: "capitalize",
                     }}
                   >
                     {String(index + 1).padStart(2, "0")}
                   </div>
 
-                  {/* Content - Right Side */}
-                  <div className="flex-1">
-                    {/* Title - Responsive */}
+                  {/* Content */}
+                  <div className={`flex-1  ${index == 0 ? 'ml-[2vw]' : ''}`}>
+                    {/* Title */}
                     <h3
-                      className="mb-3 md:mb-4 capitalize"
+                      className={`mb-3 md:mb-4 capitalize`}
                       style={{
                         fontFamily: "Inter",
                         fontSize: "clamp(20px, 3.5vw, 36px)",
                         fontWeight: "300",
                         lineHeight: "clamp(28px, 4.5vw, 50px)",
-                        letterSpacing: "0%",
                       }}
                     >
                       {service.title}
                     </h3>
 
-                    {/* Description - Responsive */}
-                    <p
-                      className="text-gray-600 mb-4 md:mb-6 capitalize"
-                      style={{
-                        fontFamily: "Inter",
-                        fontSize: "clamp(14px, 2vw, 20px)",
-                        fontWeight: "300",
-                        lineHeight: "clamp(22px, 3vw, 30px)",
-                        letterSpacing: "0%",
-                      }}
+                    {/* Description — always visible on sm+, expandable on mobile */}
+                    <div
+                      className={`overflow-hidden transition-all duration-500 ease-in-out sm:!max-h-none sm:!opacity-100 ${
+                        isExpanded
+                          ? "max-h-[500px] opacity-100"
+                          : "max-h-0 opacity-0 sm:max-h-none sm:opacity-100"
+                      }`}
                     >
-                      {service.description}
-                    </p>
+                      <p
+                        className="text-gray-600 mb-4 md:mb-6 capitalize"
+                        style={{
+                          fontFamily: "Inter",
+                          fontSize: "clamp(14px, 2vw, 20px)",
+                          fontWeight: "300",
+                          lineHeight: "clamp(22px, 3vw, 30px)",
+                        }}
+                      >
+                        {service.description}
+                      </p>
 
-                    {/* Discuss Project Button - Responsive */}
+                      {/* Discuss Project — visible inside expanded on mobile, always on sm+ */}
+                      <button
+                        className="px-4 md:px-5 py-1 md:py-1.5 border border-black rounded capitalize hover:bg-black hover:text-white transition-colors"
+                        style={{
+                          fontFamily: "Inter",
+                          fontSize: "clamp(14px, 2vw, 20px)",
+                          fontWeight: "300",
+                          lineHeight: "clamp(22px, 3vw, 30px)",
+                        }}
+                        onClick={() =>
+                          navigate("/contact", {
+                            state: { service: service.title, index },
+                          })
+                        }
+                      >
+                        Discuss Project
+                      </button>
+                    </div>
+
+                    {/* Learn More toggle — mobile only */}
                     <button
-                      className="px-4 md:px-5 py-1 md:py-1.5 border border-black rounded capitalize hover:bg-black hover:text-white transition-colors"
-                      style={{
-                        fontFamily: "Inter",
-                        fontSize: "clamp(14px, 2vw, 20px)",
-                        fontWeight: "300",
-                        lineHeight: "clamp(22px, 3vw, 30px)",
-                        letterSpacing: "0%",
-                        textAlign: "center",
-                      }}
-                      onClick={()=>{
-                        navigate('/contact')
-                      }}
+                      className="sm:hidden mt-3 underline capitalize text-sm font-light hover:opacity-70 transition-opacity"
+                      style={{ fontFamily: "Inter" }}
+                      onClick={() => toggleExpand(service.id)}
                     >
-                      Discuss Project
+                      {isExpanded ? "Show Less" : "Learn More"}
                     </button>
                   </div>
                 </div>

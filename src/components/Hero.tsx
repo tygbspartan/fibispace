@@ -22,7 +22,7 @@ const Hero = () => {
         <div className="text-center mb-8 md:mb-12">
           {/* Main Titles - Responsive */}
           <h1
-            className="mb-4"
+            className="mb-4 "
             style={{
               fontFamily: "Inter",
               fontWeight: "500",
@@ -31,8 +31,8 @@ const Hero = () => {
               letterSpacing: "0%",
             }}
           >
-            {hero.title}
-            <br />
+            {hero.title}{"  "}
+            <br className="hidden sm:block"/>
             {hero.subtitle}
           </h1>
 

@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { contactAPI } from "../../services/api";
+import { useLocation } from "react-router-dom";
 
 const ContactForm: React.FC = () => {
+  const location = useLocation();
+  const service = location?.state?.service || '';
+  console.log(service);
   const [formData, setFormData] = useState({
     name: "",
     orgName: "",
     phone: "",
     email: "",
-    service: "",
+    service: service,
     message: "",
   });
   const [loading, setLoading] = useState(false);

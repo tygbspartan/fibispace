@@ -38,16 +38,16 @@ const Main = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Route changes
-  useEffect(() => {
-    // Don't show loading overlay for admin routes
-    if (!isAdminRoute) {
-      setLoading(true);
-      const totalTime = phaseTimer + 180 + phaseTimer + 50;
-      const timer = setTimeout(() => setLoading(false), totalTime);
-      return () => clearTimeout(timer);
-    }
-  }, [location.pathname, isAdminRoute]);
+  // // Route changes
+  // useEffect(() => {
+  //   // Don't show loading overlay for admin routes
+  //   if (!isAdminRoute) {
+  //     setLoading(true);
+  //     const totalTime = phaseTimer + 180 + phaseTimer + 50;
+  //     const timer = setTimeout(() => setLoading(false), totalTime);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [location.pathname, isAdminRoute]);
 
   return (
     <AuthProvider>

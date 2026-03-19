@@ -81,6 +81,55 @@ const Expertise: React.FC = () => {
     };
   };
 
+  const renderCards = (scroll = false) =>
+    expertise.map((item, index) => {
+      const { firstLine, secondLine } = splitTitle(item.title);
+
+      return (
+        <div
+          key={item.id}
+          className={`rounded overflow-hidden hover:shadow-lg transition-shadow flex flex-col flex-shrink-0 ${
+            scroll ? "w-[80vw] snap-start" : "w-full"
+          }`}
+          style={{
+            backgroundColor: cardBackgrounds[index],
+            borderRadius: "4px",
+            ...getCardAnimation(index),
+          }}
+        >
+          {/* Card Content Section */}
+          <div className="p-6 md:p-8 flex flex-col">
+            <h3 className="font-light capitalize mb-3 md:mb-4 text-2xl md:text-3xl lg:text-4xl leading-tight md:leading-snug">
+              {firstLine}
+              {secondLine && (
+                <>
+                  <br />
+                  {secondLine}
+                </>
+              )}
+            </h3>
+            <div className="w-full h-[1px] bg-black mb-3 md:mb-4"></div>
+            <p className="font-light text-[#5C5C5C] capitalize mb-2 text-sm md:text-base lg:text-xl leading-relaxed">
+              {item.description1}
+            </p>
+            <p className="font-light text-[#5C5C5C] capitalize text-sm md:text-base lg:text-xl leading-relaxed">
+              {item.description2}
+            </p>
+          </div>
+          <div className="px-6 md:px-8 pb-6 md:pb-8">
+            <img
+              src={item.image}
+              alt={item.title}
+              className="w-full h-auto object-cover transition-transform duration-300 rounded"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = "none";
+              }}
+            />
+          </div>
+        </div>
+      );
+    });
+
   return (
     <section
       className="bg-white min-h-screen flex flex-col overflow-hidden"
@@ -107,64 +156,13 @@ const Expertise: React.FC = () => {
         </div>
 
         {/* Expertise Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-10 lg:mb-12 flex-1">
-          {expertise.map((item, index) => {
-            const { firstLine, secondLine } = splitTitle(item.title);
+        {/* Desktop: grid | Below lg: horizontal scroll */}
+        <div className="hidden lg:grid lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-10 lg:mb-12">
+          {renderCards()}
+        </div>
 
-            return (
-              <div
-                key={item.id}
-                className="rounded overflow-hidden hover:shadow-lg transition-shadow flex flex-col"
-                style={{
-                  backgroundColor: cardBackgrounds[index],
-                  width: "100%",
-                  maxWidth: "555px",
-                  minHeight: "500px",
-                  height: "auto",
-                  borderRadius: "4px",
-                  margin: "0 auto",
-                  ...getCardAnimation(index),
-                }}
-              >
-                {/* Card Content Section */}
-                <div className="p-6 md:p-8 flex flex-col flex-1">
-                  {/* Title - Split into two lines */}
-                  <h3 className="font-light capitalize mb-3 md:mb-4 text-2xl md:text-3xl lg:text-4xl leading-tight md:leading-snug">
-                    {firstLine}
-                    {secondLine && (
-                      <>
-                        <br />
-                        {secondLine}
-                      </>
-                    )}
-                  </h3>
-
-                  {/* Horizontal Line */}
-                  <div className="w-full h-[1px] bg-black mb-3 md:mb-4"></div>
-
-                  {/* Description */}
-                  <p className="font-light text-[#5C5C5C] capitalize mb-2 text-sm md:text-base lg:text-xl leading-relaxed">
-                    {item.description1}
-                  </p>
-                  <p className="font-light text-[#5C5C5C] capitalize text-sm md:text-base lg:text-xl leading-relaxed">
-                    {item.description2}
-                  </p>
-                </div>
-
-                {/* Card Image - At the bottom */}
-                <div className="px-6 md:px-8 pb-6 md:pb-8">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-auto object-cover transition-transform duration-300 rounded"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = "none";
-                    }}
-                  />
-                </div>
-              </div>
-            );
-          })}
+        <div className="lg:hidden flex gap-4 overflow-x-auto pb-4 mb-8 snap-x snap-mandatory scrollbar-hide">
+          {renderCards(true)}
         </div>
 
         {/* Description Box */}

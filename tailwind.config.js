@@ -34,11 +34,11 @@ module.exports = {
         expandLogo: "expandLogo 0.8s linear forwards",
         fadeOutOverlay: "fadeOutOverlay 0.4s ease-out forwards",
       },
-       lineClamp: {
-        7: '7',
-        8: '8',
-        9: '9',
-        10: '10',
+      lineClamp: {
+        7: "7",
+        8: "8",
+        9: "9",
+        10: "10",
       },
       screens: {
         nlg: "1400px",
@@ -66,5 +66,15 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        ".scrollbar-hide": {
+          "-ms-overflow-style": "none",
+          "scrollbar-width": "none",
+          "&::-webkit-scrollbar": { display: "none" },
+        },
+      });
+    },
+  ],
 };

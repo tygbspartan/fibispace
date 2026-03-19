@@ -142,7 +142,7 @@ const ProjectsGrid: React.FC = () => {
     <section className="bg-white pt-8 md:pt-12 lg:pt-20 overflow-hidden">
       <div className="px-6 md:px-12 lg:px-24">
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8 md:mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 mb-8 md:mb-12">
           {currentProjects.map((project, index) => {
             const isLeftColumn = index % 2 === 0;
             const isAnimated = animatedCards.has(index);
@@ -170,12 +170,7 @@ const ProjectsGrid: React.FC = () => {
                 }}
               >
                 {/* Project Image - Responsive */}
-                <div
-                  className="relative overflow-hidden mb-3 md:mb-4"
-                  style={{
-                    height: "clamp(400px, 50vw, 655px)",
-                  }}
-                >
+                <div className="relative overflow-hidden mb-4 h-[200px] md:h-[330px] lg:h-[450px] xl:h-[655px]">
                   <img
                     src={project.mainImage}
                     alt={project.title}
@@ -187,11 +182,11 @@ const ProjectsGrid: React.FC = () => {
                 <div className="flex flex-col md:flex-row justify-between md:items-center gap-3 md:gap-4">
                   {/* Title - Responsive */}
                   <h3
-                    className="font-light flex-1"
+                    className="font-light flex-1 text-xl md:text-2xl lg:text-3xl xl:text-4xl"
                     style={{
                       fontFamily: "Inter",
-                      fontSize: "clamp(24px, 4vw, 36px)",
-                      lineHeight: "clamp(28px, 4.5vw, 40px)",
+                      lineHeight: "1.2",
+                      letterSpacing: "0%",
                     }}
                   >
                     {project.title}
@@ -202,7 +197,7 @@ const ProjectsGrid: React.FC = () => {
                     {project.category.map((cat, idx) => (
                       <span
                         key={idx}
-                        className="px-2 md:px-3 py-1 text-xs md:text-sm font-normal bg-white border border-black rounded"
+                        className="px-2 md:px-3 py-1 text-[10px] md:text-sm font-normal bg-white border border-black rounded"
                         style={{ fontFamily: "Inter" }}
                       >
                         {cat.replace(/_/g, " ").toUpperCase()}

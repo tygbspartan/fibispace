@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import contentData from "../data/content.json";
 import { contactAPI } from "../services/api";
+import { Copy, Check } from "lucide-react";
 
 const Footer: React.FC = () => {
   const { contact } = contentData;
@@ -14,6 +15,13 @@ const Footer: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(contact.email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -117,6 +125,7 @@ const Footer: React.FC = () => {
               </h3>
               <a
                 href="https://wa.me/9779741661719"
+                target="_blank"
                 className="capitalize hover:text-[#008AA9] transition-colors block text-base md:text-lg lg:text-2xl leading-relaxed"
               >
                 {contact.phone}
@@ -164,12 +173,21 @@ const Footer: React.FC = () => {
               <h3 className="capitalize mb-3 md:mb-4 text-xl md:text-2xl lg:text-3xl font-semibold">
                 Enquires
               </h3>
-              <a
-                href={`mailto:${contact.email}`}
-                className="hover:text-[#008AA9] transition-colors block text-base md:text-lg lg:text-2xl leading-relaxed"
-              >
-                {contact.email}
-              </a>
+              <div className="flex items-center gap-3">
+                <a
+                  href={`mailto:${contact.email}`}
+                  className="hover:text-[#008AA9] transition-colors block text-base md:text-lg lg:text-2xl leading-relaxed"
+                >
+                  {contact.email}
+                </a>
+                <button
+                  onClick={handleCopy}
+                  className="text-gray-400 hover:text-[#008AA9] transition-colors"
+                  title="Copy email"
+                >
+                  {copied ? <Check size={18} /> : <Copy size={18} />}
+                </button>
+              </div>
             </div>
           </div>
 

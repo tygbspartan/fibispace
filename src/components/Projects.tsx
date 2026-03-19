@@ -2,18 +2,33 @@ import React, { useState, useEffect, useRef } from "react";
 import { projectsAPI } from "../services/api";
 import { Project } from "../types";
 import { useNavigate } from "react-router-dom";
+import ProjectModal from "./projects/ProjectModal";
 
 const Projects: React.FC = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [animatedCards, setAnimatedCards] = useState<Set<number>>(new Set());
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     fetchProjects();
   }, []);
+
+  const handleProjectClick = (project: Project) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setTimeout(() => {
+      setSelectedProject(null);
+    }, 300);
+  };
 
   const fetchProjects = async () => {
     try {
@@ -120,7 +135,7 @@ const Projects: React.FC = () => {
       <div className="px-6 md:px-12 lg:px-24">
         {/* Section Title */}
         <h2
-          className="text-[32px] md:text-[40px] lg:text-[48px] font-medium mb-10 md:mb-12 lg:mb-16"
+          className="text-[32px] md:text-[40px] lg:text-[48px] font-medium mb-6 md:mb-12 lg:mb-16"
           style={{
             fontFamily: "Inter",
             lineHeight: "40px",
@@ -131,10 +146,10 @@ const Projects: React.FC = () => {
         </h2>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8">
           {projects
             .filter((x) => {
-              return x.isFeatured
+              return x.isFeatured;
             })
             .map((project, index) => {
               const isLeftColumn = index % 2 === 0;
@@ -146,6 +161,7 @@ const Projects: React.FC = () => {
                   ref={(el) => {
                     cardRefs.current[index] = el;
                   }}
+                  onClick={() => handleProjectClick(project)}
                   className={`group cursor-pointer transition-all duration-1000 ease-in-out ${
                     isAnimated
                       ? "opacity-100 translate-x-0 translate-y-0"
@@ -162,10 +178,7 @@ const Projects: React.FC = () => {
                   }}
                 >
                   {/* Project Image */}
-                  <div
-                    className="relative overflow-hidden mb-4"
-                    style={{ height: "655px" }}
-                  >
+                  <div className="relative overflow-hidden mb-4 h-[200px] md:h-[330px] lg:h-[450px] xl:h-[655px]">
                     <img
                       src={project.mainImage}
                       alt={project.title}
@@ -177,11 +190,10 @@ const Projects: React.FC = () => {
                   <div className="flex justify-between items-center gap-4">
                     {/* Title */}
                     <h3
-                      className="font-light flex-1"
+                      className="font-light flex-1 text-xl md:text-2xl lg:text-3xl xl:text-4xl"
                       style={{
                         fontFamily: "Inter",
-                        fontSize: "36px",
-                        lineHeight: "40px",
+                        lineHeight: "1.2",
                         letterSpacing: "0%",
                       }}
                     >
@@ -193,7 +205,7 @@ const Projects: React.FC = () => {
                       {project.category.map((cat, idx) => (
                         <span
                           key={idx}
-                          className="px-3 py-1 text-sm font-normal bg-white border border-black rounded"
+                          className="px-2 md:px-3 py-1 text-[10px] md:text-sm font-normal bg-white border border-black rounded"
                           style={{ fontFamily: "Inter" }}
                         >
                           {cat.replace(/_/g, " ").toUpperCase()}
@@ -210,8 +222,11 @@ const Projects: React.FC = () => {
         {projects.length > 0 && (
           <div className="text-center mt-8 lg:mt-10">
             <button
-            onClick={()=> { navigate('/projects')}}
-             className="px-8 py-3 bg-[#008AA9] text-white rounded-md font-medium hover:bg-[#007a98] transition-colors">
+              onClick={() => {
+                navigate("/projects");
+              }}
+              className="px-8 py-3 bg-[#008AA9] text-white rounded-md font-medium hover:bg-[#007a98] transition-colors"
+            >
               All Projects
             </button>
           </div>
@@ -219,6 +234,15 @@ const Projects: React.FC = () => {
         {/* Horizontal Line */}
         <div className="w-full h-[1px] bg-black mt-12"></div>
       </div>
+
+      {/* Project Modal */}
+      {selectedProject && (
+        <ProjectModal
+          project={selectedProject}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+        />
+      )}
     </section>
   );
 };

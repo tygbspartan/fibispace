@@ -37,7 +37,7 @@ const OurClients: React.FC = () => {
 
     const interval = setInterval(() => {
       setCurrentPage((prev) => (prev >= totalPages ? 1 : prev + 1));
-    }, 4000);
+    }, 15000);
 
     return () => clearInterval(interval);
   }, [totalPages]);
@@ -98,20 +98,20 @@ const OurClients: React.FC = () => {
         {/* Clients Grid with Fade Transition */}
         <div className="relative mb-8 md:mb-12">
           <div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 transition-opacity duration-500"
+            className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 transition-opacity duration-500"
             key={currentPage}
           >
             {currentClients.map((client) => (
               <div
                 key={client.id}
-                className="flex items-center gap-3 md:gap-4 p-3 md:p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
+                className="flex flex-col items-center md:flex-row md:items-center gap-2 md:gap-4 p-3 md:p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
               >
                 {/* Circle Image */}
-                <div className="flex-shrink-0 rounded-full border border-gray-200 overflow-hidden flex items-center justify-center bg-gray-50 w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28">
+                <div className="flex-shrink-0 rounded-full border border-gray-200 overflow-hidden flex items-center justify-center bg-gray-50 w-16 h-16 md:w-24 md:h-24 lg:w-28 lg:h-28">
                   <img
                     src={client.image}
                     alt={client.name}
-                    className="object-contain transition-all w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
+                    className="object-contain w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16"
                     onError={(e) => {
                       e.currentTarget.src =
                         "https://via.placeholder.com/64?text=Logo";
@@ -120,7 +120,7 @@ const OurClients: React.FC = () => {
                 </div>
 
                 {/* Company Name */}
-                <p className="flex-1 text-base md:text-lg lg:text-2xl font-medium leading-tight">
+                <p className="flex-1 text-center md:text-left text-sm md:text-lg lg:text-2xl font-medium leading-tight">
                   {client.name}
                 </p>
               </div>

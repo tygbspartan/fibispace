@@ -106,6 +106,9 @@ const AboutTeam: React.FC = () => {
                 height: "clamp(500px, 65vw, 782px)",
               }}
             >
+              <h2 className="text-white mb-3 xl:hidden text-2xl md:text-3xl font-medium">
+                Our Team
+              </h2>
               <img
                 src={highlightedMember.image}
                 alt={highlightedMember.name}
@@ -147,7 +150,7 @@ const AboutTeam: React.FC = () => {
           {/* Right Side - Info & Horizontal Scrollable Cards */}
           <div className="min-w-0">
             {/* Our Team Title - FIXED */}
-            <h2 className="text-white mb-3 md:mb-4 text-2xl md:text-3xl xl:text-5xl font-medium">
+            <h2 className="hidden xl:block text-white  xl:mb-4 xl:text-5xl font-medium">
               Our Team
             </h2>
 
@@ -177,9 +180,8 @@ const AboutTeam: React.FC = () => {
                     <div
                       key={member.id}
                       onClick={() => handleMemberClick(actualIndex)}
-                      className="relative flex-shrink-0 overflow-hidden rounded cursor-pointer transition-all duration-300 group hover:ring-2 md:hover:ring-4 ring-white"
+                      className="relative flex-shrink-0 overflow-hidden rounded cursor-pointer transition-all duration-300 group hover:ring-2 md:hover:ring-4 ring-white w-[150px] md:w-[280px] lg:w-[340px] xl:w-[350px] 2xl:w-[400px]"
                       style={{
-                        width: "clamp(250px, 70vw, 400px)",
                         aspectRatio: "345/442",
                         scrollSnapAlign: "start",
                       }}

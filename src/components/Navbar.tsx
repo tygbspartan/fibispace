@@ -45,7 +45,7 @@ const Navbar: React.FC = () => {
     },
     {
       name: "LinkedIn",
-      icon: "Linkedin.png",
+      icon: "LinkedIn.png",
       link: "https://linkedin.com/",
     },
     {

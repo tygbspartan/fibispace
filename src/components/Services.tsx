@@ -63,7 +63,7 @@ const Services: React.FC = () => {
         </h2>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
           {services.map((service, index) => {
             const isFlipped = flippedCards.has(service.id);
             const isAnimated = animatedCards.has(index);
@@ -76,9 +76,14 @@ const Services: React.FC = () => {
                 }}
                 className={`relative transition-all duration-1000 ease-in-out ${
                   isAnimated ? "opacity-100 translate-y-0" : "opacity-0"
-                }`}
+                }
+                ${
+                  isFlipped ? "h-[clamp(154px,70vw,550px)]":"h-[clamp(124px,40vw,520px)]"
+                }
+                sm:h-[clamp(450px,60vw,552px)]
+                `}
                 style={{
-                  height: "clamp(450px, 60vw, 552px)",
+                  // height: "clamp(450px, 60vw, 552px)",
                   perspective: "1000px",
                   transform: !isAnimated
                     ? "translateY(100px)"
@@ -112,7 +117,7 @@ const Services: React.FC = () => {
                       </h3>
 
                       {/* Service Subtitle */}
-                      <p className="font-light capitalize text-sm md:text-base lg:text-xl leading-relaxed">
+                      <p className="hidden sm:block font-light capitalize text-sm md:text-base lg:text-xl leading-relaxed">
                         {service.subtitle}
                       </p>
                     </div>
