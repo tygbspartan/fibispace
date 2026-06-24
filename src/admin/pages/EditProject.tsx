@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { projectsAPI } from "../../services/api";
+import { projectsAPI, resolveImageUrl } from "../../services/api";
 import { useAuth } from "../context/AuthContext";
 
 const EditProject: React.FC = () => {
@@ -13,12 +13,17 @@ const EditProject: React.FC = () => {
     title: "",
     description: "",
     category: [] as string[],
-    mainImage: "",
-    thumbnailImages: [] as string[],
     keyFindings: [] as string[],
-    isFeatured: false, // Add this
+    isFeatured: false,
   });
-  const [newThumbnail, setNewThumbnail] = useState("");
+  // Currently stored images (loaded from the API).
+  const [existingMainImage, setExistingMainImage] = useState("");
+  const [existingThumbnails, setExistingThumbnails] = useState<string[]>([]);
+  // Newly picked files that will replace the stored ones on save.
+  const [mainImageFile, setMainImageFile] = useState<File | null>(null);
+  const [mainImagePreview, setMainImagePreview] = useState("");
+  const [thumbnailFiles, setThumbnailFiles] = useState<File[]>([]);
+  const [thumbnailPreviews, setThumbnailPreviews] = useState<string[]>([]);
   const [newKeyFinding, setNewKeyFinding] = useState("");
 
   const categories = [
@@ -39,7 +44,16 @@ const EditProject: React.FC = () => {
   const fetchProject = async () => {
     try {
       const response = await projectsAPI.getById(Number(id));
-      setFormData(response.data.project);
+      const project = response.data.project;
+      setFormData({
+        title: project.title ?? "",
+        description: project.description ?? "",
+        category: project.category ?? [],
+        keyFindings: project.keyFindings ?? [],
+        isFeatured: project.isFeatured ?? false,
+      });
+      setExistingMainImage(project.mainImage ?? "");
+      setExistingThumbnails(project.thumbnailImages ?? []);
     } catch (error) {
       alert("Error loading project");
       navigate("/admin/projects");
@@ -48,29 +62,48 @@ const EditProject: React.FC = () => {
     }
   };
 
+  // Release object URLs created for previews on unmount.
+  useEffect(() => {
+    return () => {
+      if (mainImagePreview) URL.revokeObjectURL(mainImagePreview);
+      thumbnailPreviews.forEach((url) => URL.revokeObjectURL(url));
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleMainImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (mainImagePreview) URL.revokeObjectURL(mainImagePreview);
+    setMainImageFile(file);
+    setMainImagePreview(URL.createObjectURL(file));
+  };
+
+  const handleThumbnailsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = Array.from(e.target.files ?? []);
+    if (selected.length === 0) return;
+    const room = 10 - thumbnailFiles.length;
+    const toAdd = selected.slice(0, Math.max(room, 0));
+    setThumbnailFiles((prev) => [...prev, ...toAdd]);
+    setThumbnailPreviews((prev) => [
+      ...prev,
+      ...toAdd.map((f) => URL.createObjectURL(f)),
+    ]);
+    e.target.value = "";
+  };
+
+  const removeNewThumbnail = (index: number) => {
+    URL.revokeObjectURL(thumbnailPreviews[index]);
+    setThumbnailFiles((prev) => prev.filter((_, i) => i !== index));
+    setThumbnailPreviews((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const handleCategoryChange = (cat: string) => {
     setFormData((prev) => ({
       ...prev,
       category: prev.category.includes(cat)
         ? prev.category.filter((c) => c !== cat)
         : [...prev.category, cat],
-    }));
-  };
-
-  const addThumbnail = () => {
-    if (newThumbnail.trim() && formData.thumbnailImages.length < 10) {
-      setFormData((prev) => ({
-        ...prev,
-        thumbnailImages: [...prev.thumbnailImages, newThumbnail.trim()],
-      }));
-      setNewThumbnail("");
-    }
-  };
-
-  const removeThumbnail = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      thumbnailImages: prev.thumbnailImages.filter((_, i) => i !== index),
     }));
   };
 
@@ -102,7 +135,19 @@ const EditProject: React.FC = () => {
     setSaving(true);
 
     try {
-      await projectsAPI.update(Number(id), formData);
+      const data = new FormData();
+      data.append("title", formData.title);
+      data.append("description", formData.description);
+      data.append("category", JSON.stringify(formData.category));
+      data.append("keyFindings", JSON.stringify(formData.keyFindings));
+      data.append("isFeatured", String(formData.isFeatured));
+      // Only send images that were actually replaced. The server keeps the
+      // existing main image / thumbnails when these fields are absent, and a
+      // new set of thumbnails replaces the old set entirely.
+      if (mainImageFile) data.append("mainImage", mainImageFile);
+      thumbnailFiles.forEach((file) => data.append("thumbnailImages", file));
+
+      await projectsAPI.update(Number(id), data);
       alert("Project updated successfully!");
       navigate("/admin/projects");
     } catch (error: any) {
@@ -215,28 +260,23 @@ const EditProject: React.FC = () => {
           {/* Main Image */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Main Image URL <span className="text-red-500">*</span>
+              Main Image
             </label>
             <input
-              type="url"
-              value={formData.mainImage}
-              onChange={(e) =>
-                setFormData({ ...formData, mainImage: e.target.value })
-              }
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
-              placeholder="https://i.imgur.com/example.jpg"
+              type="file"
+              accept="image/*"
+              onChange={handleMainImageChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
             />
-            {formData.mainImage && (
+            <p className="mt-1 text-sm text-gray-500">
+              Leave empty to keep the current image.
+            </p>
+            {(mainImagePreview || existingMainImage) && (
               <div className="mt-4">
                 <img
-                  src={formData.mainImage}
+                  src={mainImagePreview || resolveImageUrl(existingMainImage)}
                   alt="Main preview"
                   className="w-full max-w-md h-48 object-cover rounded-lg border-2 border-gray-200"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src =
-                      "https://via.placeholder.com/400x200?text=Invalid+Image+URL";
-                  }}
                 />
               </div>
             )}
@@ -294,45 +334,50 @@ const EditProject: React.FC = () => {
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Thumbnail Images (Max 10)
             </label>
-            <div className="flex gap-2 mb-3">
-              <input
-                type="url"
-                value={newThumbnail}
-                onChange={(e) => setNewThumbnail(e.target.value)}
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
-                placeholder="https://i.imgur.com/thumb.jpg"
-              />
-              <button
-                type="button"
-                onClick={addThumbnail}
-                className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition"
-              >
-                Add
-              </button>
-            </div>
-            {formData.thumbnailImages.length > 0 && (
-              <div className="space-y-2">
-                {formData.thumbnailImages.map((url, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
-                  >
+
+            {/* Current thumbnails (shown until new ones are selected) */}
+            {existingThumbnails.length > 0 && thumbnailFiles.length === 0 && (
+              <div className="mb-3">
+                <p className="text-sm text-gray-500 mb-2">Current thumbnails:</p>
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                  {existingThumbnails.map((url, index) => (
+                    <img
+                      key={index}
+                      src={resolveImageUrl(url)}
+                      alt={`Thumbnail ${index + 1}`}
+                      className="w-full h-24 object-cover rounded border border-gray-200"
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleThumbnailsChange}
+              disabled={thumbnailFiles.length >= 10}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 disabled:opacity-50"
+            />
+            <p className="mt-1 text-sm text-gray-500">
+              Uploading new thumbnails replaces the entire current set. Leave
+              empty to keep them. ({thumbnailFiles.length}/10 new)
+            </p>
+
+            {thumbnailPreviews.length > 0 && (
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-3">
+                {thumbnailPreviews.map((url, index) => (
+                  <div key={index} className="relative">
                     <img
                       src={url}
-                      alt={`Thumbnail ${index + 1}`}
-                      className="w-16 h-16 object-cover rounded"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src =
-                          "https://via.placeholder.com/64?text=Invalid";
-                      }}
+                      alt={`New thumbnail ${index + 1}`}
+                      className="w-full h-24 object-cover rounded border border-gray-200"
                     />
-                    <span className="flex-1 text-sm text-gray-600 truncate">
-                      {url}
-                    </span>
                     <button
                       type="button"
-                      onClick={() => removeThumbnail(index)}
-                      className="bg-red-600 hover:bg-red-700 text-white w-8 h-8 rounded-full flex items-center justify-center transition"
+                      onClick={() => removeNewThumbnail(index)}
+                      className="absolute -top-2 -right-2 bg-red-600 hover:bg-red-700 text-white w-6 h-6 rounded-full flex items-center justify-center transition"
                     >
                       ×
                     </button>

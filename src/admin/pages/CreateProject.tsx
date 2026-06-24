@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { projectsAPI } from "../../services/api";
 import { useAuth } from "../context/AuthContext";
@@ -11,12 +11,14 @@ const CreateProject: React.FC = () => {
     title: "",
     description: "",
     category: [] as string[],
-    mainImage: "",
-    thumbnailImages: [] as string[],
     keyFindings: [] as string[],
     isFeatured: false,
   });
-  const [newThumbnail, setNewThumbnail] = useState("");
+  // Images are now uploaded files rather than URLs.
+  const [mainImageFile, setMainImageFile] = useState<File | null>(null);
+  const [mainImagePreview, setMainImagePreview] = useState("");
+  const [thumbnailFiles, setThumbnailFiles] = useState<File[]>([]);
+  const [thumbnailPreviews, setThumbnailPreviews] = useState<string[]>([]);
   const [newKeyFinding, setNewKeyFinding] = useState("");
 
   const categories = [
@@ -39,21 +41,42 @@ const CreateProject: React.FC = () => {
     }));
   };
 
-  const addThumbnail = () => {
-    if (newThumbnail.trim() && formData.thumbnailImages.length < 10) {
-      setFormData((prev) => ({
-        ...prev,
-        thumbnailImages: [...prev.thumbnailImages, newThumbnail.trim()],
-      }));
-      setNewThumbnail("");
-    }
+  // Release object URLs created for previews on unmount.
+  useEffect(() => {
+    return () => {
+      if (mainImagePreview) URL.revokeObjectURL(mainImagePreview);
+      thumbnailPreviews.forEach((url) => URL.revokeObjectURL(url));
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleMainImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (mainImagePreview) URL.revokeObjectURL(mainImagePreview);
+    setMainImageFile(file);
+    setMainImagePreview(URL.createObjectURL(file));
+  };
+
+  const handleThumbnailsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = Array.from(e.target.files ?? []);
+    if (selected.length === 0) return;
+    // Cap the combined set at 10 (matches the multer maxCount on the server).
+    const room = 10 - thumbnailFiles.length;
+    const toAdd = selected.slice(0, Math.max(room, 0));
+    setThumbnailFiles((prev) => [...prev, ...toAdd]);
+    setThumbnailPreviews((prev) => [
+      ...prev,
+      ...toAdd.map((f) => URL.createObjectURL(f)),
+    ]);
+    // Allow re-selecting the same file later.
+    e.target.value = "";
   };
 
   const removeThumbnail = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      thumbnailImages: prev.thumbnailImages.filter((_, i) => i !== index),
-    }));
+    URL.revokeObjectURL(thumbnailPreviews[index]);
+    setThumbnailFiles((prev) => prev.filter((_, i) => i !== index));
+    setThumbnailPreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   const addKeyFinding = () => {
@@ -81,10 +104,25 @@ const CreateProject: React.FC = () => {
       return;
     }
 
+    if (!mainImageFile) {
+      alert("Please select a main image");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      await projectsAPI.create(formData);
+      const data = new FormData();
+      data.append("title", formData.title);
+      data.append("description", formData.description);
+      // Arrays are sent as JSON strings; the server JSON.parses them.
+      data.append("category", JSON.stringify(formData.category));
+      data.append("keyFindings", JSON.stringify(formData.keyFindings));
+      data.append("isFeatured", String(formData.isFeatured));
+      data.append("mainImage", mainImageFile);
+      thumbnailFiles.forEach((file) => data.append("thumbnailImages", file));
+
+      await projectsAPI.create(data);
       alert("Project created successfully!");
       navigate("/admin/projects");
     } catch (error: any) {
@@ -191,28 +229,20 @@ const CreateProject: React.FC = () => {
           {/* Main Image */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Main Image URL <span className="text-red-500">*</span>
+              Main Image <span className="text-red-500">*</span>
             </label>
             <input
-              type="url"
-              value={formData.mainImage}
-              onChange={(e) =>
-                setFormData({ ...formData, mainImage: e.target.value })
-              }
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
-              placeholder="https://i.imgur.com/example.jpg"
+              type="file"
+              accept="image/*"
+              onChange={handleMainImageChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
             />
-            {formData.mainImage && (
+            {mainImagePreview && (
               <div className="mt-4">
                 <img
-                  src={formData.mainImage}
+                  src={mainImagePreview}
                   alt="Main preview"
                   className="w-full max-w-md h-48 object-cover rounded-lg border-2 border-gray-200"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src =
-                      "https://via.placeholder.com/400x200?text=Invalid+Image+URL";
-                  }}
                 />
               </div>
             )}
@@ -223,45 +253,30 @@ const CreateProject: React.FC = () => {
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Thumbnail Images (Max 10)
             </label>
-            <div className="flex gap-2 mb-3">
-              <input
-                type="url"
-                value={newThumbnail}
-                onChange={(e) => setNewThumbnail(e.target.value)}
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
-                placeholder="https://i.imgur.com/thumb.jpg"
-              />
-              <button
-                type="button"
-                onClick={addThumbnail}
-                className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition"
-              >
-                Add
-              </button>
-            </div>
-            {formData.thumbnailImages.length > 0 && (
-              <div className="space-y-2">
-                {formData.thumbnailImages.map((url, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
-                  >
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleThumbnailsChange}
+              disabled={thumbnailFiles.length >= 10}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 disabled:opacity-50"
+            />
+            <p className="mt-1 text-sm text-gray-500">
+              {thumbnailFiles.length}/10 selected
+            </p>
+            {thumbnailPreviews.length > 0 && (
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-3">
+                {thumbnailPreviews.map((url, index) => (
+                  <div key={index} className="relative">
                     <img
                       src={url}
                       alt={`Thumbnail ${index + 1}`}
-                      className="w-16 h-16 object-cover rounded"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src =
-                          "https://via.placeholder.com/64?text=Invalid";
-                      }}
+                      className="w-full h-24 object-cover rounded border border-gray-200"
                     />
-                    <span className="flex-1 text-sm text-gray-600 truncate">
-                      {url}
-                    </span>
                     <button
                       type="button"
                       onClick={() => removeThumbnail(index)}
-                      className="bg-red-600 hover:bg-red-700 text-white w-8 h-8 rounded-full flex items-center justify-center transition"
+                      className="absolute -top-2 -right-2 bg-red-600 hover:bg-red-700 text-white w-6 h-6 rounded-full flex items-center justify-center transition"
                     >
                       ×
                     </button>

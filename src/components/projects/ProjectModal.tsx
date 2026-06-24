@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Project } from "../../types";
+import { resolveImageUrl } from "../../services/api";
 
 interface ProjectModalProps {
   project: Project;
@@ -124,7 +125,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           {/* Main Image */}
           <div className="mb-6 md:mb-8">
             <img
-              src={project.mainImage}
+              src={resolveImageUrl(project.mainImage)}
               alt={project.title}
               className="w-full h-auto rounded md:rounded-lg shadow-md"
               onError={(e) => {
@@ -143,7 +144,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
               {project.thumbnailImages.map((image, idx) => (
                 <img
                   key={idx}
-                  src={image}
+                  src={resolveImageUrl(image)}
                   alt={`${project.title} - Image ${idx + 1}`}
                   className="w-full h-auto rounded shadow-md"
                   onError={(e) => {

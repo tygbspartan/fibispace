@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { clientAPI } from "../../services/api";
+import { clientAPI, resolveImageUrl } from "../../services/api";
 import { Client } from "../../types";
 
 const OurClients: React.FC = () => {
@@ -109,7 +109,7 @@ const OurClients: React.FC = () => {
                 {/* Circle Image */}
                 <div className="flex-shrink-0 rounded-full border border-gray-200 overflow-hidden flex items-center justify-center bg-gray-50 w-16 h-16 md:w-24 md:h-24 lg:w-28 lg:h-28">
                   <img
-                    src={client.image}
+                    src={resolveImageUrl(client.image)}
                     alt={client.name}
                     className="object-contain w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16"
                     onError={(e) => {

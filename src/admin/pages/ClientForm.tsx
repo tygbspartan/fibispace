@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { clientAPI } from "../../services/api";
+import { clientAPI, resolveImageUrl } from "../../services/api";
 
 const ClientForm: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const isEdit = Boolean(id);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    image: "",
-  });
+  const [name, setName] = useState("");
+  // Existing stored logo (edit mode) vs. a freshly picked file.
+  const [existingImage, setExistingImage] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -20,14 +21,19 @@ const ClientForm: React.FC = () => {
     }
   }, [id, isEdit]);
 
+  // Release the object URL created for the local preview.
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
+
   const fetchClient = async (clientId: number) => {
     try {
       const response = await clientAPI.getById(clientId);
       const client = response.data.client;
-      setFormData({
-        name: client.name,
-        image: client.image,
-      });
+      setName(client.name);
+      setExistingImage(client.image);
     } catch (error) {
       console.error("Error fetching client:", error);
       alert("Failed to load client data");
@@ -38,27 +44,37 @@ const ClientForm: React.FC = () => {
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.name.trim()) {
+    if (!name.trim()) {
       newErrors.name = "Client name is required";
-    } else if (formData.name.length > 100) {
+    } else if (name.length > 100) {
       newErrors.name = "Name must be less than 100 characters";
     }
 
-    if (!formData.image.trim()) {
-      newErrors.image = "Logo URL is required";
-    } else if (!/^https?:\/\/.+/.test(formData.image)) {
-      newErrors.image = "Please enter a valid URL";
+    // A logo file is required when creating; on edit the existing one is kept
+    // unless a new file is chosen.
+    if (!imageFile && !existingImage) {
+      newErrors.image = "A logo image is required";
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+    if (errors.name) {
+      setErrors((prev) => ({ ...prev, name: "" }));
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setImageFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+    if (errors.image) {
+      setErrors((prev) => ({ ...prev, image: "" }));
     }
   };
 
@@ -72,13 +88,18 @@ const ClientForm: React.FC = () => {
     try {
       setLoading(true);
 
+      const data = new FormData();
+      data.append("name", name);
+      // Only send a file when one was picked; on edit the server keeps the old
+      // image if "image" is absent.
+      if (imageFile) data.append("image", imageFile);
+
       if (isEdit && id) {
-        await clientAPI.update(parseInt(id), formData);
+        await clientAPI.update(parseInt(id), data);
         alert("Client updated successfully");
       } else {
-        await clientAPI.create(formData);
+        await clientAPI.create(data);
         alert("Client added successfully");
-        setFormData({ name: "", image: "" });
       }
 
       navigate("/admin/clients");
@@ -89,6 +110,9 @@ const ClientForm: React.FC = () => {
       setLoading(false);
     }
   };
+
+  // What to show in the preview box: the new file if picked, else the stored logo.
+  const previewSrc = previewUrl || resolveImageUrl(existingImage);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -119,8 +143,8 @@ const ClientForm: React.FC = () => {
               <input
                 type="text"
                 name="name"
-                value={formData.name}
-                onChange={handleChange}
+                value={name}
+                onChange={handleNameChange}
                 maxLength={100}
                 className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
                   errors.name ? "border-red-500" : "border-gray-300"
@@ -131,44 +155,44 @@ const ClientForm: React.FC = () => {
                 <p className="mt-1 text-sm text-red-600">{errors.name}</p>
               )}
               <p className="mt-1 text-sm text-gray-500">
-                {formData.name.length}/100 characters
+                {name.length}/100 characters
               </p>
             </div>
 
-            {/* Logo URL */}
+            {/* Logo File */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Logo URL *
+                Logo Image {isEdit ? "" : "*"}
               </label>
               <input
-                type="url"
+                type="file"
                 name="image"
-                value={formData.image}
-                onChange={handleChange}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+                accept="image/*"
+                onChange={handleFileChange}
+                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 ${
                   errors.image ? "border-red-500" : "border-gray-300"
                 }`}
-                placeholder="https://example.com/logo.png"
               />
+              {isEdit && (
+                <p className="mt-1 text-sm text-gray-500">
+                  Leave empty to keep the current logo.
+                </p>
+              )}
               {errors.image && (
                 <p className="mt-1 text-sm text-red-600">{errors.image}</p>
               )}
 
               {/* Logo Preview */}
-              {formData.image && !errors.image && (
+              {previewSrc && (
                 <div className="mt-4 p-4 bg-gray-50 rounded-lg">
                   <p className="text-sm font-medium text-gray-700 mb-2">
                     Logo Preview:
                   </p>
                   <div className="w-48 h-48 bg-white border border-gray-300 rounded-lg flex items-center justify-center p-4">
                     <img
-                      src={formData.image}
+                      src={previewSrc}
                       alt="Logo preview"
                       className="max-w-full max-h-full object-contain"
-                      onError={(e) => {
-                        e.currentTarget.src =
-                          "https://via.placeholder.com/200x200?text=Invalid+URL";
-                      }}
                     />
                   </div>
                 </div>

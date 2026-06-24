@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { projectsAPI } from '../../services/api';
+import { projectsAPI, resolveImageUrl } from '../../services/api';
 import { useAuth } from '../context/AuthContext';
 
 interface Project {
@@ -136,7 +136,7 @@ const ProjectList: React.FC = () => {
                 className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition"
               >
                 <img
-                  src={project.mainImage}
+                  src={resolveImageUrl(project.mainImage)}
                   alt={project.title}
                   className="w-full h-48 object-cover"
                 />

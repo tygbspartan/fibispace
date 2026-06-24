@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { teamAPI } from "../../services/api";
+import { teamAPI, resolveImageUrl } from "../../services/api";
 import { TeamMember } from "../../types";
 
 const TeamList: React.FC = () => {
@@ -121,7 +121,7 @@ const TeamList: React.FC = () => {
                 className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition"
               >
                 <img
-                  src={member.image}
+                  src={resolveImageUrl(member.image)}
                   alt={member.name}
                   className="w-full h-64 object-cover"
                   onError={(e) => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { clientAPI } from '../../services/api';
+import { clientAPI, resolveImageUrl } from '../../services/api';
 import { Client } from '../../types';
 
 const ClientList: React.FC = () => {
@@ -138,7 +138,7 @@ const ClientList: React.FC = () => {
                 {/* Client Logo */}
                 <div className="h-48 bg-gray-100 flex items-center justify-center p-6">
                   <img
-                    src={client.image}
+                    src={resolveImageUrl(client.image)}
                     alt={client.name}
                     className="max-w-full max-h-full object-contain"
                     onError={(e) => {

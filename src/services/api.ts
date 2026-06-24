@@ -1,14 +1,29 @@
 import axios from "axios";
 import { Client, ClientsResponse, TeamMember, TeamMembersResponse } from "../types";
 
-// const API_BASE_URL = "http://localhost:5000/api";
-const API_BASE_URL = "https://api.fibispace.com/api"; // production only
+const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api";
 
+// Server origin without the trailing "/api". Stored upload paths already start
+// with "/api/uploads/..." (Passenger does NOT strip the BaseURI), so resolving
+// them against the base URL — which also ends in "/api" — would double it.
+export const API_ORIGIN = API_BASE_URL.replace(/\/api\/?$/, "");
+
+// Resolve a stored image value to a displayable URL:
+// - empty            -> "" (callers fall back to a placeholder)
+// - http(s)/data/blob -> used as-is (legacy Cloudinary/Imgur URLs, local previews)
+// - "/api/uploads/.." -> prefixed with the server origin so it points at the API host
+export const resolveImageUrl = (value?: string | null): string => {
+  if (!value) return "";
+  if (/^(https?:|data:|blob:)/i.test(value)) return value;
+  return `${API_ORIGIN}${value.startsWith("/") ? "" : "/"}${value}`;
+};
+
+// NOTE: no default Content-Type. Axios auto-sets application/json for plain
+// object bodies, and lets the browser set multipart/form-data (with boundary)
+// when the body is a FormData instance.
 const api = axios.create({
   baseURL: API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 // Add token to requests
@@ -48,8 +63,9 @@ export const authAPI = {
 export const projectsAPI = {
   getAll: (params?: any) => api.get("/projects", { params }),
   getById: (id: number) => api.get(`/projects/${id}`),
-  create: (data: any) => api.post("/projects", data),
-  update: (id: number, data: any) => api.put(`/projects/${id}`, data),
+  // Images are uploaded as files, so the body is multipart FormData.
+  create: (data: FormData) => api.post("/projects", data),
+  update: (id: number, data: FormData) => api.put(`/projects/${id}`, data),
   delete: (id: number) => api.delete(`/projects/${id}`),
   getStats: () => api.get("/projects/stats"),
 };
@@ -62,15 +78,12 @@ export const teamAPI = {
   // Get single team member
   getById: (id: number) => api.get<{ member: TeamMember }>(`/teams/${id}`),
 
-  // Create team member
-  create: (data: Omit<TeamMember, "id" | "createdAt" | "updatedAt">) =>
-    api.post<{ member: TeamMember }>("/teams/", data),
+  // Create team member (multipart: text fields + "image" file)
+  create: (data: FormData) => api.post<{ member: TeamMember }>("/teams/", data),
 
-  // Update team member
-  update: (
-    id: number,
-    data: Omit<TeamMember, "id" | "createdAt" | "updatedAt">,
-  ) => api.put<{ member: TeamMember }>(`/teams/${id}`, data),
+  // Update team member (multipart: text fields + optional "image" file)
+  update: (id: number, data: FormData) =>
+    api.put<{ member: TeamMember }>(`/teams/${id}`, data),
 
   // Delete team member
   delete: (id: number) => api.delete(`/teams/${id}`),
@@ -93,9 +106,9 @@ export const contactAPI = {
 export const clientAPI = {
   getAll: () => api.get<ClientsResponse>('/clients'),
   getById: (id: number) => api.get<{ client: Client }>(`/clients/${id}`),
-  create: (data: { name: string; image: string }) => api.post('/clients', data),
-  update: (id: number, data: { name: string; image: string }) => 
-    api.put(`/clients/${id}`, data),
+  // Multipart: "name" text field + "image" file
+  create: (data: FormData) => api.post('/clients', data),
+  update: (id: number, data: FormData) => api.put(`/clients/${id}`, data),
   delete: (id: number) => api.delete(`/clients/${id}`),
 };
 

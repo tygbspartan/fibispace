@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { teamAPI } from "../../services/api";
+import { teamAPI, resolveImageUrl } from "../../services/api";
 import { TeamMember } from "../../types";
 
 const AboutTeam: React.FC = () => {
@@ -110,7 +110,7 @@ const AboutTeam: React.FC = () => {
                 Our Team
               </h2>
               <img
-                src={highlightedMember.image}
+                src={resolveImageUrl(highlightedMember.image)}
                 alt={highlightedMember.name}
                 className="w-full h-full object-cover"
                 onError={(e) => {
@@ -187,7 +187,7 @@ const AboutTeam: React.FC = () => {
                       }}
                     >
                       <img
-                        src={member.image}
+                        src={resolveImageUrl(member.image)}
                         alt={member.name}
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                         onError={(e) => {

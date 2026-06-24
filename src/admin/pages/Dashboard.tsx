@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { projectsAPI, teamAPI, clientAPI } from "../../services/api";
+import {
+  projectsAPI,
+  teamAPI,
+  clientAPI,
+  resolveImageUrl,
+} from "../../services/api";
 import { useAuth } from "../context/AuthContext";
 
 interface Stats {
@@ -228,7 +233,7 @@ const Dashboard: React.FC = () => {
                   className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
                 >
                   <img
-                    src={project.mainImage}
+                    src={resolveImageUrl(project.mainImage)}
                     alt={project.title}
                     className="w-20 h-20 object-cover rounded-lg"
                     onError={(e) => {
@@ -289,7 +294,7 @@ const Dashboard: React.FC = () => {
                   className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
                 >
                   <img
-                    src={member.image}
+                    src={resolveImageUrl(member.image)}
                     alt={member.name}
                     className="w-20 h-20 object-cover rounded-full mx-auto mb-3"
                     onError={(e) => {
@@ -339,7 +344,7 @@ const Dashboard: React.FC = () => {
                 >
                   <div className="h-20 flex items-center justify-center mb-3">
                     <img
-                      src={client.image}
+                      src={resolveImageUrl(client.image)}
                       alt={client.name}
                       className="max-w-full max-h-full object-contain"
                       onError={(e) => {

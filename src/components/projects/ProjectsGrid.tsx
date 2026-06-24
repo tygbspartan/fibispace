@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { projectsAPI } from "../../services/api";
+import { projectsAPI, resolveImageUrl } from "../../services/api";
 import { Project } from "../../types";
 import ProjectModal from "./ProjectModal";
 
@@ -172,7 +172,7 @@ const ProjectsGrid: React.FC = () => {
                 {/* Project Image - Responsive */}
                 <div className="relative overflow-hidden mb-4 h-[200px] md:h-[330px] lg:h-[450px] xl:h-[655px]">
                   <img
-                    src={project.mainImage}
+                    src={resolveImageUrl(project.mainImage)}
                     alt={project.title}
                     className="w-full h-full object-cover rounded group-hover:scale-105 transition-transform duration-300"
                   />

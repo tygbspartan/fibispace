@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { teamAPI } from "../../services/api";
-import { TeamMember } from "../../types";
+import { teamAPI, resolveImageUrl } from "../../services/api";
 
 const TeamForm: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,8 +12,11 @@ const TeamForm: React.FC = () => {
     name: "",
     designation: "",
     aboutMe: "",
-    image: "",
   });
+  // Existing stored image (edit mode) vs. a freshly picked file.
+  const [existingImage, setExistingImage] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -23,18 +25,24 @@ const TeamForm: React.FC = () => {
     }
   }, [id, isEditMode]);
 
+  // Release the object URL created for the local preview.
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
+
   const fetchTeamMember = async (memberId: number) => {
     try {
       setLoading(true);
       const response = await teamAPI.getById(memberId);
-      console.log("Fetch Member Response:", response.data); // Debug log
-      const member = response.data.member; // Changed from teamMember to member
+      const member = response.data.member;
       setFormData({
         name: member.name,
         designation: member.designation,
         aboutMe: member.aboutMe,
-        image: member.image,
       });
+      setExistingImage(member.image);
     } catch (error) {
       console.error("Error fetching team member:", error);
       alert("Failed to load team member");
@@ -65,23 +73,14 @@ const TeamForm: React.FC = () => {
       newErrors.aboutMe = "About me must be less than 500 characters";
     }
 
-    if (!formData.image.trim()) {
-      newErrors.image = "Image URL is required";
-    } else if (!isValidUrl(formData.image)) {
-      newErrors.image = "Please enter a valid URL";
+    // An image file is required when creating; on edit the existing one is kept
+    // unless a new file is chosen.
+    if (!imageFile && !existingImage) {
+      newErrors.image = "An image is required";
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
-
-  const isValidUrl = (url: string) => {
-    try {
-      new URL(url);
-      return true;
-    } catch {
-      return false;
-    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -94,11 +93,19 @@ const TeamForm: React.FC = () => {
     try {
       setLoading(true);
 
+      const data = new FormData();
+      data.append("name", formData.name);
+      data.append("designation", formData.designation);
+      data.append("aboutMe", formData.aboutMe);
+      // Only send a file when one was picked; on edit the server keeps the old
+      // image if "image" is absent.
+      if (imageFile) data.append("image", imageFile);
+
       if (isEditMode && id) {
-        await teamAPI.update(parseInt(id), formData);
+        await teamAPI.update(parseInt(id), data);
         alert("Team member updated successfully!");
       } else {
-        await teamAPI.create(formData);
+        await teamAPI.create(data);
         alert("Team member created successfully!");
       }
 
@@ -121,6 +128,20 @@ const TeamForm: React.FC = () => {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setImageFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+    if (errors.image) {
+      setErrors((prev) => ({ ...prev, image: "" }));
+    }
+  };
+
+  // What to show in the preview: the new file if picked, else the stored image.
+  const previewSrc = previewUrl || resolveImageUrl(existingImage);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -219,41 +240,41 @@ const TeamForm: React.FC = () => {
             )}
           </div>
 
-          {/* Image URL */}
+          {/* Image File */}
           <div className="mb-6">
             <label
               htmlFor="image"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              Image URL *
+              Image {isEditMode ? "" : "*"}
             </label>
             <input
-              type="text"
+              type="file"
               id="image"
               name="image"
-              value={formData.image}
-              onChange={handleChange}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+              accept="image/*"
+              onChange={handleFileChange}
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 ${
                 errors.image ? "border-red-500" : "border-gray-300"
               }`}
-              placeholder="https://example.com/image.jpg"
             />
+            {isEditMode && (
+              <p className="mt-1 text-sm text-gray-500">
+                Leave empty to keep the current image.
+              </p>
+            )}
             {errors.image && (
               <p className="mt-1 text-sm text-red-600">{errors.image}</p>
             )}
-            {formData.image && isValidUrl(formData.image) && (
+            {previewSrc && (
               <div className="mt-4">
                 <p className="text-sm font-medium text-gray-700 mb-2">
                   Image Preview:
                 </p>
                 <img
-                  src={formData.image}
+                  src={previewSrc}
                   alt="Preview"
                   className="w-48 h-48 object-cover rounded-lg"
-                  onError={(e) => {
-                    e.currentTarget.src =
-                      "https://via.placeholder.com/200?text=Invalid+Image";
-                  }}
                 />
               </div>
             )}
