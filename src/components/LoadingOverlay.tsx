@@ -2,6 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import StarField from "./StarField";
 import Sparkle from "./icons/Sparkle";
 import { HERO_BACKGROUND } from "./NewHero";
+// Straight from package.json, so it can never disagree with what was shipped.
+// Reaching outside src is normally refused by CRA's module scope, but the
+// manifest is on its allow-list precisely for this.
+// A default import, not a named one: a JSON module has only a default export,
+// and picking a key off it directly is refused.
+import pkg from "../../package.json";
 
 const MONTSERRAT = "Montserrat, sans-serif";
 const INTER = "Inter, sans-serif";
@@ -171,6 +177,15 @@ export default function LoadingOverlay({
       <div aria-hidden="true" className="absolute inset-0">
         <StarField />
       </div>
+
+      {/* ---------- Build ----------
+          Bottom right, quiet enough to be found rather than read. */}
+      <span
+        className="absolute bottom-4 right-4 md:bottom-6 md:right-6 z-10 text-[10px] md:text-[11px] lg:text-[12px] tabular-nums tracking-[0.08em]"
+        style={{ fontFamily: INTER, fontWeight: 400, color: "#B4B3B3" }}
+      >
+        v{pkg.version}
+      </span>
 
       <div className="relative h-full flex flex-col items-center justify-center px-6">
         {/* ---------- The name, being swept ---------- */}
