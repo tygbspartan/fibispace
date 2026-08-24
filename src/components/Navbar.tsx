@@ -91,8 +91,8 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <nav className="bg-white relative">
-      <div className="px-6 md:px-12 lg:px-24 pt-[30px] md:pt-[40px] lg:pt-[47px]">
+    <nav className="bg-site relative">
+      <div className="px-6 md:px-12 lg:px-[120px] pt-[30px] md:pt-[40px] lg:pt-[47px]">
         <div className="flex justify-between items-center">
           {/* Logo - Responsive */}
           <div className="flex-shrink-0 flex gap-4 md:gap-6 lg:gap-10">

@@ -14,8 +14,8 @@ const ContactHero: React.FC = () => {
   };
 
   return (
-    <section className="bg-white pt-8 md:pt-12 lg:pt-20 pb-12 md:pb-20">
-      <div className="px-6 md:px-12 lg:px-24">
+    <section className="bg-site pt-8 md:pt-12 lg:pt-20 pb-12 md:pb-20">
+      <div className="px-6 md:px-12 lg:px-[120px]">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Left Side - Contact Info */}
           <div className="lg:pt-16">

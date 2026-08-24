@@ -2,8 +2,8 @@ import React from "react";
 
 const AboutMissionVision: React.FC = () => {
   return (
-    <section className="bg-white pt-12 md:pt-20">
-      <div className="px-6 md:px-12 lg:px-24">
+    <section className="bg-site pt-12 md:pt-20">
+      <div className="px-6 md:px-12 lg:px-[120px]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {/* Our Mission */}
           <div

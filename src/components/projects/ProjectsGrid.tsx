@@ -39,10 +39,13 @@ const ProjectsGrid: React.FC = () => {
   const endIndex = startIndex + projectsPerPage;
   const currentProjects = projects.slice(startIndex, endIndex);
 
-  // Reset animations when page changes
+  // Reset animations when page changes.
+  // NOTE: do not clear cardRefs here. The ref callbacks repopulate the array
+  // during the commit phase (before effects run), so wiping it in this effect
+  // would leave the observer effect below with an empty array and no card would
+  // ever animate in — which blanked out every page after the first.
   useEffect(() => {
     setAnimatedCards(new Set());
-    cardRefs.current = [];
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPage]);
 
@@ -110,8 +113,8 @@ const ProjectsGrid: React.FC = () => {
 
   if (loading) {
     return (
-      <section className="bg-white py-12 md:py-20">
-        <div className="px-6 md:px-12 lg:px-24">
+      <section className="bg-site py-12 md:py-20">
+        <div className="px-6 md:px-12 lg:px-[120px]">
           <div className="flex justify-center items-center py-20">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#008AA9]"></div>
           </div>
@@ -122,8 +125,8 @@ const ProjectsGrid: React.FC = () => {
 
   if (error) {
     return (
-      <section className="bg-white py-12 md:py-20">
-        <div className="px-6 md:px-12 lg:px-24">
+      <section className="bg-site py-12 md:py-20">
+        <div className="px-6 md:px-12 lg:px-[120px]">
           <div className="text-center py-20">
             <p className="text-red-600 mb-4">{error}</p>
             <button
@@ -139,8 +142,8 @@ const ProjectsGrid: React.FC = () => {
   }
 
   return (
-    <section className="bg-white pt-8 md:pt-12 lg:pt-20 overflow-hidden">
-      <div className="px-6 md:px-12 lg:px-24">
+    <section className="bg-site pt-8 md:pt-12 lg:pt-20 overflow-hidden">
+      <div className="px-6 md:px-12 lg:px-[120px]">
         {/* Projects Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 mb-8 md:mb-12">
           {currentProjects.map((project, index) => {

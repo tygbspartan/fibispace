@@ -1,23 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronUp } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { ChevronUp } from "lucide-react";
 
 const ScrollToTopButton = () => {
   const [isVisible, setIsVisible] = useState(false);
 
-  // Show button when page is scrolled down
+  // Appear once the Projects section has taken the screen. On pages without
+  // one, fall back to a plain scroll distance.
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.scrollY > 300) {
-        setIsVisible(true);
+      const projects = document.getElementById("projects");
+
+      if (projects) {
+        setIsVisible(projects.getBoundingClientRect().top <= 0);
       } else {
-        setIsVisible(false);
+        setIsVisible(window.scrollY > 300);
       }
     };
 
-    window.addEventListener('scroll', toggleVisibility);
+    toggleVisibility();
+    window.addEventListener("scroll", toggleVisibility, { passive: true });
+    window.addEventListener("resize", toggleVisibility);
 
     return () => {
-      window.removeEventListener('scroll', toggleVisibility);
+      window.removeEventListener("scroll", toggleVisibility);
+      window.removeEventListener("resize", toggleVisibility);
     };
   }, []);
 
@@ -25,7 +31,7 @@ const ScrollToTopButton = () => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   };
 
@@ -34,7 +40,7 @@ const ScrollToTopButton = () => {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="scroll-to-top-button fixed bottom-8 right-8 z-50 w-12 h-12 bg-[#008AA9] text-white rounded-full shadow-lg transition-all duration-300 flex items-center justify-center group hover:scale-110 hover:shadow-xl"
+          className="scroll-to-top-button fixed bottom-8 right-8 z-50 w-12 h-12 bg-primary hover:bg-primary-dark text-white rounded-full shadow-lg transition-all duration-300 flex items-center justify-center group hover:scale-110 hover:shadow-xl"
           aria-label="Scroll to top"
         >
           <ChevronUp className="w-6 h-6 group-hover:animate-bounce" />

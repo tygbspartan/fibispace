@@ -1,36 +1,26 @@
 {
   "hero": {
-    "title": "From Social Feeds to Street Prints",
-    "subtitle": "We Make Your Brand Unmissable",
-    "description": "Bridging the gap between digital strategy & creative execution to build brands that last.",
-    "ctaText": "Free Counselling",
+    "title": "We Make Brands Worth",
+    "subtitle": "Remembering",
+    "subtitles": [
+      "Remembering.",
+      "Coming back to.",
+      "Experiencing.",
+      "Believing In.",
+      "The hype.",
+      "Connecting with."
+    ],
+    "description": "Strategy, creativity, and digital experiences built to leave a mark.",
+    "ctaText": "Book Counselling Session",
     "stats": {
       "time": "34.5 Mins",
       "timeDescription": "Average Video Watch Time",
       "reach": "2.8B+",
-      "reachDescription": "Total Accounts Reached"
+      "reachDescription": "Total Accounts Reached",
+      "customers": "25+",
+      "customersDescription": "Happy Customers"
     }
   },
-  "clients": [
-    { "name": "Ecos Ink", "logo": "/images/clients/ecos-ink.png" },
-    {
-      "name": "Bhatbeni Fitness",
-      "logo": "/images/clients/bhatbeni-fitness.png"
-    },
-    { "name": "Bottoms Nepal", "logo": "/images/clients/bottoms-nepal.png" },
-    {
-      "name": "Planet Education",
-      "logo": "/images/clients/planet-education.png"
-    },
-    { "name": "Mero Chitra", "logo": "/images/clients/mero-chitra.png" },
-    { "name": "Ecstasy Hotel", "logo": "/images/clients/ecstasy-hotel.png" },
-    { "name": "Path To Career", "logo": "/images/clients/path-to-career.png" },
-    { "name": "Aburi", "logo": "/images/clients/aburi.png" },
-    { "name": "Johnson International", "logo": "/images/clients/johnson.png" },
-    { "name": "Stryder Fashion", "logo": "/images/clients/stryder.png" },
-    { "name": "Mala Retail", "logo": "/images/clients/mala-retail.png" },
-    { "name": "Tranquility Spa", "logo": "/images/clients/tranquility.png" }
-  ],
   "expertise": [
     {
       "id": 1,
@@ -58,65 +48,211 @@
   "services": [
     {
       "id": 1,
-      "title": "Social Media Marketing (SMM)",
+      "title": "Social Media Marketing",
       "subtitle": "Ready to expand and market to your audiences on social media?",
       "description": "Ready to expand and market to your audiences on social media? We handle everything from content creation to community management, amplifying your presence and driving real engagement.",
-      "bg-color": "#F8F8F8"
+      "bg-color": "#F8F8F8",
+      "slug": "social-media-marketing",
+      "shortTitle": "SMM",
+      "image": "/assets/Services/SocialMedia.png",
+      "banner": "/assets/Services/placeholder.png"
     },
     {
       "id": 2,
       "title": "Custom Website Design (UI/UX)",
       "subtitle": "Capture your target audiences’ attention with a professional custom web design...",
       "description": "Capture your target audiences’ attention with a professional custom web design that creates a powerful first impression. We build responsive, high-performance sites tailored specifically to reflect your brand’s unique identity and vision.",
-      "bg-color": "#F1F6F5"
+      "bg-color": "#F1F6F5",
+      "slug": "ui-ux",
+      "shortTitle": "UI/UX",
+      "image": "/assets/Services/UIUX.png",
+      "banner": "/assets/Services/placeholder.png"
+
     },
     {
       "id": 3,
-      "title": "Custom Graphic Design",
+      "title": "Graphic Design",
       "subtitle": "Transforming your brand vision into stunning visuals that communicate, engage, and convert.",
       "description": "We build custom, mobile-ready, and search engine optimized websites that help your business thrive online and convert visitors into loyal customers.",
-      "bg-color": "#F9EDE4"
+      "bg-color": "#F9EDE4",
+      "slug": "graphic-design",
+      "shortTitle": "Graphic Designing",
+      "image": "/assets/Services/GraphicDesign.png",
+      "banner": "/assets/Services/placeholder.png"
     },
     {
       "id": 4,
-      "title": "Web Design & Development",
+      "title": "Website Development",
       "subtitle": "Thrive build custom, Mobile Ready And Search Engine Optimized Website..",
       "description": "Through careful keywords research & SEO practices we optimize your digital presence to secure top search rankings, ensuring your brand is the first one your customers see.",
-      "bg-color": "#F8F8F8"
+      "bg-color": "#F8F8F8",
+      "slug": "web-development",
+      "shortTitle": "Web Development",
+      "image": "/assets/Services/WebDev.png",
+      "banner": "/assets/Services/placeholder.png"
     },
     {
       "id": 5,
-      "title": "Search Engine Optimization (SEO)",
+      "title": "Search Engine Optimization",
       "subtitle": "Through careful keywords research & SEO practices..",
       "description": "Tell your brand’s story through cinematic visuals and compelling narratives that emotionally connect with your audience, transforming casual viewers into loyal brand advocates.",
-      "bg-color": "#F1F5F9"
+      "bg-color": "#F1F5F9",
+      "slug": "seo",
+      "shortTitle": "SEO",
+      "image": "/assets/Services/SEO.png",
+      "banner": "/assets/Services/placeholder.png"
     },
     {
       "id": 6,
       "title": "Advertisement And Commercial",
       "subtitle": "Tell your brand’s story through cinematic visuals and compelling narratives that emotionally connect with your audience.",
       "description": "We transform your brand vision into stunning visuals that communicate, engage, and convert. Whether you need a brand refresh or digital assets, our team delivers designs that leave a mark.",
-      "bg-color": "#F9F1E4"
+      "bg-color": "#F9F1E4",
+      "slug": "advertising",
+      "shortTitle": "Ads and Commercials",
+      "image": "/assets/Services/Ad.png",
+      "banner": "/assets/Services/placeholder.png"
     },
     {
       "id": 7,
       "title": "Event Management",
       "subtitle": "bring your brand to life through seamless, high-impact event management.",
       "description": "We provide stunning product photography that makes your merchandise impossible to ignore. From crisp catalog shots to creative lifestyle imagery, we ensure your products look as good on screen as they do in real life.",
-      "bg-color": "#F1F7FF"
+      "bg-color": "#F1F7FF",
+      "slug": "event-management",
+      "shortTitle": "Event Management",
+      "image": "/assets/Services/Event.png",
+      "banner": "/assets/Services/placeholder.png"
+
     },
     {
       "id": 8,
       "title": "Creative Product Shoot",
       "subtitle": "stunning product photography that makes your merchandise impossible to ignore.",
       "description": "Bring your brand to life through seamless, high-impact event management. Whether it’s a corporate launch or an exclusive gala, we ensure your vision is executed to perfection.",
-      "bg-color": "#FEFAE7"
+      "bg-color": "#FEFAE7",
+      "slug": "product-photography",
+      "shortTitle": "Photoshoots",
+      "image": "/assets/Services/Photoshoot.png",
+      "banner": "/assets/Services/placeholder.png"
+
     }
   ],
   "cta": {
     "title": "READY TO UNLEASH YOUR WILDEST CONCEPTS?",
     "heading": "Let's work together!",
     "buttonText": "Connect With Us"
+  },
+  "serviceMethod": {
+    "label": "Our Method",
+    "heading": "How We Shape Work That Performs",
+    "blurb": "A structured, collaborative, and iterative approach. We blend rigorous analysis with creative craft to build work that earns attention and keeps it.",
+    "steps": [
+      {
+        "title": "Discovery & Research",
+        "description": "We dig into your business, your audience and your competitors to map out where the real opportunity sits."
+      },
+      {
+        "title": "Strategy & Planning",
+        "description": "Findings become a plan: what we make, who it speaks to, where it runs and what success will look like."
+      },
+      {
+        "title": "Creative Production",
+        "description": "The build itself, made against the strategy rather than around it, with your brand carried through every piece."
+      },
+      {
+        "title": "Review & Refine",
+        "description": "We put the work in front of real people, measure how it performs and tighten it before it goes wide."
+      },
+      {
+        "title": "Launch & Support",
+        "description": "We ship it, watch how it lands, and stay on to keep it working long after the launch week."
+      }
+    ],
+    "ctaText": "Have an idea in mind? Let us build something exceptional together.",
+    "ctaButton": "Start Your Project"
+  },
+  "faq": {
+    "heading": "Frequently Asked Questions",
+    "intro": "Still have questions? Lets talk.",
+    "items": [
+      {
+        "question": "What services does Fibi Space Provide?",
+        "answer": "We cover brand strategy, design, web development and digital marketing. Most clients come to us for one of them and stay for the rest, so the work is set up to hand over cleanly between them."
+      },
+      {
+        "question": "How long does a project take?",
+        "answer": "A focused website runs four to six weeks from kickoff to launch. Larger builds and ongoing marketing retainers are scoped per project, and we give you the timeline before any work starts."
+      },
+      {
+        "question": "How do I book a session?",
+        "answer": "Use the Book a call button in the header, or send us the details through the contact page. We reply within one working day with a time that suits you."
+      },
+      {
+        "question": "What is the design and development process?",
+        "answer": "Discovery, then design, then build, then launch. You see work at the end of every stage rather than only at the end, so nothing arrives as a surprise."
+      },
+      {
+        "question": "What is the digital marketing process?",
+        "answer": "We start by measuring where you are, agree on the numbers that matter, then run campaigns against them. Reporting is monthly and shows spend against results, not impressions alone."
+      }
+    ]
+  },
+  "about": {
+    "heading": "We create digital experiences that connect",
+    "intro": " We create seamless digital experiences that are as effortless ",
+    "mission": {
+      "title": "Our Mission",
+      "body": "To drive business growth by breaking down the barriers between Above the Line and Below the Line marketing. We are dedicated to crafting high-impact strategies that turn brand vision into reality, ensuring our clients dominate both the screen and the street."
+    },
+    "vision": {
+      "title": "Our Vision",
+      "body": "To be the most trusted growth partner for brands in Nepal and beyond, setting the standard for integrated marketing by seamlessly blending technology, creativity, and human connection."
+    },
+    "stats": [
+      { "value": "8+", "label": "Years" },
+      { "value": "$9,000", "label": "in ads" },
+      { "value": "20+", "label": "Clients" }
+    ],
+    "process": {
+      "heading": "How we work",
+      "intro": "Four steps that take a brand from unseen to chosen — each one feeding the next.",
+      "steps": [
+        {
+          "number": "01",
+          "icon": "visibility",
+          "title": "Visibility",
+          "body": "We amplify your brand presence across all social media platforms."
+        },
+        {
+          "number": "02",
+          "icon": "traffic",
+          "title": "Traffic",
+          "body": "We drive high-intent users from social feeds to your website."
+        },
+        {
+          "number": "03",
+          "icon": "inquiries",
+          "title": "Inquiries",
+          "body": "We convert that traffic into calls, messages, and tangible leads."
+        },
+        {
+          "number": "04",
+          "icon": "conversion",
+          "title": "Conversion",
+          "body": "We nurture those leads until they become loyal customers."
+        }
+      ]
+    },
+    "team": {
+      "heading": "Our Team",
+      "intro": "A glimpse into the brands, ideas, and digital experiences we have brought to life."
+    }
+  },
+  "footer": {
+    "tagline": "We Turn Ideas Into Brands That Matter.",
+    "location": "Kathmandu, Nepal.",
+    "company": "Fibi Space"
   },
   "contact": {
     "heading": "Let's Connect",

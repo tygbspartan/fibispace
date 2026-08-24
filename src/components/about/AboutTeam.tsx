@@ -61,7 +61,7 @@ const AboutTeam: React.FC = () => {
             "linear-gradient(92.66deg, #019FD2 4.07%, #01526C 109.31%)",
         }}
       >
-        <div className="px-6 md:px-12 lg:px-24">
+        <div className="px-6 md:px-12 lg:px-[120px]">
           <div className="flex justify-center items-center py-20">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
           </div>
@@ -79,7 +79,7 @@ const AboutTeam: React.FC = () => {
             "linear-gradient(92.66deg, #019FD2 4.07%, #01526C 109.31%)",
         }}
       >
-        <div className="px-6 md:px-12 lg:px-24">
+        <div className="px-6 md:px-12 lg:px-[120px]">
           <h2 className="text-white text-center text-2xl">
             No team members available
           </h2>
@@ -89,7 +89,7 @@ const AboutTeam: React.FC = () => {
   }
 
   return (
-    <section className="bg-white pb-6 md:pb-10 px-6 md:px-12 lg:px-24 overflow-hidden">
+    <section className="bg-site pb-6 md:pb-10 px-6 md:px-12 lg:px-[120px] overflow-hidden">
       <div
         style={{
           background:

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Project } from "../../types";
 import { resolveImageUrl } from "../../services/api";
 
@@ -45,9 +46,13 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
   if (!isOpen) return null;
 
-  return (
+  // Rendered into <body> rather than in place. The modal sits inside sections
+  // that create their own stacking contexts (a positioned ancestor carrying a
+  // z-index), and those cap every z-index within them — so left in place it
+  // could never rise above the navbar whatever number it was given.
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-start md:items-center justify-center p-0 md:p-4 lg:p-6 animate-fadeIn overflow-y-auto"
+      className="fixed inset-0 z-[100] flex items-start md:items-center justify-center p-0 md:p-4 lg:p-6 animate-fadeIn overflow-y-auto"
       onClick={onClose}
     >
       {/* Backdrop Overlay */}
@@ -157,7 +162,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };
 

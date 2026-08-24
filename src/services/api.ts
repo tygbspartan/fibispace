@@ -1,5 +1,13 @@
 import axios from "axios";
-import { Client, ClientsResponse, TeamMember, TeamMembersResponse } from "../types";
+import {
+  Client,
+  ClientsResponse,
+  TeamMember,
+  TeamMembersResponse,
+  Testimony,
+  TestimoniesResponse,
+  TestimonyInput,
+} from "../types";
 
 const API_BASE_URL =
   process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api";
@@ -99,15 +107,37 @@ export const contactAPI = {
     email: string;
     service: string;
     message: string;
-  }) => api.post('/contactus', data),
+  }) => api.post("/contactus", data),
 };
 
-// Add this with the other API sections (after teamAPI)
+export const testimonyAPI = {
+  // Get all testimonies (public, newest first)
+  getAll: () => api.get<TestimoniesResponse>("/testimonies"),
+
+  // Get single testimony
+  getById: (id: number) =>
+    api.get<{ testimony: Testimony }>(`/testimonies/${id}`),
+
+  // Create testimony (plain JSON — no image, unlike clients and team members)
+  create: (data: TestimonyInput) =>
+    api.post<{ message: string; testimony: Testimony }>("/testimonies", data),
+
+  // Update testimony (any subset of the fields)
+  update: (id: number, data: Partial<TestimonyInput>) =>
+    api.put<{ message: string; testimony: Testimony }>(
+      `/testimonies/${id}`,
+      data,
+    ),
+
+  // Delete testimony
+  delete: (id: number) => api.delete<{ message: string }>(`/testimonies/${id}`),
+};
+
 export const clientAPI = {
-  getAll: () => api.get<ClientsResponse>('/clients'),
+  getAll: () => api.get<ClientsResponse>("/clients"),
   getById: (id: number) => api.get<{ client: Client }>(`/clients/${id}`),
   // Multipart: "name" text field + "image" file
-  create: (data: FormData) => api.post('/clients', data),
+  create: (data: FormData) => api.post("/clients", data),
   update: (id: number, data: FormData) => api.put(`/clients/${id}`, data),
   delete: (id: number) => api.delete(`/clients/${id}`),
 };

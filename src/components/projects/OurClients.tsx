@@ -49,8 +49,8 @@ const OurClients: React.FC = () => {
   // Loading state
   if (loading) {
     return (
-      <section className="bg-white pt-12 md:pt-20">
-        <div className="px-6 md:px-12 lg:px-24">
+      <section className="bg-site pt-12 md:pt-20">
+        <div className="px-6 md:px-12 lg:px-[120px]">
           <h2 className="text-center mb-6 md:mb-8 text-3xl md:text-4xl lg:text-5xl font-medium">
             Our Clients
           </h2>
@@ -65,8 +65,8 @@ const OurClients: React.FC = () => {
   // Empty state
   if (clients.length === 0) {
     return (
-      <section className="bg-white pt-12 md:pt-20">
-        <div className="px-6 md:px-12 lg:px-24">
+      <section className="bg-site pt-12 md:pt-20">
+        <div className="px-6 md:px-12 lg:px-[120px]">
           <h2 className="text-center mb-6 md:mb-8 text-3xl md:text-4xl lg:text-5xl font-medium">
             Our Clients
           </h2>
@@ -79,8 +79,8 @@ const OurClients: React.FC = () => {
   }
 
   return (
-    <section className="bg-white pt-12 md:pt-20">
-      <div className="px-6 md:px-12 lg:px-24">
+    <section className="bg-site pt-12 md:pt-20">
+      <div className="px-6 md:px-12 lg:px-[120px]">
         {/* Section Title */}
         <h2 className="text-center mb-6 md:mb-8 text-3xl md:text-4xl lg:text-5xl font-medium leading-tight">
           Our Clients

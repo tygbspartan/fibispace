@@ -2,8 +2,8 @@ import React from "react";
 
 const AboutHero: React.FC = () => {
   return (
-    <section className="bg-white pt-8 md:pt-12 lg:pt-20">
-      <div className="px-6 md:px-12 lg:px-24">
+    <section className="bg-site pt-8 md:pt-12 lg:pt-20">
+      <div className="px-6 md:px-12 lg:px-[120px]">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-8 lg:mb-12">
           {/* Left Side - Text Content */}
           <div className="flex flex-col justify-center">

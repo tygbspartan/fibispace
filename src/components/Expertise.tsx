@@ -132,11 +132,11 @@ const Expertise: React.FC = () => {
 
   return (
     <section
-      className="bg-white min-h-screen flex flex-col overflow-hidden"
+      className="bg-site min-h-screen flex flex-col overflow-hidden"
       id="about"
       ref={sectionRef}
     >
-      <div className="px-6 md:px-12 lg:px-24 py-12 md:py-16 lg:py-20 flex-1 flex flex-col">
+      <div className="px-6 md:px-12 lg:px-[120px] py-12 md:py-16 lg:py-20 flex-1 flex flex-col">
         {/* Section Header - Title and Tagline */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 md:gap-6 lg:gap-12 mb-8 md:mb-10 lg:mb-12">
           {/* Title */}

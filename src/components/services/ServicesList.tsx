@@ -52,8 +52,8 @@ const ServicesList: React.FC = () => {
   }, [services.length]);
 
   return (
-    <section className="bg-white py-12 md:py-20 overflow-hidden">
-      <div className="px-6 md:px-12 lg:px-24">
+    <section className="bg-site py-12 md:py-20 overflow-hidden">
+      <div className="px-6 md:px-12 lg:px-[120px]">
         <h2
           className="mb-10 md:mb-12 lg:mb-16"
           style={{
@@ -101,7 +101,7 @@ const ServicesList: React.FC = () => {
                   </div>
 
                   {/* Content */}
-                  <div className={`flex-1  ${index == 0 ? 'ml-[2vw]' : ''}`}>
+                  <div className={`flex-1  ${index == 0 ? "ml-[2vw]" : ""}`}>
                     {/* Title */}
                     <h3
                       className={`mb-3 md:mb-4 capitalize`}

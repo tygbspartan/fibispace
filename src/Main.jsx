@@ -1,6 +1,7 @@
-import Footer from "./components/Footer";
-import Navbar from "./components/Navbar";
-import { Routes, Route, useLocation } from "react-router-dom";
+// The previous navbar is kept at ./components/Navbar for an easy revert —
+// swap the import below to bring it back.
+import Navbar from "./components/NavbarNew";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import { useEffect, useState } from "react";
 import LoadingOverlay from "./components/LoadingOverlay";
@@ -14,14 +15,18 @@ import ProjectList from "./admin/pages/ProjectList";
 import CreateProject from "./admin/pages/CreateProject";
 import EditProject from "./admin/pages/EditProject";
 import ProjectsPage from "./pages/ProjectsPage";
-import ServicesPage from "./pages/ServicesPage";
+import ServiceDetailPage from "./pages/ServiceDetailPage";
 import AboutPage from "./pages/AboutPage";
 import TeamList from "./admin/pages/TeamList";
 import TeamForm from "./admin/pages/TeamForm";
 import ContactPage from "./pages/ContactPage";
+import LegalPage from "./pages/LegalPage";
 import ClientList from "./admin/pages/ClientList";
 import ClientForm from "./admin/pages/ClientForm";
+import TestimonyList from "./admin/pages/TestimonyList";
+import TestimonyForm from "./admin/pages/TestimonyForm";
 import api from "./services/api";
+import contentData from "./data/content.json";
 
 const Main = () => {
   const location = useLocation();
@@ -41,30 +46,55 @@ const Main = () => {
     setLoading(true);
     setBackendReady(false);
 
-    // Hit a lightweight endpoint to verify backend is up
-    api
-      .get("/teams/")
-      .then(() => setBackendReady(true))
-      .catch(() => {
-        // Even on error, we know the backend responded — let user through
-        console.warn("Backend check failed, proceeding anyway");
-        setBackendReady(true);
-      });
+    // Hit a lightweight endpoint to verify the backend is up, and keep asking
+    // until it is. Letting people through on a failed check meant they landed
+    // on a site with no projects, no team and no clients — every section either
+    // empty or missing, with nothing to say why. Holding the screen is the
+    // honest state.
+    let stopped = false;
+    let attempt = 0;
+    let timer;
+
+    const ask = () => {
+      api
+        .get("/teams/")
+        .then(() => {
+          if (!stopped) setBackendReady(true);
+        })
+        .catch(() => {
+          if (stopped) return;
+          attempt += 1;
+          // Backing off to a ceiling: quick retries while it is probably just
+          // starting up, then a slower pulse rather than hammering a server
+          // that is genuinely down.
+          const wait = Math.min(1000 * 2 ** (attempt - 1), 8000);
+          console.warn(
+            `Backend check failed (attempt ${attempt}), retrying in ${wait}ms`,
+          );
+          timer = setTimeout(ask, wait);
+        });
+    };
+
+    ask();
+
+    return () => {
+      stopped = true;
+      clearTimeout(timer);
+    };
   }, []);
 
-  // Once overlay finishes its fade animation, stop rendering it
-  useEffect(() => {
-    if (backendReady) {
-      const timer = setTimeout(() => setLoading(false), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [backendReady]);
+  // The overlay now holds the screen until the sound question is answered, so
+  // it says when the page behind it may be shown rather than a timer guessing.
 
   return (
     <AuthProvider>
       {/* Only show loading overlay for non-admin routes */}
       {!isAdminRoute && (
-        <LoadingOverlay isActive={loading} backendReady={backendReady} />
+        <LoadingOverlay
+          isActive={loading}
+          backendReady={backendReady}
+          onFinish={() => setLoading(false)}
+        />
       )}
 
       {/* Conditionally render public layout wrapper */}
@@ -152,6 +182,30 @@ const Main = () => {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/admin/testimonies"
+            element={
+              <PrivateRoute>
+                <TestimonyList />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/testimonies/create"
+            element={
+              <PrivateRoute>
+                <TestimonyForm />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/testimonies/edit/:id"
+            element={
+              <PrivateRoute>
+                <TestimonyForm />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       ) : (
         // Public routes - with navbar/footer
@@ -165,9 +219,29 @@ const Main = () => {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/projects" element={<ProjectsPage />} />
-              <Route path="/services" element={<ServicesPage />} />
+              {/* Services has no index of its own any more — the navbar panel
+                  is the way in. Anything still pointing at /services lands on
+                  the first service rather than a blank page. */}
+              <Route
+                path="/services"
+                element={
+                  <Navigate
+                    to={`/services/${contentData.services[0].slug}`}
+                    replace
+                  />
+                }
+              />
+              <Route path="/services/:slug" element={<ServiceDetailPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route
+                path="/privacy-policy"
+                element={<LegalPage title="Privacy Policy" />}
+              />
+              <Route
+                path="/terms-and-conditions"
+                element={<LegalPage title="Terms and Conditions" />}
+              />
               {/* <Route path="/projects/:id" element={<ProjectDetails />} /> */}
               {/* <Route path="*" element={<HomePage />} /> */}
             </Routes>

@@ -65,6 +65,28 @@ export interface Client {
   updatedAt: string;
 }
 
+export interface Testimony {
+  id: number;
+  name: string;
+  companyName: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TestimoniesResponse {
+  testimonies: Testimony[];
+  count: number;
+}
+
+// What the create/update forms send. Every field is required on POST; PUT
+// accepts any subset, hence the Partial at the call site.
+export interface TestimonyInput {
+  name: string;
+  companyName: string;
+  description: string;
+}
+
 export interface ClientsResponse {
   clients: Client[];
   count: number;

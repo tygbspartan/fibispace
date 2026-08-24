@@ -40,7 +40,7 @@ const CTA: React.FC = () => {
   return (
     <>
       <section className="bg-[#008AA9] min-h-screen flex items-center justify-center">
-        <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24 text-center py-12">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-[120px] text-center py-12">
           <p
             className="text-white uppercase mb-6 md:mb-8 lg:mb-12"
             style={{

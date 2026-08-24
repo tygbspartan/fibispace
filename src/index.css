@@ -14,7 +14,7 @@
 }
 
 body {
-  background-color: #fff;
+  background-color: #ffffff;
   color: #000;
 }
 
@@ -22,22 +22,26 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* The scrollbar is hidden, not disabled — the page still scrolls by wheel,
+   touch, keyboard and scrollTo, there is just no track drawn beside it. */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 0;
+  height: 0;
 }
 
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
+html {
+  /* Firefox, which does not support the ::-webkit- pseudo-elements */
+  scrollbar-width: none;
+  /* Legacy Edge and IE */
+  -ms-overflow-style: none;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #008AA9;
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #007a98;
-}
 @keyframes fadeIn {
   from {
     opacity: 0;

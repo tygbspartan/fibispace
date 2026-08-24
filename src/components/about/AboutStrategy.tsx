@@ -2,8 +2,8 @@ import React from "react";
 
 const AboutStrategy: React.FC = () => {
   return (
-    <section className="bg-white pt-12 md:pt-16 lg:pt-20">
-      <div className="px-6 md:px-12 lg:px-24">
+    <section className="bg-site pt-12 md:pt-16 lg:pt-20">
+      <div className="px-6 md:px-12 lg:px-[120px]">
         <div className="max-w-8xl mx-auto text-center">
           <p className="text-xl md:text-2xl lg:text-4xl leading-relaxed md:leading-relaxed lg:leading-relaxed">
             <span className="text-[#008AA9] font-medium">

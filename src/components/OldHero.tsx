@@ -1,9 +1,10 @@
 import React from "react";
 import contentData from "../data/content.json";
 import { useNavigate } from "react-router-dom";
-import { Clock4, Globe  } from "lucide-react";
+import { Clock4, Globe } from "lucide-react";
+import RippleImage from "./RippleImage";
 
-const Hero = () => {
+const OldHero = () => {
   const { hero } = contentData;
   const navigate = useNavigate();
 
@@ -16,8 +17,8 @@ const Hero = () => {
   };
 
   return (
-    <section className="bg-white pt-8 md:pt-12 lg:pt-20 overflow-hidden">
-      <div className="px-6 md:px-12 lg:px-24">
+    <section className="bg-site pt-8 md:pt-12 lg:pt-20 overflow-hidden">
+      <div className="px-6 md:px-12 lg:px-[120px]">
         {/* Hero Content */}
         <div className="text-center mb-8 md:mb-12">
           {/* Main Titles - Responsive */}
@@ -31,8 +32,9 @@ const Hero = () => {
               letterSpacing: "0%",
             }}
           >
-            {hero.title}{"  "}
-            <br className="hidden sm:block"/>
+            {hero.title}
+            {"  "}
+            <br className="hidden sm:block" />
             {hero.subtitle}
           </h1>
 
@@ -45,7 +47,7 @@ const Hero = () => {
               fontSize: "clamp(16px, 2.5vw, 24px)",
               lineHeight: "clamp(20px, 3vw, 32px)",
               letterSpacing: "0%",
-              zIndex:'100000000'
+              zIndex: "100000000",
             }}
           >
             {hero.description}
@@ -71,10 +73,10 @@ const Hero = () => {
         <div className="relative hidden nlg:flex justify-center items-center mt-16">
           {/* Phone Mockup */}
           <div className="relative z-10">
-            <img
+            <RippleImage
               src="/images/banner.png"
               alt="Phone Mockup"
-              className="w-auto h-[45vh] object-contain"
+              imgClassName="w-auto h-[45vh] object-contain"
             />
           </div>
 
@@ -127,7 +129,7 @@ const Hero = () => {
             }}
           >
             <div className="mt-1">
-              <Clock4 size={'30px'}/>
+              <Clock4 size={"30px"} />
             </div>
             <div>
               <p className="text-xl md:text-3xl font-bold">{hero.stats.time}</p>
@@ -146,7 +148,9 @@ const Hero = () => {
             }}
           >
             <div className="flex items-center gap-2 mb-2">
-              <div className="text-xl md:text-2xl text-black"><Globe size={'30px'}/></div>
+              <div className="text-xl md:text-2xl text-black">
+                <Globe size={"30px"} />
+              </div>
             </div>
             <p className="text-xl md:text-3xl font-bold text-black">
               {hero.stats.reach}
@@ -173,4 +177,4 @@ const Hero = () => {
   );
 };
 
-export default Hero;
+export default OldHero;

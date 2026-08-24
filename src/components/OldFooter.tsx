@@ -4,7 +4,7 @@ import contentData from "../data/content.json";
 import { contactAPI } from "../services/api";
 import { Copy, Check } from "lucide-react";
 
-const Footer: React.FC = () => {
+const OldFooter: React.FC = () => {
   const { contact } = contentData;
   const navigate = useNavigate();
 
@@ -98,10 +98,10 @@ const Footer: React.FC = () => {
 
   return (
     <footer
-      className="bg-white pt-8 pb-6 md:pt-12 md:pb-8 lg:pt-16 border-t border-gray-200"
+      className="bg-site pt-8 pb-6 md:pt-12 md:pb-8 lg:pt-16 border-t border-gray-200"
       id="contact"
     >
-      <div className="px-6 md:px-12 lg:px-24">
+      <div className="px-6 md:px-12 lg:px-[120px]">
         {/* 3 Equal Grid Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-12">
           {/* Column 1 - Location & Quick Connect */}
@@ -280,4 +280,4 @@ const Footer: React.FC = () => {
   );
 };
 
-export default Footer;
+export default OldFooter;

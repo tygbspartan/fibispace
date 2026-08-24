@@ -5,6 +5,7 @@ import {
   teamAPI,
   clientAPI,
   resolveImageUrl,
+  testimonyAPI,
 } from "../../services/api";
 import { useAuth } from "../context/AuthContext";
 
@@ -12,6 +13,7 @@ interface Stats {
   totalProjects: number;
   totalMembers: number;
   totalClients: number;
+  totalTestimonies: number;
 }
 
 interface Client {
@@ -42,6 +44,7 @@ const Dashboard: React.FC = () => {
     totalProjects: 0,
     totalMembers: 0,
     totalClients: 0,
+    totalTestimonies: 0,
   });
   const [clients, setClients] = useState<Client[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -55,17 +58,20 @@ const Dashboard: React.FC = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const [statsRes, projectsRes, teamRes, clientsRes] = await Promise.all([
-        projectsAPI.getStats(),
-        projectsAPI.getAll(),
-        teamAPI.getAll(),
-        clientAPI.getAll(),
-      ]);
+      const [statsRes, projectsRes, teamRes, clientsRes, testimoniesRes] =
+        await Promise.all([
+          projectsAPI.getStats(),
+          projectsAPI.getAll(),
+          teamAPI.getAll(),
+          clientAPI.getAll(),
+          testimonyAPI.getAll(),
+        ]);
 
       setStats({
         totalProjects: statsRes.data.totalProjects || 0,
         totalMembers: teamRes.data.count || 0,
         totalClients: clientsRes.data.count || 0,
+        totalTestimonies: testimoniesRes.data.count || 0,
       });
       setProjects(projectsRes.data.projects?.slice(0, 5) || []);
       setTeamMembers(teamRes.data.members?.slice(0, 5) || []);
@@ -105,7 +111,7 @@ const Dashboard: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
             <h3 className="text-sm font-medium opacity-90 uppercase tracking-wide">
               Total Projects
@@ -123,6 +129,12 @@ const Dashboard: React.FC = () => {
               Total Clients
             </h3>
             <p className="text-4xl font-bold mt-2">{stats.totalClients}</p>
+          </div>
+          <div className="bg-gradient-to-br from-sky-500 to-blue-600 rounded-xl shadow-lg p-6 text-white">
+            <h3 className="text-sm font-medium opacity-90 uppercase tracking-wide">
+              Testimonies
+            </h3>
+            <p className="text-4xl font-bold mt-2">{stats.totalTestimonies}</p>
           </div>
         </div>
 
@@ -206,6 +218,31 @@ const Dashboard: React.FC = () => {
               className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-lg font-semibold transition"
             >
               Manage Clients
+            </Link>
+            <Link
+              to="/admin/testimonies/create"
+              className="bg-sky-600 hover:bg-sky-700 text-white px-6 py-3 rounded-lg font-semibold transition inline-flex items-center"
+            >
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              Add Testimony
+            </Link>
+            <Link
+              to="/admin/testimonies"
+              className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-lg font-semibold transition"
+            >
+              Manage Testimonies
             </Link>
           </div>
         </div>

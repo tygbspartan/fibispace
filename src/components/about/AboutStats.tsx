@@ -8,8 +8,8 @@ const AboutStats: React.FC = () => {
   ];
 
   return (
-    <section className="bg-white pt-12 md:pt-20">
-      <div className="px-6 md:px-12 lg:px-24">
+    <section className="bg-site pt-12 md:pt-20">
+      <div className="px-6 md:px-12 lg:px-[120px]">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
           {/* Left - Stats Circles */}
           <div className="flex flex-wrap justify-center gap-4 md:gap-8 lg:gap-16">
@@ -36,7 +36,7 @@ const AboutStats: React.FC = () => {
                   {stat.number}
                 </p>
                 <p
-                className="pt-2"
+                  className="pt-2"
                   style={{
                     fontFamily: "Inter",
                     fontSize: "clamp(16px, 2.5vw, 24px)",

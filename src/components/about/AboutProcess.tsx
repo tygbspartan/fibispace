@@ -32,8 +32,8 @@ const AboutProcess: React.FC = () => {
   ];
 
   return (
-    <section className="bg-white py-12 md:py-20">
-      <div className="px-6 md:px-12 lg:px-24">
+    <section className="bg-site py-12 md:py-20">
+      <div className="px-6 md:px-12 lg:px-[120px]">
         {/* Section Title */}
         <h2
           className="mb-10 md:mb-12 lg:mb-16"
