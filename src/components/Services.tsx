@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 import contentData from "../data/content.json";
 
 // The rotating 01…08 wheel on the arc. With it off, a static dot marks the
@@ -53,6 +55,7 @@ const Services: React.FC = () => {
   const targetRef = useRef(0);
   const currentRef = useRef(0);
 
+  const navigate = useNavigate();
   const [progress, setProgress] = useState(0);
   const [isWide, setIsWide] = useState(
     () => typeof window !== "undefined" && window.innerWidth >= PIN_BREAKPOINT,
@@ -239,7 +242,8 @@ const Services: React.FC = () => {
                     opacity: Math.max(0, 1 - distance * 1.9),
                     pointerEvents:
                       index === Math.round(progress) ? "auto" : "none",
-                    willChange: "transform, opacity",
+                    willChange:
+                      distance < 1.4 ? "transform, opacity" : undefined,
                   }}
                 >
                   <h3
@@ -258,6 +262,18 @@ const Services: React.FC = () => {
                   >
                     {service.description}
                   </p>
+                  <button
+                    onClick={() => navigate(`/services/${service.slug}`)}
+                    className="group mt-4 inline-flex items-center gap-2 text-[12px] sm:text-[15px]"
+                    style={{ fontWeight: 500, color: "#535353" }}
+                  >
+                    View related projects
+                    <ArrowRight
+                      size={14}
+                      strokeWidth={2}
+                      className="group-hover:animate-nudge motion-reduce:animate-none"
+                    />
+                  </button>
                 </div>
               );
             })}
@@ -279,7 +295,8 @@ const Services: React.FC = () => {
                   style={{
                     transform: `translateX(${offset * 18}%) scale(${1 + Math.min(distance, 1) * 0.04})`,
                     opacity: Math.max(0, 1 - distance * 1.6),
-                    willChange: "transform, opacity",
+                    willChange:
+                      distance < 1.4 ? "transform, opacity" : undefined,
                   }}
                 />
               );
@@ -442,7 +459,8 @@ const Services: React.FC = () => {
                     // copy is gone by the time it would otherwise be cut.
                     opacity: Math.max(0, 1 - distance * 1.9),
                     pointerEvents: index === activeIndex ? "auto" : "none",
-                    willChange: "transform, opacity",
+                    willChange:
+                      distance < 1.4 ? "transform, opacity" : undefined,
                   }}
                 >
                   <h3
@@ -461,6 +479,18 @@ const Services: React.FC = () => {
                   >
                     {service.description}
                   </p>
+                  <button
+                    onClick={() => navigate(`/services/${service.slug}`)}
+                    className="group mt-5 xl:mt-6 inline-flex items-center gap-2 text-[16px] xl:text-[18px] slg:text-[20px]"
+                    style={{ fontWeight: 500, color: "#535353" }}
+                  >
+                    View related projects
+                    <ArrowRight
+                      size={16}
+                      strokeWidth={2}
+                      className="group-hover:animate-nudge motion-reduce:animate-none"
+                    />
+                  </button>
                 </div>
               );
             })}
@@ -490,7 +520,8 @@ const Services: React.FC = () => {
                   style={{
                     transform: `translateY(${offset * 12}%) scale(${1 + Math.min(distance, 1) * 0.04})`,
                     opacity: Math.max(0, 1 - distance * 1.6),
-                    willChange: "transform, opacity",
+                    willChange:
+                      distance < 1.4 ? "transform, opacity" : undefined,
                   }}
                 />
               );

@@ -1,5 +1,6 @@
 import React from "react";
 import { BAND } from "./NewHero";
+import { useNearViewport } from "../hooks/useNearViewport";
 
 /**
  * The transition between the hero's sky and the page below it.
@@ -64,47 +65,59 @@ const BASE =
   " #FFFFFF 84%," +
   " #FFFFFF 100%)";
 
-const CloudBand: React.FC = () => (
-  <div
-    aria-hidden="true"
-    // The hero measures its transition off this, rather than counting
-    // viewports — see the comment in NewHero's scroll handler.
-    data-cloud-band
-    className="absolute inset-x-0 pointer-events-none"
-    style={{
-      // Read from the hero rather than written twice: the band's height and the
-      // scroll the hero owns for it are the same measurement, and they drift
-      // apart the moment they are two numbers.
-      height: `${BAND * 100}vh`,
-      top: `${BAND * -100}vh`,
-    }}
-  >
-    <div className="absolute inset-0" style={{ background: BASE }} />
+const CloudBand: React.FC = () => {
+  // Both layers drift forever. Off screen that is two composited surfaces being
+  // moved every frame for nothing, on a page where the hero is already drawing
+  // a starfield.
+  const [ref, near] = useNearViewport<HTMLDivElement>();
 
-    {/* Drifting sideways at two speeds. Only a transform moves, so both layers
+  return (
+    <div
+      ref={ref}
+      aria-hidden="true"
+      // The hero measures its transition off this, rather than counting
+      // viewports — see the comment in NewHero's scroll handler.
+      data-cloud-band
+      className="absolute inset-x-0 pointer-events-none"
+      style={{
+        // Read from the hero rather than written twice: the band's height and the
+        // scroll the hero owns for it are the same measurement, and they drift
+        // apart the moment they are two numbers.
+        height: `${BAND * 100}vh`,
+        top: `${BAND * -100}vh`,
+      }}
+    >
+      <div className="absolute inset-0" style={{ background: BASE }} />
+
+      {/* Drifting sideways at two speeds. Only a transform moves, so both layers
         stay on the compositor and nothing is repainted as they go. */}
-    <div
-      className="absolute -inset-x-[18%] top-0 opacity-[0.55] animate-cloudFar motion-reduce:animate-none"
-      style={{
-        // Hangs below the band, over the top of the page itself.
-        bottom: `${BAND * -100 * CLOUD_OVERHANG}vh`,
-        backgroundImage: `url("${CLOUD_FAR}")`,
-        backgroundSize: "cover",
-        maskImage: CLOUD_MASK,
-        WebkitMaskImage: CLOUD_MASK,
-      }}
-    />
-    <div
-      className="absolute -inset-x-[18%] top-0 opacity-[0.4] animate-cloudNear motion-reduce:animate-none"
-      style={{
-        bottom: `${BAND * -100 * CLOUD_OVERHANG}vh`,
-        backgroundImage: `url("${CLOUD_NEAR}")`,
-        backgroundSize: "cover",
-        maskImage: CLOUD_MASK,
-        WebkitMaskImage: CLOUD_MASK,
-      }}
-    />
-  </div>
-);
+      <div
+        className={`absolute -inset-x-[18%] top-0 opacity-[0.55] animate-cloudFar motion-reduce:animate-none ${
+          near ? "" : "[animation-play-state:paused]"
+        }`}
+        style={{
+          // Hangs below the band, over the top of the page itself.
+          bottom: `${BAND * -100 * CLOUD_OVERHANG}vh`,
+          backgroundImage: `url("${CLOUD_FAR}")`,
+          backgroundSize: "cover",
+          maskImage: CLOUD_MASK,
+          WebkitMaskImage: CLOUD_MASK,
+        }}
+      />
+      <div
+        className={`absolute -inset-x-[18%] top-0 opacity-[0.4] animate-cloudNear motion-reduce:animate-none ${
+          near ? "" : "[animation-play-state:paused]"
+        }`}
+        style={{
+          bottom: `${BAND * -100 * CLOUD_OVERHANG}vh`,
+          backgroundImage: `url("${CLOUD_NEAR}")`,
+          backgroundSize: "cover",
+          maskImage: CLOUD_MASK,
+          WebkitMaskImage: CLOUD_MASK,
+        }}
+      />
+    </div>
+  );
+};
 
 export default CloudBand;

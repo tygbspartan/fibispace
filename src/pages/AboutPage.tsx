@@ -29,7 +29,10 @@ const AboutPage: React.FC = () => {
             whatever it pins, so holding the cards alone is what pushed the
             stats off the screen — and because this reaches the top of the
             page, the hold begins on the very first scroll. */}
-        <div data-about-pin>
+        <div
+          data-about-pin
+          className="md:min-h-[calc(100vh-100px)] md:flex md:flex-col md:justify-center"
+        >
           {/* ---------- Opening ---------- */}
           <h1
             className={`text-center mx-auto max-w-4xl ${TITLE_SIZE}`}
@@ -57,7 +60,7 @@ const AboutPage: React.FC = () => {
               <div key={stat.label} className="w-1/3 md:w-[300px] text-center">
                 <StatCounter
                   value={stat.value}
-                  className="block text-[14px] md:text-[20px] lg:text-[35px]"
+                  className="block text-[14px] md:text-[24px] lg:text-[35px]"
                   style={{
                     fontFamily: MONTSERRAT,
                     fontWeight: 600,
@@ -65,7 +68,7 @@ const AboutPage: React.FC = () => {
                   }}
                 />
                 <p
-                  className="mt-2 text-[12px] md:text-[18px] lg:text-[24px]"
+                  className="mt-2 text-[12px] md:text-[16px] lg:text-[24px]"
                   style={{
                     fontFamily: INTER,
                     fontWeight: 300,

@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { clientAPI, resolveImageUrl, testimonyAPI } from "../services/api";
 import { Client, Testimony } from "../types";
 import { REVEAL_HIDDEN, useRevealOnView } from "../hooks/useRevealOnView";
+import { useNearViewport } from "../hooks/useNearViewport";
 import QuoteMark from "./icons/QuoteMark";
 
 // index.css sets `* { font-family: Inter }` on every element, so Montserrat
@@ -47,6 +48,8 @@ const fill = (row: Client[]) => {
 
 const Clients: React.FC = () => {
   const [clients, setClients] = useState<Client[]>([]);
+  // Three tracks, all infinite. They only need to move while they can be seen.
+  const [sectionRef, rowsNear] = useNearViewport<HTMLElement>();
 
   const [testimonies, setTestimonies] = useState<Testimony[]>([]);
   const [shown, setShown] = useState(0);
@@ -96,7 +99,11 @@ const Clients: React.FC = () => {
   const rows = dealIntoRows(clients);
 
   return (
-    <section className="py-[40px] md:py-[60px] overflow-hidden" id="clients">
+    <section
+      ref={sectionRef}
+      className="py-[40px] md:py-[60px] overflow-hidden"
+      id="clients"
+    >
       <h2
         ref={titleRef}
         className={`text-center px-6 ${TITLE_SIZE}`}
@@ -224,7 +231,9 @@ const Clients: React.FC = () => {
                 }}
               >
                 <div
-                  className="flex w-max animate-marquee motion-reduce:animate-none"
+                  className={`flex w-max animate-marquee motion-reduce:animate-none ${
+                    rowsNear ? "" : "[animation-play-state:paused]"
+                  }`}
                   style={{
                     animationDuration: `${ROW_SECONDS[rowIndex]}s`,
                     animationDirection: ROW_REVERSED[rowIndex]

@@ -79,6 +79,12 @@ interface ProjectsProps {
   featuredOnly?: boolean;
   /** Pointless on the projects page, which is already all of them. */
   showAllButton?: boolean;
+  /** Narrows to one stored category — the service pages show only the work
+   *  that used the service being read about. The filter pills go with it:
+   *  there is nothing left to filter. */
+  category?: string;
+  /** How many to show at most. */
+  limit?: number;
 }
 
 // How far apart the cards follow one another in.
@@ -109,6 +115,8 @@ const Projects: React.FC<ProjectsProps> = ({
   intro,
   featuredOnly = true,
   showAllButton = true,
+  category,
+  limit,
 }) => {
   const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[]>([]);
@@ -195,11 +203,13 @@ const Projects: React.FC<ProjectsProps> = ({
   };
 
   const tab = TABS.find((t) => t.id === activeTab) ?? TABS[0];
-  const visible = projects.filter(
-    (project) =>
-      (!featuredOnly || project.isFeatured) &&
-      project.category.some((cat) => tab.categories.includes(cat)),
+  const matched = projects.filter((project) =>
+    category
+      ? project.category.includes(category)
+      : (!featuredOnly || project.isFeatured) &&
+        project.category.some((cat) => tab.categories.includes(cat)),
   );
+  const visible = limit ? matched.slice(0, limit) : matched;
 
   // Cards reveal one at a time, every time they arrive.
   //
@@ -368,38 +378,40 @@ const Projects: React.FC<ProjectsProps> = ({
         {introLine}
 
         {/* ---------- Filter pills ---------- */}
-        <div
-          ref={pillsRef}
-          className="flex justify-center mt-6 md:mt-8"
-          style={REVEAL_HIDDEN}
-        >
+        {!category && (
           <div
-            className="inline-flex items-center gap-1 rounded-full bg-black p-1"
-            role="tablist"
-            aria-label="Project type"
+            ref={pillsRef}
+            className="flex justify-center mt-6 md:mt-8"
+            style={REVEAL_HIDDEN}
           >
-            {TABS.map((option) => {
-              const active = option.id === activeTab;
-              return (
-                <button
-                  key={option.id}
-                  role="tab"
-                  aria-selected={active}
-                  onClick={() => {
-                    setActiveTab(option.id);
-                    setAnimatedCards(new Set());
-                  }}
-                  className={`rounded-full px-4 py-1.5 wide:px-5 wide:py-2 transition-colors ${TAB_SIZE} ${
-                    active ? "bg-white text-black" : "text-white"
-                  }`}
-                  style={{ fontFamily: MONTSERRAT, fontWeight: 500 }}
-                >
-                  {option.label}
-                </button>
-              );
-            })}
+            <div
+              className="inline-flex items-center gap-1 rounded-full bg-black p-1"
+              role="tablist"
+              aria-label="Project type"
+            >
+              {TABS.map((option) => {
+                const active = option.id === activeTab;
+                return (
+                  <button
+                    key={option.id}
+                    role="tab"
+                    aria-selected={active}
+                    onClick={() => {
+                      setActiveTab(option.id);
+                      setAnimatedCards(new Set());
+                    }}
+                    className={`rounded-full px-4 py-1.5 wide:px-5 wide:py-2 transition-colors ${TAB_SIZE} ${
+                      active ? "bg-white text-black" : "text-white"
+                    }`}
+                    style={{ fontFamily: MONTSERRAT, fontWeight: 500 }}
+                  >
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* ---------- Grid ---------- */}
         {visible.length === 0 ? (
@@ -548,11 +560,7 @@ const Projects: React.FC<ProjectsProps> = ({
               style={{ fontFamily: MONTSERRAT, fontWeight: 600, fontSize: 14 }}
             >
               All Projects
-              <ArrowRight
-                size={16}
-                strokeWidth={2}
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              />
+              <ArrowRight size={16} strokeWidth={2} className="group-hover:animate-nudge motion-reduce:animate-none" />
             </button>
           </div>
         )}

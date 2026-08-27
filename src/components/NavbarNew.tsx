@@ -234,7 +234,7 @@ const NavbarNew: React.FC = () => {
               style={CTA_STYLE}
             >
               Book a call
-              <ArrowRight size={16} strokeWidth={2} />
+              <ArrowRight size={16} strokeWidth={2} className="group-hover:animate-nudge motion-reduce:animate-none" />
             </button>
 
             <button
@@ -429,7 +429,7 @@ const NavbarNew: React.FC = () => {
             }}
           >
             Book a call
-            <ArrowRight size={16} strokeWidth={2} />
+            <ArrowRight size={16} strokeWidth={2} className="group-hover:animate-nudge motion-reduce:animate-none" />
           </button>
         </div>
       </div>

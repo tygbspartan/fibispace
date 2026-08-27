@@ -1,8 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Navigate } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CornerDownRight } from "lucide-react";
 import contentData from "../data/content.json";
+import Projects from "../components/Projects";
 import Footer from "../components/NewFooter";
+import { projectsAPI } from "../services/api";
+import { Project } from "../types";
+import { REVEAL_HIDDEN, useRevealOnView } from "../hooks/useRevealOnView";
 
 // index.css sets `* { font-family: Inter }` on every element, so Montserrat
 // cannot be inherited from a parent — it has to be set where the text is.
@@ -20,6 +24,20 @@ const SUB_TITLE_SIZE =
 
 const MUTED = "#898080";
 
+// A service is named by its slug; a project is tagged with a stored category.
+// This is the join between the two, and the only place the two vocabularies
+// meet — everything else on either side keeps its own.
+const SERVICE_CATEGORY: Record<string, string> = {
+  "social-media-marketing": "smm",
+  "ui-ux": "ui_ux",
+  "graphic-design": "graphic_design",
+  "web-development": "web_development",
+  seo: "seo",
+  advertising: "ad_commercial",
+  "event-management": "event_management",
+  "product-photography": "product_shoot",
+};
+
 const ServiceDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -27,9 +45,42 @@ const ServiceDetailPage: React.FC = () => {
 
   const service = services.find((item) => item.slug === slug);
 
+  const category = slug ? SERVICE_CATEGORY[slug] : undefined;
+  // Whether any project actually carries this category. Asked here rather than
+  // left to the grid: the heading and the whole section have to go too, and the
+  // grid only knows what it has after it has already rendered one.
+  const [hasWork, setHasWork] = useState(false);
+
+  const otherRef = useRevealOnView<HTMLHeadingElement>({ pop: true });
+  const otherIntroRef = useRevealOnView<HTMLParagraphElement>({ delay: 130 });
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
+
+  useEffect(() => {
+    if (!category) {
+      setHasWork(false);
+      return;
+    }
+
+    let stopped = false;
+    projectsAPI
+      .getAll()
+      .then((response) => {
+        if (stopped) return;
+        const projects: Project[] = response.data.projects || [];
+        setHasWork(projects.some((item) => item.category.includes(category)));
+      })
+      .catch((error) => {
+        console.error("Error checking projects for this service:", error);
+        if (!stopped) setHasWork(false);
+      });
+
+    return () => {
+      stopped = true;
+    };
+  }, [category]);
 
   // An unknown slug goes to the first service rather than a blank screen.
   if (!service)
@@ -155,6 +206,85 @@ const ServiceDetailPage: React.FC = () => {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* ---------- The work that used it ----------
+            Rendered only when a project actually carries this category, so a
+            service with nothing to show gets no empty section. The grid is the
+            same component the projects page uses, with the pills dropped:
+            there is nothing left to filter once it is one category. */}
+      {hasWork && (
+        <Projects
+          heading="Our best work, So far."
+          headingClass={TITLE_SIZE}
+          topClass="pt-[40px] md:pt-[60px]"
+          intro="A few of the projects this went into."
+          category={category}
+          limit={3}
+          featuredOnly={false}
+        />
+      )}
+
+      <div className="px-6 md:px-12 lg:px-[120px] pb-[40px] md:pb-20">
+        {/* ---------- Other services ---------- */}
+        <section className="py-[40px] md:py-[60px]">
+          <h2
+            ref={otherRef}
+            className={`text-center ${TITLE_SIZE}`}
+            style={{
+              ...REVEAL_HIDDEN,
+              fontFamily: MONTSERRAT,
+              fontWeight: 400,
+              lineHeight: 1.1,
+            }}
+          >
+            Other services
+          </h2>
+          <p
+            ref={otherIntroRef}
+            className="mt-4 mx-auto max-w-2xl text-center text-[13px] md:text-[16px] xl:text-[18px] slg:text-[20px] leading-relaxed"
+            style={{
+              ...REVEAL_HIDDEN,
+              fontFamily: INTER,
+              fontWeight: 400,
+              color: MUTED,
+            }}
+          >
+            Everything else we do, and how it fits alongside this.
+          </p>
+
+          <div className="mt-8 md:mt-12 mx-auto max-w-4xl grid grid-cols-1 sm:grid-cols-2 gap-x-10 md:gap-x-20 lg:gap-x-28 gap-y-4 md:gap-y-5">
+            {services.map((item) => {
+              const current = item.slug === service.slug;
+
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => navigate(`/services/${item.slug}`)}
+                  className="group flex items-center gap-2.5 text-left"
+                  style={{
+                    fontFamily: INTER,
+                    fontWeight: 400,
+                    // The one being read is marked rather than removed: it is
+                    // still part of the set, and taking it out would make the
+                    // column jump between pages.
+                    color: current ? "#12A89C" : "#111111",
+                  }}
+                >
+                  <CornerDownRight
+                    size={18}
+                    strokeWidth={1.8}
+                    className="shrink-0"
+                    style={{ color: current ? "#12A89C" : MUTED }}
+                  />
+                  <span className="text-[14px] md:text-[18px] lg:text-[25px] group-hover:text-primary transition-colors">
+                    {item.title}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
 
         {/* ---------- Closing prompt ---------- */}
         <div className="mt-8 md:mt-10 pt-6 md:pt-8 border-t border-black/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 md:gap-6">
@@ -177,7 +307,7 @@ const ServiceDetailPage: React.FC = () => {
             <ArrowRight
               size={15}
               strokeWidth={2}
-              className="transition-transform duration-300 group-hover:translate-x-1"
+              className="group-hover:animate-nudge motion-reduce:animate-none"
             />
           </button>
         </div>
