@@ -1,8 +1,16 @@
+// Which of the two tabs a project belongs to on the projects page. Before
+// this split the tabs were derived from the eight categories; now it is stored,
+// so a project says where it belongs rather than being inferred.
+export type ProjectType = "digital_marketing" | "website";
+
 export interface Project {
   id: number;
   title: string;
   description: string;
   category: string[];
+  projectType: ProjectType;
+  /** Optional external URL — the arrow beside the title in the modal. */
+  link?: string | null;
   mainImage: string;
   isFeatured: boolean;
   thumbnailImages: string[];

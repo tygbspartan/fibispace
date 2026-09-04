@@ -22,24 +22,13 @@ const CATEGORY_LABELS: Record<string, string> = {
   product_shoot: "Photo shoot",
 };
 
-// The two filters group those eight categories.
+// The two filters are now the project's own stored type rather than a
+// grouping of its categories: a website project that also used SMM was landing
+// under Digital Marketing, and nothing could say otherwise. The ids are the
+// stored enum values, so a tab matches a project directly.
 const TABS = [
-  {
-    id: "digital",
-    label: "Digital Marketing",
-    categories: [
-      "smm",
-      "graphic_design",
-      "ad_commercial",
-      "event_management",
-      "product_shoot",
-    ],
-  },
-  {
-    id: "websites",
-    label: "Websites",
-    categories: ["ui_ux", "web_development", "seo"],
-  },
+  { id: "digital_marketing", label: "Digital Marketing" },
+  { id: "website", label: "Websites" },
 ];
 
 // Same scale as a Services title, so the two sections read as a set.
@@ -207,7 +196,9 @@ const Projects: React.FC<ProjectsProps> = ({
     category
       ? project.category.includes(category)
       : (!featuredOnly || project.isFeatured) &&
-        project.category.some((cat) => tab.categories.includes(cat)),
+        // Projects stored before the split have no type; they were all digital
+        // marketing, which is also what the column defaults to.
+        (project.projectType ?? "digital_marketing") === tab.id,
   );
   const visible = limit ? matched.slice(0, limit) : matched;
 

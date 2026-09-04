@@ -11,6 +11,8 @@ const CreateProject: React.FC = () => {
     title: "",
     description: "",
     category: [] as string[],
+    projectType: "digital_marketing",
+    link: "",
     keyFindings: [] as string[],
     isFeatured: false,
   });
@@ -20,6 +22,11 @@ const CreateProject: React.FC = () => {
   const [thumbnailFiles, setThumbnailFiles] = useState<File[]>([]);
   const [thumbnailPreviews, setThumbnailPreviews] = useState<string[]>([]);
   const [newKeyFinding, setNewKeyFinding] = useState("");
+
+  const projectTypes = [
+    { value: "digital_marketing", label: "Digital Marketing" },
+    { value: "website", label: "Website" },
+  ];
 
   const categories = [
     { value: "smm", label: "Social Media Marketing" },
@@ -117,6 +124,8 @@ const CreateProject: React.FC = () => {
       data.append("description", formData.description);
       // Arrays are sent as JSON strings; the server JSON.parses them.
       data.append("category", JSON.stringify(formData.category));
+      data.append("projectType", formData.projectType);
+      data.append("link", formData.link.trim());
       data.append("keyFindings", JSON.stringify(formData.keyFindings));
       data.append("isFeatured", String(formData.isFeatured));
       data.append("mainImage", mainImageFile);
@@ -194,6 +203,67 @@ const CreateProject: React.FC = () => {
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition resize-none"
               placeholder="Enter project description"
             />
+          </div>
+
+          {/* Project Type — the tab this lands under on the public site. */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Project Type <span className="text-red-500">*</span>
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              {projectTypes.map((type) => (
+                <label
+                  key={type.value}
+                  className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition ${
+                    formData.projectType === type.value
+                      ? "border-indigo-500 bg-indigo-50"
+                      : "border-gray-300 hover:border-gray-400"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="projectType"
+                    value={type.value}
+                    checked={formData.projectType === type.value}
+                    onChange={() =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        projectType: type.value,
+                      }))
+                    }
+                    className="w-5 h-5 text-indigo-600 border-gray-300 focus:ring-indigo-500"
+                  />
+                  <span className="ml-3 text-gray-700 font-medium">
+                    {type.label}
+                  </span>
+                </label>
+              ))}
+            </div>
+            <p className="mt-2 text-sm text-gray-500">
+              Decides which filter tab the project appears under on the projects
+              page. Separate from the categories below.
+            </p>
+          </div>
+
+          {/* Website Link */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Website Link{" "}
+              <span className="font-normal text-gray-400">(optional)</span>
+            </label>
+            <input
+              type="url"
+              value={formData.link}
+              onChange={(e) =>
+                setFormData({ ...formData, link: e.target.value })
+              }
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+              placeholder="https://example.com"
+            />
+            <p className="mt-1 text-sm text-gray-500">
+              Shown as an arrow beside the title in the project popup. Must
+              start with http:// or https://.
+            </p>
           </div>
 
           {/* Categories */}

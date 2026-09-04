@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
+import { ArrowUpRight } from "lucide-react";
 import { Project } from "../../types";
 import { resolveImageUrl } from "../../services/api";
 
@@ -86,9 +87,32 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
         {/* Modal Body */}
         <div className="p-4 md:p-6 lg:p-8 xl:p-12">
-          {/* Project Title */}
+          {/* Project Title, with the link arrow sitting beside it.
+              The anchor is inline rather than in a flex row of its own so it
+              follows the last word of the title and still wraps around the
+              floated close button above. */}
           <h2 className="mb-4 md:mb-6 text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-medium leading-tight">
-            {project.title}
+            <span className="align-middle">{project.title}</span>
+            {project.link && (
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Visit ${project.title}`}
+                title={project.link}
+                // Same treatment as the arrow on a project card: white to black
+                // on the same 600ms ease-in-out, the arrow turning 45° into it.
+                className="group ml-3 md:ml-4 inline-grid place-items-center align-middle shrink-0 w-9 h-9 md:w-11 md:h-11 rounded-full border-[1.5px] border-black/50 bg-white text-black transition-[background-color,border-color,color] duration-[600ms] ease-in-out hover:bg-black hover:border-black hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              >
+                <span className="inline-flex transition-transform duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:rotate-45">
+                  <ArrowUpRight
+                    size={20}
+                    strokeWidth={2}
+                    className="md:w-6 md:h-6"
+                  />
+                </span>
+              </a>
+            )}
           </h2>
 
           {/* Category Badges */}

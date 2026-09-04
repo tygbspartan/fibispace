@@ -88,7 +88,10 @@ const ServiceDetailPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-site flex flex-col">
-      <div className="flex-grow px-6 md:px-12 lg:px-[120px] pt-[30px] md:pt-[100px] pb-[40px] md:pb-20">
+      {/* No bottom padding of its own: the Method section inside already
+          ends with the standard section padding, and stacking the two put
+          200px between the last step and the section below. */}
+      <div className="flex-grow px-6 md:px-12 lg:px-[120px] pt-[30px] md:pt-[100px]">
         {/* ---------- Title, blurb, and the service's mark ---------- */}
         <div className="flex items-start justify-between gap-8">
           {/* Held narrow on purpose: the title is meant to break over two
@@ -165,7 +168,7 @@ const ServiceDetailPage: React.FC = () => {
           </div>
 
           {/* Steps */}
-          <div className="mt-8 md:mt-20 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-x-5 md:gap-x-6 gap-y-8 md:gap-y-12">
+          <div className="mt-8 md:mt-12 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-x-5 md:gap-x-6 gap-y-8 md:gap-y-12">
             {serviceMethod.steps.map((step, index) => (
               <div key={step.title}>
                 <div className="flex items-center gap-2">
