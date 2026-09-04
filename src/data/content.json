@@ -55,7 +55,33 @@
       "slug": "social-media-marketing",
       "shortTitle": "SMM",
       "image": "/assets/Services/SocialMedia.png",
-      "banner": "/assets/Services/placeholder.png"
+      "banner": "/assets/Services/placeholder.png",
+      "method": {
+        "heading": "How We Build Social That Earns Attention",
+        "blurb": "Posting is easy; being worth following is not. We start from what your audience already cares about and build a presence around it.",
+        "steps": [
+          {
+            "title": "Audience & Channel Audit",
+            "description": "We look at who is already talking about you, where they spend their time, and which platforms are actually worth yours."
+          },
+          {
+            "title": "Content Strategy",
+            "description": "A calendar with a reason behind it: content pillars, tone of voice, posting rhythm, and what each channel is there to do."
+          },
+          {
+            "title": "Production",
+            "description": "Shooting, writing and designing the work itself — made for the feed it will live in rather than resized into it."
+          },
+          {
+            "title": "Community & Publishing",
+            "description": "We publish, reply and keep the conversation going. A page nobody answers stops being followed."
+          },
+          {
+            "title": "Report & Adjust",
+            "description": "Monthly numbers against the goals we agreed, and the plan changes wherever the numbers say it should."
+          }
+        ]
+      }
     },
     {
       "id": 2,
@@ -66,8 +92,33 @@
       "slug": "ui-ux",
       "shortTitle": "UI/UX",
       "image": "/assets/Services/UIUX.png",
-      "banner": "/assets/Services/placeholder.png"
-
+      "banner": "/assets/Services/placeholder.png",
+      "method": {
+        "heading": "How We Design Sites People Get Through",
+        "blurb": "A site's job is to carry someone from curious to convinced. We design that path first and the pixels second.",
+        "steps": [
+          {
+            "title": "Discovery & Flows",
+            "description": "What visitors arrive for, what they need along the way, and the shortest honest route between the two."
+          },
+          {
+            "title": "Wireframes",
+            "description": "Structure before decoration: layout, hierarchy and copy blocks agreed while they are still cheap to change."
+          },
+          {
+            "title": "Visual Design",
+            "description": "Your brand applied across every screen, with type, spacing and colour decided once and then reused."
+          },
+          {
+            "title": "Prototype & Test",
+            "description": "A clickable build put in front of real people, so the awkward parts surface before anything is built."
+          },
+          {
+            "title": "Handover",
+            "description": "Design files, a component library, and the notes a developer needs to build it exactly as drawn."
+          }
+        ]
+      }
     },
     {
       "id": 3,
@@ -78,7 +129,33 @@
       "slug": "graphic-design",
       "shortTitle": "Graphic Designing",
       "image": "/assets/Services/GraphicDesign.png",
-      "banner": "/assets/Services/placeholder.png"
+      "banner": "/assets/Services/placeholder.png",
+      "method": {
+        "heading": "How We Make Work That Holds Up",
+        "blurb": "Good design survives being shrunk, printed badly and seen for half a second. That is what we design against.",
+        "steps": [
+          {
+            "title": "Brief & References",
+            "description": "What it is for, where it will appear, and what it will have to sit next to when it does."
+          },
+          {
+            "title": "Concepts",
+            "description": "Two or three genuinely different directions rather than variations on one, so the choice is a real choice."
+          },
+          {
+            "title": "Refinement",
+            "description": "The chosen route taken to finish: type, colour, spacing and the small decisions that separate considered from close enough."
+          },
+          {
+            "title": "Formats & Sizes",
+            "description": "Every crop and size it needs, built from one master so nothing drifts between them."
+          },
+          {
+            "title": "Files & Guidelines",
+            "description": "Print-ready and screen-ready files, plus the rules for using them without needing us."
+          }
+        ]
+      }
     },
     {
       "id": 4,
@@ -89,7 +166,33 @@
       "slug": "web-development",
       "shortTitle": "Web Development",
       "image": "/assets/Services/WebDev.png",
-      "banner": "/assets/Services/placeholder.png"
+      "banner": "/assets/Services/placeholder.png",
+      "method": {
+        "heading": "How We Build Sites That Stay Fast",
+        "blurb": "Anything looks quick on a new laptop. We build for the phone on a bad connection, because that is who is actually visiting.",
+        "steps": [
+          {
+            "title": "Scope & Stack",
+            "description": "What it has to do, what it has to connect to, and the smallest set of tools that covers both."
+          },
+          {
+            "title": "Architecture",
+            "description": "Content model, page structure and the admin behind it, settled before a line of it is written."
+          },
+          {
+            "title": "Build",
+            "description": "Front end and back end together, in pieces small enough that you see them working as they land."
+          },
+          {
+            "title": "Testing",
+            "description": "Real devices and slow connections, not just a desktop browser. Performance is a feature, not a polish step."
+          },
+          {
+            "title": "Launch & Care",
+            "description": "Deployment, monitoring, and the updates that keep it healthy long after launch week."
+          }
+        ]
+      }
     },
     {
       "id": 5,
@@ -100,7 +203,33 @@
       "slug": "seo",
       "shortTitle": "SEO",
       "image": "/assets/Services/SEO.png",
-      "banner": "/assets/Services/placeholder.png"
+      "banner": "/assets/Services/placeholder.png",
+      "method": {
+        "heading": "How We Earn Rankings That Last",
+        "blurb": "Rankings bought with tricks come back down. We fix what is holding a site back and build the reasons to rank.",
+        "steps": [
+          {
+            "title": "Technical Audit",
+            "description": "Crawling, indexing, speed and structure — the things that cap everything else when they are wrong."
+          },
+          {
+            "title": "Keyword & Intent Research",
+            "description": "What people actually search for, and what they expect to find when they do."
+          },
+          {
+            "title": "On-Page Work",
+            "description": "Titles, structure, internal links and copy, changed against the research rather than a checklist."
+          },
+          {
+            "title": "Content & Authority",
+            "description": "Pages worth linking to, and the outreach that gets them linked to."
+          },
+          {
+            "title": "Tracking",
+            "description": "Rankings, traffic and enquiries reported monthly, with next month's priorities attached."
+          }
+        ]
+      }
     },
     {
       "id": 6,
@@ -111,7 +240,33 @@
       "slug": "advertising",
       "shortTitle": "Ads and Commercials",
       "image": "/assets/Services/Ad.png",
-      "banner": "/assets/Services/placeholder.png"
+      "banner": "/assets/Services/placeholder.png",
+      "method": {
+        "heading": "How We Make Ads Worth Watching",
+        "blurb": "People skip advertising, not stories. We work out what is worth saying before anyone opens a camera.",
+        "steps": [
+          {
+            "title": "Proposition",
+            "description": "The one thing the ad has to land, agreed and written down before production starts."
+          },
+          {
+            "title": "Concept & Script",
+            "description": "Idea, script and storyboard, written for the length and the placement it will actually run in."
+          },
+          {
+            "title": "Pre-Production",
+            "description": "Cast, location, kit and schedule. This is the part that decides whether the shoot day is calm."
+          },
+          {
+            "title": "Shoot & Edit",
+            "description": "Filming, then the cut, grade and sound that turn footage into something people finish watching."
+          },
+          {
+            "title": "Delivery & Placement",
+            "description": "Every aspect ratio and cutdown the platforms ask for, delivered ready to run."
+          }
+        ]
+      }
     },
     {
       "id": 7,
@@ -122,8 +277,33 @@
       "slug": "event-management",
       "shortTitle": "Event Management",
       "image": "/assets/Services/Event.png",
-      "banner": "/assets/Services/placeholder.png"
-
+      "banner": "/assets/Services/placeholder.png",
+      "method": {
+        "heading": "How We Run Events That Feel Effortless",
+        "blurb": "The calm of a good event is built weeks earlier. We do that part so the day itself has nothing left to go wrong.",
+        "steps": [
+          {
+            "title": "Brief & Budget",
+            "description": "What the event is for, who is coming, and what the money genuinely has to cover."
+          },
+          {
+            "title": "Concept & Venue",
+            "description": "The idea for the day and the space that suits it, held early rather than settled for late."
+          },
+          {
+            "title": "Planning & Suppliers",
+            "description": "Run sheet, vendors, permits and contingencies — the paperwork that keeps the day quiet."
+          },
+          {
+            "title": "On The Day",
+            "description": "We run it. You get to be a guest at your own event rather than its stage manager."
+          },
+          {
+            "title": "Wrap & Content",
+            "description": "Settlement, feedback, and the photography and film that keep the event working afterwards."
+          }
+        ]
+      }
     },
     {
       "id": 8,
@@ -134,8 +314,33 @@
       "slug": "product-photography",
       "shortTitle": "Photoshoots",
       "image": "/assets/Services/Photoshoot.png",
-      "banner": "/assets/Services/placeholder.png"
-
+      "banner": "/assets/Services/placeholder.png",
+      "method": {
+        "heading": "How We Photograph Products That Sell",
+        "blurb": "A product shot has one job: make someone confident enough to buy. Everything on the day serves that.",
+        "steps": [
+          {
+            "title": "Moodboard",
+            "description": "References, palette and styling agreed up front, so the shoot is execution rather than discovery."
+          },
+          {
+            "title": "Styling & Set",
+            "description": "Props, surfaces and lighting built around your product instead of borrowed from a template."
+          },
+          {
+            "title": "Shoot",
+            "description": "Hero frames, detail frames and the angles each channel needs, all captured in one session."
+          },
+          {
+            "title": "Retouching",
+            "description": "Colour matched to the real thing — cleaned up without making it look like something it is not."
+          },
+          {
+            "title": "Delivery",
+            "description": "Web, print and marketplace-ready files, named so you can find the one you need."
+          }
+        ]
+      }
     }
   ],
   "cta": {
@@ -210,9 +415,18 @@
       "body": "To be the most trusted growth partner for brands in Nepal and beyond, setting the standard for integrated marketing by seamlessly blending technology, creativity, and human connection."
     },
     "stats": [
-      { "value": "8+", "label": "Years" },
-      { "value": "$9,000", "label": "in ads" },
-      { "value": "20+", "label": "Clients" }
+      {
+        "value": "8+",
+        "label": "Years"
+      },
+      {
+        "value": "$9,000",
+        "label": "in ads"
+      },
+      {
+        "value": "20+",
+        "label": "Clients"
+      }
     ],
     "process": {
       "heading": "How we work",
@@ -256,7 +470,11 @@
   },
   "contact": {
     "heading": "Let's Connect",
-    "location": ["Swayambhu Marg", "17-Dhalko", "Kathmandu, Nepal"],
+    "location": [
+      "Swayambhu Marg",
+      "17-Dhalko",
+      "Kathmandu, Nepal"
+    ],
     "phone": "+977 974-1661719",
     "email": "fibispace@gmail.com",
     "socials": {

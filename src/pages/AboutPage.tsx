@@ -5,6 +5,7 @@ import Team from "../components/about/Team";
 import StatCounter from "../components/about/StatCounter";
 import Footer from "../components/NewFooter";
 import contentData from "../data/content.json";
+import { jumpToTop } from "../lib/jumpToTop";
 
 const MONTSERRAT = "Montserrat, sans-serif";
 const INTER = "Inter, sans-serif";
@@ -17,7 +18,7 @@ const AboutPage: React.FC = () => {
   const { about } = contentData;
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    jumpToTop();
   }, []);
 
   return (

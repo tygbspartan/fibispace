@@ -7,6 +7,7 @@ import Footer from "../components/NewFooter";
 import { projectsAPI } from "../services/api";
 import { Project } from "../types";
 import { REVEAL_HIDDEN, useRevealOnView } from "../hooks/useRevealOnView";
+import { jumpToTop } from "../lib/jumpToTop";
 
 // index.css sets `* { font-family: Inter }` on every element, so Montserrat
 // cannot be inherited from a parent — it has to be set where the text is.
@@ -44,6 +45,9 @@ const ServiceDetailPage: React.FC = () => {
   const { services, serviceMethod } = contentData;
 
   const service = services.find((item) => item.slug === slug);
+  // Falls back to the shared block if a service has not been given its own,
+  // so a new service added to the content file still renders something.
+  const method = service?.method ?? serviceMethod;
 
   const category = slug ? SERVICE_CATEGORY[slug] : undefined;
   // Whether any project actually carries this category. Asked here rather than
@@ -55,7 +59,7 @@ const ServiceDetailPage: React.FC = () => {
   const otherIntroRef = useRevealOnView<HTMLParagraphElement>({ delay: 130 });
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    jumpToTop();
   }, [slug]);
 
   useEffect(() => {
@@ -157,19 +161,19 @@ const ServiceDetailPage: React.FC = () => {
                 lineHeight: 1.15,
               }}
             >
-              {serviceMethod.heading}
+              {method.heading}
             </h2>
             <p
               className="max-w-md text-[13px] md:text-[14px] leading-relaxed"
               style={{ fontFamily: INTER, fontWeight: 400, color: MUTED }}
             >
-              {serviceMethod.blurb}
+              {method.blurb}
             </p>
           </div>
 
           {/* Steps */}
           <div className="mt-8 md:mt-12 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-x-5 md:gap-x-6 gap-y-8 md:gap-y-12">
-            {serviceMethod.steps.map((step, index) => (
+            {method.steps.map((step, index) => (
               <div key={step.title}>
                 <div className="flex items-center gap-2">
                   <span

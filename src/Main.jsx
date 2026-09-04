@@ -86,6 +86,16 @@ const Main = () => {
   // The overlay now holds the screen until the sound question is answered, so
   // it says when the page behind it may be shown rather than a timer guessing.
 
+  // Announced so the hero can stand its starfield down while the loading
+  // screen is up: the screen draws one of its own, and the hero's would
+  // otherwise be running underneath it for the whole of the wait.
+  useEffect(() => {
+    document.documentElement.dataset.booting = loading ? "true" : "false";
+    window.dispatchEvent(
+      new CustomEvent("fibi:booting", { detail: { booting: loading } }),
+    );
+  }, [loading]);
+
   return (
     <AuthProvider>
       {/* Only show loading overlay for non-admin routes */}

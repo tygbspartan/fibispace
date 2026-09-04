@@ -138,6 +138,25 @@ const NewHero: React.FC = () => {
   // vary by breakpoint. Hence a flag rather than a class.
   const [phone, setPhone] = useState(false);
 
+  // While the loading screen is up it is drawing its own sky; this one is
+  // behind it and cannot be seen, so it does not need to be drawn.
+  const [booting, setBooting] = useState(
+    () =>
+      typeof document !== "undefined" &&
+      document.documentElement.dataset.booting !== "false",
+  );
+
+  useEffect(() => {
+    const onBooting = (event: Event) => {
+      const { booting: still } = (event as CustomEvent<{ booting: boolean }>)
+        .detail;
+      setBooting(still);
+    };
+
+    window.addEventListener("fibi:booting", onBooting);
+    return () => window.removeEventListener("fibi:booting", onBooting);
+  }, []);
+
   useEffect(() => {
     const query = window.matchMedia("(max-width: 1023px)");
     const sync = () => setPhone(query.matches);
@@ -357,7 +376,7 @@ const NewHero: React.FC = () => {
         style={{ background: HERO_BACKGROUND, willChange: "transform" }}
       >
         <div aria-hidden="true" className="absolute inset-0">
-          <StarField travelRef={travelRef} />
+          <StarField travelRef={travelRef} active={!booting} />
         </div>
 
         <section

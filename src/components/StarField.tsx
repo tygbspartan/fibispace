@@ -51,14 +51,23 @@ interface StarFieldProps {
    *  ref rather than a prop value, because it changes every frame and must not
    *  re-render. */
   travelRef?: React.MutableRefObject<number>;
+  /** False stops the loop entirely. The loading screen draws a field of its
+   *  own, and the hero's is still running behind it — two canvases of a couple
+   *  of hundred stars each, drawing every frame, while the screen also plays
+   *  its own animation. */
+  active?: boolean;
 }
 
-const StarField: React.FC<StarFieldProps> = ({ className = "", travelRef }) => {
+const StarField: React.FC<StarFieldProps> = ({
+  className = "",
+  travelRef,
+  active = true,
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || !active) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
@@ -321,8 +330,10 @@ const StarField: React.FC<StarFieldProps> = ({ className = "", travelRef }) => {
     };
     // travelRef is a ref: its identity is stable, and the loop reads .current
     // every frame rather than closing over a value.
+    // travelRef is a ref: its identity is stable, and the loop reads .current
+    // every frame rather than closing over a value.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [active]);
 
   return (
     <canvas

@@ -11,6 +11,7 @@ import IdeaBulb from "../components/icons/IdeaBulb";
 import ContactForm from "../components/contact/ContactForm";
 import Footer from "../components/NewFooter";
 import contentData from "../data/content.json";
+import { jumpToTop } from "../lib/jumpToTop";
 
 const MONTSERRAT = "Montserrat, sans-serif";
 const INTER = "Inter, sans-serif";
@@ -37,7 +38,7 @@ const ContactPage: React.FC = () => {
   const [titleWidth, setTitleWidth] = useState<number>();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    jumpToTop();
   }, []);
 
   useEffect(() => {

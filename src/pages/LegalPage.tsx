@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import Footer from "../components/NewFooter";
+import { jumpToTop } from "../lib/jumpToTop";
 
 const MONTSERRAT = "Montserrat, sans-serif";
 
@@ -13,7 +14,7 @@ interface LegalPageProps {
  */
 const LegalPage: React.FC<LegalPageProps> = ({ title }) => {
   useEffect(() => {
-    window.scrollTo(0, 0);
+    jumpToTop();
   }, [title]);
 
   return (
