@@ -1,0 +1,69 @@
+{
+  "siteUrl": "https://fibispace.com",
+  "siteName": "Fibispace",
+  "image": "/og-image.jpg",
+  "pages": {
+    "/": {
+      "title": "Fibispace | Creative & Digital Marketing Agency in Kathmandu",
+      "description": "Fibispace is a creative agency in Kathmandu, Nepal for branding, social media marketing, web design, SEO, ad production and product shoots. We make brands worth remembering."
+    },
+    "/projects": {
+      "title": "Our Projects | Fibispace",
+      "description": "Explore Fibispace's portfolio of branding, social media, web design, ad films and product photography work for brands across Nepal."
+    },
+    "/about": {
+      "title": "About Us | Fibispace",
+      "description": "Meet Fibispace, the Kathmandu team behind brands people remember. Learn about our mission, our vision, our process and the people who do the work."
+    },
+    "/contact": {
+      "title": "Contact Us | Fibispace",
+      "description": "Start a project with Fibispace. Reach our Kathmandu studio at Swayambhu Marg by phone, email or the contact form and tell us what you want to build."
+    },
+    "/privacy-policy": {
+      "title": "Privacy Policy | Fibispace",
+      "description": "How Fibispace collects, uses and protects the personal information you share with us through this website and our services."
+    },
+    "/terms-and-conditions": {
+      "title": "Terms and Conditions | Fibispace",
+      "description": "The terms and conditions that apply to using the Fibispace website and working with Fibispace on a project."
+    },
+    "/admin": {
+      "title": "Admin | Fibispace",
+      "description": "Fibispace admin panel."
+    }
+  },
+  "services": {
+    "social-media-marketing": {
+      "title": "Social Media Marketing in Nepal | Fibispace",
+      "description": "Social media marketing agency in Kathmandu, Nepal. Fibispace handles strategy, content creation, publishing and community management that grows real engagement."
+    },
+    "ui-ux": {
+      "title": "UI/UX & Website Design in Nepal | Fibispace",
+      "description": "Custom UI/UX and website design in Nepal. Fibispace designs responsive, intuitive websites around your brand, from user flows to tested prototypes."
+    },
+    "graphic-design": {
+      "title": "Graphic Design in Nepal | Fibispace",
+      "description": "Graphic design services in Kathmandu, Nepal. Fibispace creates brand visuals, social creatives and print and digital assets that help your brand stand out."
+    },
+    "web-development": {
+      "title": "Website Development in Nepal | Fibispace",
+      "description": "Website development company in Nepal. Fibispace builds fast, mobile-ready, SEO-friendly websites with an easy admin, made to turn visitors into customers."
+    },
+    "seo": {
+      "title": "SEO Services in Nepal | Fibispace",
+      "description": "SEO services in Nepal. Fibispace runs technical audits, keyword research, on-page SEO and content that lift your Google rankings and bring in enquiries."
+    },
+    "advertising": {
+      "title": "Ad Film & Commercial Production in Nepal | Fibispace",
+      "description": "Ad film and TV commercial production in Nepal. Fibispace handles concept, script, shoot and edit for ads that tell your brand’s story and move people to act."
+    },
+    "event-management": {
+      "title": "Event Management in Nepal | Fibispace",
+      "description": "Event management in Kathmandu, Nepal. Fibispace plans and runs corporate launches, brand activations and galas, executed seamlessly from start to finish."
+    },
+    "product-photography": {
+      "title": "Product Photography in Nepal | Fibispace",
+      "description": "Product photography in Kathmandu, Nepal. Fibispace shoots crisp catalog, e-commerce and creative lifestyle images that make your products impossible to ignore."
+    }
+  }
+}

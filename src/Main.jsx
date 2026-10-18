@@ -27,6 +27,7 @@ import TestimonyList from "./admin/pages/TestimonyList";
 import TestimonyForm from "./admin/pages/TestimonyForm";
 import api from "./services/api";
 import contentData from "./data/content.json";
+import { useSeo } from "./hooks/useSeo";
 
 const Main = () => {
   const location = useLocation();
@@ -35,6 +36,10 @@ const Main = () => {
 
   // Check if current route is admin route
   const isAdminRoute = location.pathname.startsWith("/admin");
+
+  // Title, description and share tags for whichever page is showing; the
+  // admin is kept out of search results.
+  useSeo(location.pathname, { noindex: isAdminRoute });
 
   // Check backend on initial load
   useEffect(() => {

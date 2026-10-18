@@ -188,16 +188,18 @@ const Services: React.FC = () => {
                     }}
                   >
                     <span
-                      className="absolute top-0 left-0 flex flex-col items-center gap-1.5"
+                      className="absolute top-0 left-0 w-0 h-0"
                       style={{
                         // Held upright against both rotations above, so the
                         // numbers read level wherever they are on the arc.
-                        transform: `translate(-50%, -50%) rotate(${-(90 - (index - progress) * STEP_ANGLE)}deg)`,
+                        transform: `rotate(${-(90 - (index - progress) * STEP_ANGLE)}deg)`,
                       }}
                     >
+                      {/* Hangs above the dot, clear of the circle */}
                       <span
-                        className="tabular-nums text-[18px] sm:text-[20px]"
+                        className="absolute left-0 bottom-[8px] tabular-nums whitespace-nowrap text-[18px] sm:text-[20px] leading-none"
                         style={{
+                          transform: "translateX(-50%)",
                           fontFamily: "Montserrat, sans-serif",
                           fontWeight: 300,
                           color: `rgba(17, 17, 17, ${0.18 + nearness * 0.82})`,
@@ -205,9 +207,11 @@ const Services: React.FC = () => {
                       >
                         {String(index + 1).padStart(2, "0")}
                       </span>
+                      {/* Centred on the point itself, so it sits on the line */}
                       <span
-                        className="w-[7px] h-[7px] rounded-full bg-[#12A89C]"
+                        className="absolute top-0 left-0 w-[7px] h-[7px] rounded-full bg-[#12A89C]"
                         style={{
+                          transform: "translate(-50%, -50%)",
                           opacity: dotOpacity,
                           boxShadow: `0 0 ${5 + dotOpacity * 8}px ${1 + dotOpacity * 2}px rgba(18, 168, 156, ${dotOpacity * 0.45})`,
                         }}

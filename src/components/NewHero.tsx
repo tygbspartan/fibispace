@@ -75,7 +75,7 @@ const PHRASE_MS = 2000;
 //                base  sm  md  lg  xl 2xl wide
 //   headline       28  34  40  48  54  60   68
 //   description    14  15  16  17  18   -    -
-//   button         13   -  14   -  15   -    -
+//   button         12   -  14   -  15   -    -
 //   stat value     14  15  16  17  18   -   20
 //   stat label      9  10   -  11   -  12    -
 //
@@ -90,7 +90,7 @@ const BODY =
   "text-[14px] sm:text-[15px] md:text-[16px] lg:text-[16px] xl:text-[17px] " +
   "short:text-[14px] lg:short:text-[15px]";
 const BUTTON =
-  "text-[13px] md:text-[14px] xl:text-[15px] short:text-[13px] xl:short:text-[14px]";
+  "text-[12px] md:text-[14px] xl:text-[15px] short:text-[13px] xl:short:text-[14px]";
 const STAT_VALUE =
   "text-[14px] sm:text-[15px] md:text-[16px] lg:text-[16px] xl:text-[17px] wide:text-[20px] " +
   "short:text-[13px] lg:short:text-[14px] 2xl:short:text-[15px]";
@@ -439,14 +439,14 @@ const NewHero: React.FC = () => {
               <div className="mt-6 md:mt-[30px] short:mt-4 flex items-center gap-3 md:gap-4">
                 <button
                   onClick={() => navigate("/services")}
-                  className={`rounded-full bg-white text-black px-5 md:px-6 lg:px-7 py-2.5 lg:py-3 hover:bg-white/90 transition-colors ${BUTTON}`}
+                  className={`rounded-full bg-white text-black px-4 md:px-6 lg:px-7 py-2 md:py-2.5 lg:py-3 hover:bg-white/90 transition-colors ${BUTTON}`}
                   style={{ fontFamily: MONTSERRAT, fontWeight: 600 }}
                 >
                   Our Services
                 </button>
                 <button
                   onClick={() => navigate("/contact")}
-                  className={`group inline-flex items-center gap-2 rounded-full bg-white text-black px-5 md:px-6 lg:px-7 py-2.5 lg:py-3 hover:bg-white/90 transition-colors ${BUTTON}`}
+                  className={`group inline-flex items-center gap-2 rounded-full bg-white text-black px-4 md:px-6 lg:px-7 py-2 md:py-2.5 lg:py-3 hover:bg-white/90 transition-colors ${BUTTON}`}
                   style={{ fontFamily: MONTSERRAT, fontWeight: 600 }}
                 >
                   {hero.ctaText}

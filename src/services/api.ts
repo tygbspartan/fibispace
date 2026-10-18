@@ -48,11 +48,37 @@ api.interceptors.request.use(
   },
 );
 
-// Handle auth errors
+// Set while a reload for the host's bot challenge is in flight, so a challenge
+// that keeps coming back cannot put the page into a reload loop.
+const CHALLENGE_RELOAD_KEY = "challenge-reload";
+
+// Handle auth errors and the host's bot-verification challenge
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // A real API response got through, so the challenge is cleared; a later
+    // one in this session may reload again.
+    sessionStorage.removeItem(CHALLENGE_RELOAD_KEY);
+    return response;
+  },
   (error) => {
-    if (error.response?.status === 401) {
+    const res = error.response;
+
+    // The challenge answers XHRs with a 403 HTML page that only a full page
+    // load can complete. Reload once so the browser can pass it.
+    const isChallenge =
+      res?.status === 403 &&
+      typeof res.data === "string" &&
+      res.data.includes("<html");
+
+    if (isChallenge && !sessionStorage.getItem(CHALLENGE_RELOAD_KEY)) {
+      sessionStorage.setItem(CHALLENGE_RELOAD_KEY, "1");
+      window.location.reload();
+      // Never settles: the page is going away, so callers should not render
+      // an error state in the meantime.
+      return new Promise(() => {});
+    }
+
+    if (res?.status === 401) {
       localStorage.removeItem("adminToken");
       window.location.href = "/admin/login";
     }
