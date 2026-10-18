@@ -58,7 +58,10 @@ export const useSeo = (path: string, options?: { noindex?: boolean }) => {
   useEffect(() => {
     const clean = normalise(path);
     const { title, description } = seoForPath(clean);
-    const url = `${seo.siteUrl}${clean}`;
+    // Trailing slash, because that is the address the server answers on: each
+    // route is a folder with an index.html, and Apache redirects /about to
+    // /about/. A canonical without it would point Google at a redirect.
+    const url = `${seo.siteUrl}${clean === "/" ? "/" : `${clean}/`}`;
     const image = `${seo.siteUrl}${seo.image}`;
 
     document.title = title;

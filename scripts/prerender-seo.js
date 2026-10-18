@@ -13,6 +13,11 @@ const path = require("path");
 const BUILD = path.join(__dirname, "..", "build");
 const seo = require("../src/data/seo.json");
 
+// The address each route is served at. Every route is a folder holding an
+// index.html, and Apache redirects /about to /about/, so the slash form is the
+// real one — canonical, og:url and the sitemap all have to use it.
+const urlFor = (route) => `${seo.siteUrl}${route === "/" ? "/" : `${route}/`}`;
+
 const escape = (s) =>
   s
     .replace(/&/g, "&amp;")
@@ -44,7 +49,7 @@ const shell = fs.readFileSync(path.join(BUILD, "index.html"), "utf8");
 
 const render = (route) => {
   const { title, description } = entryFor(route);
-  const url = `${seo.siteUrl}${route}`;
+  const url = urlFor(route);
   const image = `${seo.siteUrl}${seo.image}`;
   const t = escape(title);
   const d = escape(description);
@@ -84,7 +89,7 @@ const sitemap =
   routes
     .map(
       (r) =>
-        `  <url><loc>${seo.siteUrl}${r}</loc><lastmod>${today}</lastmod>` +
+        `  <url><loc>${urlFor(r)}</loc><lastmod>${today}</lastmod>` +
         `<priority>${r === "/" ? "1.0" : r.startsWith("/services/") ? "0.8" : "0.6"}</priority></url>`,
     )
     .join("\n") +

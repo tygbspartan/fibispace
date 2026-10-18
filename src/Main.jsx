@@ -29,9 +29,19 @@ import api from "./services/api";
 import contentData from "./data/content.json";
 import { useSeo } from "./hooks/useSeo";
 
+// Search engines, link previews and speed tests. The loading screen only lets
+// go once someone answers the sound question, which a crawler never does — so
+// Google's render was the starfield and nothing else. They get the page
+// straight away; people still get the intro. Same content either way.
+const IS_CRAWLER =
+  typeof navigator !== "undefined" &&
+  /bot|crawl|spider|slurp|Google-InspectionTool|Lighthouse|facebookexternalhit|WhatsApp|HeadlessChrome/i.test(
+    navigator.userAgent,
+  );
+
 const Main = () => {
   const location = useLocation();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!IS_CRAWLER);
   const [backendReady, setBackendReady] = useState(false);
 
   // Check if current route is admin route
@@ -43,7 +53,7 @@ const Main = () => {
 
   // Check backend on initial load
   useEffect(() => {
-    if (isAdminRoute) {
+    if (isAdminRoute || IS_CRAWLER) {
       setLoading(false);
       return;
     }
@@ -104,7 +114,7 @@ const Main = () => {
   return (
     <AuthProvider>
       {/* Only show loading overlay for non-admin routes */}
-      {!isAdminRoute && (
+      {!isAdminRoute && !IS_CRAWLER && (
         <LoadingOverlay
           isActive={loading}
           backendReady={backendReady}
